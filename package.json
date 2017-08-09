@@ -1,0 +1,13 @@
+{
+  "name": "recreo",
+  "version": "0.0.1",
+  "scripts": {
+    "js": "webpack -p --watch"
+  },
+  "devDependencies": {
+    "@shopify/slate-tools": "0.3.3"
+  },
+  "dependencies": {
+    "webpack": "^3.5.2"
+  }
+}
