@@ -17,20 +17,21 @@ slate.a11y = {
    *
    * @param {JQuery} $element - The element to be acted upon
    */
-  pageLinkFocus: function($element) {
+  pageLinkFocus: function(element) {
     var focusClass = 'js-focus-hidden';
 
-    $element.first()
-      .attr('tabIndex', '-1')
-      .focus()
-      .addClass(focusClass)
-      .one('blur', callback);
+    // document.querySelector(element).classList.add(focusClass)
+    // $element.first()
+    //   .attr('tabIndex', '-1')
+    //   .focus()
+    //   .addClass(focusClass)
+    //   .one('blur', callback);
 
-    function callback() {
-      $element.first()
-        .removeClass(focusClass)
-        .removeAttr('tabindex');
-    }
+    // function callback() {
+    //   $element.first()
+    //     .removeClass(focusClass)
+    //     .removeAttr('tabindex');
+    // }
   },
 
   /**

@@ -1,14 +1,17 @@
 const path = require('path');
+var webpack = require( 'webpack' );
 
 module.exports = {
    entry: {
-      theme: path.resolve(__dirname, 'src/scripts/src/',  'theme.jsx'),
-      vendor: path.resolve(__dirname,  'src/scripts/src/',  'vendor.jsx'),
+      app: path.resolve(__dirname, 'src/scripts/',  'app.js'),
    },
    output: {
       path: path.resolve(__dirname, 'src/scripts/'),
       filename: 'compiled.bundle.js'
    },
+    plugins: [
+        new webpack.NoEmitOnErrorsPlugin()
+    ],
    resolve: {
       extensions: ['.js', '.jsx'],
       alias: {
@@ -18,9 +21,18 @@ module.exports = {
       },
    },
    module: {
+
+      loaders: [
+        {
+          test: /\.js$/,
+          include: path.resolve(__dirname),
+          loader: 'babel',
+          query: require('./babel')
+        },
+      ],
       rules: [
          {
-            test: /\.jsx/,
+            test: /\.js$/,
             use: {
                loader: 'babel-loader',
                options: {

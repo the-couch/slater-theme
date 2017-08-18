@@ -1,5 +1,5 @@
 /*============================================================================
-  [replace with theme name] | Built with Slate
+  [Slater] | Built with Slate
     - You cannot use native CSS/Sass @imports in this file without a build script
 ==============================================================================*/
 
@@ -24,8 +24,4 @@
 
 /*================ MODULES ================*/
 @import url('modules/site-header.scss');
-@import url('modules/gift-card-template.scss');
-
-body {
-  background: red;
-}
+// @import url('modules/gift-card-template.scss');
