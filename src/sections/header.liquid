@@ -29,7 +29,7 @@
       </div>
     {% endif %}
 
-    <a href="/cart">
+    <a href="/cart" id="Cart" class='s-cart__toggle'>
       {% include 'icon-cart' %}
       {{ 'layout.cart.title' | t }}
       ({{ cart.item_count }} {{ 'layout.cart.items_count' | t: count: cart.item_count }})
