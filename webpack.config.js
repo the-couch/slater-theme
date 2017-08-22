@@ -17,6 +17,7 @@ module.exports = {
       alias: {
          components: path.resolve(__dirname, 'src/scripts/src/', 'components'),
          sections: path.resolve(__dirname, 'src/scripts/src/', 'sections'),
+         slater: path.resolve(__dirname, 'src/scripts/src/', 'slater'),
          templates: path.resolve(__dirname, 'src/scripts/src/', 'templates'),
       },
    },
@@ -39,7 +40,13 @@ module.exports = {
                   presets: ['es2015']
                }
             }
-         }
+         },
+          {
+             test: /\.handlebars$/,
+             use: {
+                loader: 'handlebars-loader'
+             }
+          }
       ]
    }
 };

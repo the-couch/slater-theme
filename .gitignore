@@ -59,3 +59,4 @@ _site
 secrets.json
 .jekyll-metadata
 .ruby-version
+/src/scripts/compiled.bundle.js
