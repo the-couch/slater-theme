@@ -44,5 +44,3 @@ const Site = {
 }
 
 Site.init()
-
-console.log('hey sup')

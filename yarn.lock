@@ -835,6 +835,14 @@ beeper@^1.0.0:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/beeper/-/beeper-1.1.1.tgz#e6d5ea8c5dad001304a70b22638447f69cb2f809"
 
+bel@^4.0.0:
+  version "4.6.0"
+  resolved "https://registry.yarnpkg.com/bel/-/bel-4.6.0.tgz#3ade16e236ab2204d8d1c66eac4bd573793ac999"
+  dependencies:
+    global "^4.3.0"
+    hyperx "^2.3.0"
+    on-load "^3.2.0"
+
 benchmark@1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/benchmark/-/benchmark-1.0.0.tgz#2f1e2fa4c359f11122aa183082218e957e390c73"
@@ -2452,7 +2460,7 @@ global-prefix@^0.1.4:
     is-windows "^0.2.0"
     which "^1.2.12"
 
-global@^4.3.2:
+global@^4.3.0, global@^4.3.2:
   version "4.3.2"
   resolved "https://registry.yarnpkg.com/global/-/global-4.3.2.tgz#e76989268a6c74c38908b1305b10fc0e394e9d0f"
   dependencies:
@@ -2895,6 +2903,16 @@ http-signature@~1.1.0:
 https-browserify@0.0.1:
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/https-browserify/-/https-browserify-0.0.1.tgz#3f91365cabe60b77ed0ebba24b454e3e09d95a82"
+
+hyperscript-attribute-to-property@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/hyperscript-attribute-to-property/-/hyperscript-attribute-to-property-1.0.0.tgz#825308d49bb8e2957923f731981bcc811cad7aff"
+
+hyperx@^2.3.0:
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/hyperx/-/hyperx-2.3.0.tgz#70f473d66d4ad550ddd1c83e4be2651276bbf1e2"
+  dependencies:
+    hyperscript-attribute-to-property "^1.0.0"
 
 ieee754@^1.1.4:
   version "1.1.8"
@@ -3853,6 +3871,10 @@ mkdirp@0.3.0:
   dependencies:
     minimist "0.0.8"
 
+morphdom@^2.1.0:
+  version "2.3.3"
+  resolved "https://registry.yarnpkg.com/morphdom/-/morphdom-2.3.3.tgz#70b0aec3db0832688f7fcbde2a8921cf508c4f16"
+
 ms@0.7.1:
   version "0.7.1"
   resolved "https://registry.yarnpkg.com/ms/-/ms-0.7.1.tgz#9cd13c03adbff25b65effde7ce864ee952017098"
@@ -4037,6 +4059,12 @@ on-finished@~2.3.0:
   resolved "https://registry.yarnpkg.com/on-finished/-/on-finished-2.3.0.tgz#20f1336481b083cd75337992a16971aa2d906947"
   dependencies:
     ee-first "1.1.1"
+
+on-load@^3.2.0:
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/on-load/-/on-load-3.2.0.tgz#dd3145d3a5c2faa5666920d1df674b69f0c2f66f"
+  dependencies:
+    global "^4.3.0"
 
 once@^1.3.0, once@^1.3.3, once@^1.4.0:
   version "1.4.0"
@@ -5817,3 +5845,10 @@ yazl@^2.1.0:
 yeast@0.1.2:
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/yeast/-/yeast-0.1.2.tgz#008e06d8094320c372dbc2f8ed76a0ca6c8ac419"
+
+yo-yo@^1.4.1:
+  version "1.4.1"
+  resolved "https://registry.yarnpkg.com/yo-yo/-/yo-yo-1.4.1.tgz#9ce4b00fd880e5533b5e7f46a93d68d914ad6f64"
+  dependencies:
+    bel "^4.0.0"
+    morphdom "^2.1.0"
