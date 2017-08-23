@@ -6,7 +6,7 @@
   {% endif %}
 </style>
 <div data-section-id="{{ section.id }}" data-section-type="header-section">
-  <header role="banner">
+  <header role="banner" class="f jcb">
     {% if template.name == 'index' %}
       <h1 itemscope itemtype="http://schema.org/Organization">
     {% else %}
@@ -60,7 +60,7 @@
       </ul>
     {% endif %}
 
-    <form action="/search" method="get" role="search">
+    <!-- <form action="/search" method="get" role="search">
       <label for="Search" class="label-hidden">
         {{ 'general.search.placeholder' | t }}
       </label>
@@ -73,7 +73,7 @@
         {% include 'icon-search' %}
         <span class="icon-fallback-text">{{ 'general.search.submit' | t }}</span>
       </button>
-    </form>
+    </form> -->
 
   </header>
 

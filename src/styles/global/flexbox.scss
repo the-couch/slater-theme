@@ -1,0 +1,41 @@
+/**
+ * From svbstate v4
+ */
+.f { display: flex }
+.fw { flex-wrap: wrap }
+.ais { align-items: flex-start }
+.aie { align-items: flex-end }
+.aic { align-items: center }
+.aib { align-items: baseline }
+.jcs { justify-content: flex-start }
+.jce { justify-content: flex-end }
+.jcc { justify-content: center }
+.jcb { justify-content: space-between }
+.fa {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+}
+
+/**
+ * These kind of classes can get out
+ * of hand quick, but whatevers if
+ * you like them.
+ */
+.f__small {
+  @media (min-width: $break-s) {
+    display: flex;
+  }
+}
+
+.f__medium {
+  @media (min-width: $break-m) {
+    display: flex;
+  }
+}
+
+.f__large {
+  @media (min-width: $break-l) {
+    display: flex;
+  }
+}

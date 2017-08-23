@@ -25,17 +25,17 @@
 }
 
 // Only show when JS is not supported
-.no-js:not(html) {
-  display: none;
-
-  .no-js & {
-    display: block;
-  }
-}
+// .no-js:not(html) {
+//   display: none;
+//
+//   .no-js & {
+//     display: block;
+//   }
+// }
 
 // Only show when JS is supported
 .js {
-  .no-js & {
+  .no-js {
     display: none;
   }
 }
