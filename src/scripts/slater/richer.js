@@ -49,13 +49,15 @@ const Richer = (options = {}) => {
     addToCart: '.js-add-to-cart', // classname
     addToCartForm: 'AddToCartForm', // id
     cartContainer: 'CartContainer', // id
+    cartCounter: 'cartCounter', // id
     items: []
   }
 
   const config = Object.assign({}, defaults, options)
 
   const dom = {
-    addToCartForm: byId(config.addToCartForm)
+    addToCartForm: byId(config.addToCartForm),
+    cartCounter: byId(config.cartCounter)
   }
 
   const init = (options) => {
@@ -82,8 +84,14 @@ const Richer = (options = {}) => {
     }
 
     const cartUpdateCallback = (cart) => {
+      updateCount(cart)
       RicherAPI.onCartUpdate(cart)
       console.log('cart', cart)
+    }
+
+    const updateCount = (cart) => {
+      const counter = dom.cartCounter
+      counter.innerHTML = cart.item_count
     }
   }
 

@@ -6,7 +6,7 @@
   {% endif %}
 </style>
 <div data-section-id="{{ section.id }}" data-section-type="header-section">
-  <header role="banner" class="f jcb">
+  <header role="banner" class="f jcb px1">
     {% if template.name == 'index' %}
       <h1 itemscope itemtype="http://schema.org/Organization">
     {% else %}
@@ -31,8 +31,7 @@
 
     <a href="/cart" id="Cart" class='s-cart__toggle'>
       {% include 'icon-cart' %}
-      {{ 'layout.cart.title' | t }}
-      ({{ cart.item_count }} {{ 'layout.cart.items_count' | t: count: cart.item_count }})
+      <span class="" id="CartCounter">{{ cart.item_count }}</span>
     </a>
 
     {% if shop.customer_accounts_enabled %}
