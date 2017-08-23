@@ -56,6 +56,10 @@
   }
 }
 
+.visually-hidden {
+  display: none;
+}
+
 /*============================================================================
   Skip to content button
     - Overrides .visually-hidden when focused

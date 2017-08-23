@@ -2,6 +2,7 @@
 // based around the timber ajax cart, minus the jquery
 import serialize from 'form-serialize'
 import fetch from 'unfetch'
+import yo from 'yo-yo'
 
 const RicherAPI = {}
 
@@ -49,7 +50,7 @@ const Richer = (options = {}) => {
     addToCart: '.js-add-to-cart', // classname
     addToCartForm: 'AddToCartForm', // id
     cartContainer: 'CartContainer', // id
-    cartCounter: 'cartCounter', // id
+    cartCounter: 'CartCounter', // id
     items: []
   }
 
@@ -57,11 +58,13 @@ const Richer = (options = {}) => {
 
   const dom = {
     addToCartForm: byId(config.addToCartForm),
+    cartContainer: byId(config.cartContainer),
     cartCounter: byId(config.cartCounter)
   }
 
   const init = (options) => {
     dom.addToCartForm ? AddToCart() : null
+    RicherAPI.getCart(cartUpdateCallback)
   }
 
   const AddToCart = () => {
@@ -82,17 +85,52 @@ const Richer = (options = {}) => {
     const itemErrorCallback = (XMLHttpRequest, textStatus) => {
       console.log('error family')
     }
+  }
 
-    const cartUpdateCallback = (cart) => {
-      updateCount(cart)
-      RicherAPI.onCartUpdate(cart)
-      console.log('cart', cart)
+  const cartUpdateCallback = (cart) => {
+    updateCount(cart)
+    buildCart(cart)
+    RicherAPI.onCartUpdate(cart)
+  }
+
+  const updateCount = (cart) => {
+    const counter = dom.cartCounter
+    counter.innerHTML = cart.item_count
+  }
+
+  const buildCart = (cart) => {
+    console.log('building', cart)
+    const cartContainer = dom.cartContainer
+    cartContainer.innerHTML = null
+
+    if (cart.item_count === 0) {
+      cartContainer.innerHTML = `<p>We're sorry your cart is empty</p>`
+      return
     }
 
-    const updateCount = (cart) => {
-      const counter = dom.cartCounter
-      counter.innerHTML = cart.item_count
+    console.log('taco', cart)
+
+    var el = cartBlock(cart.items, update)
+
+    function cartBlock (items, onclick) {
+      return yo`
+        <div>
+          ${items.map((item) => {
+            return yo`
+              <div onclick=${onclick}>taco</div>
+            `
+          })}
+        </div>
+      `
     }
+
+    function update () {
+      console.log('update')
+    }
+
+    console.log('prior', cartContainer)
+
+    cartContainer.appendChild(el)
   }
 
   return {
