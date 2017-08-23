@@ -117,15 +117,15 @@ const Richer = (options = {}) => {
         <div>
           ${items.map((item) => {
             return yo`
-              <div onclick=${onclick}>taco</div>
+              <div onclick=${() => onclick(item)}>taco</div>
             `
           })}
         </div>
       `
     }
 
-    function update () {
-      console.log('update')
+    function update (event) {
+      console.log('update', event)
     }
 
     console.log('prior', cartContainer)
