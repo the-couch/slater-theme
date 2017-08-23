@@ -99,7 +99,7 @@ const Richer = (options = {}) => {
   }
 
   const buildCart = (cart) => {
-    console.log('building', cart)
+
     const cartContainer = dom.cartContainer
     cartContainer.innerHTML = null
 
@@ -107,8 +107,6 @@ const Richer = (options = {}) => {
       cartContainer.innerHTML = `<p>We're sorry your cart is empty</p>`
       return
     }
-
-    console.log('taco', cart)
 
     var el = cartBlock(cart.items, update)
 
@@ -127,8 +125,6 @@ const Richer = (options = {}) => {
     function update (event) {
       console.log('update', event)
     }
-
-    console.log('prior', cartContainer)
 
     cartContainer.appendChild(el)
   }
