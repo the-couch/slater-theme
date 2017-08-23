@@ -5,6 +5,10 @@ import request from 'superagent'
 
 const RicherAPI = {}
 
+RicherAPI.onCartUpdate = (cart) => {
+  console.log('on update', cart.item_count)
+}
+
 RicherAPI.addItemFromForm = (form, callback, errorCallback) => {
   form = serialize(form, {hash: true})
   console.log('serialized', form)
@@ -12,8 +16,22 @@ RicherAPI.addItemFromForm = (form, callback, errorCallback) => {
     .post('/cart/add.js')
     .send(form)
     .end((err, res) => {
-      if (err) console.log(err)
-      console.log('hey', res)
+      if (err) errorCallback(err)
+      callback(res)
+    })
+}
+
+RicherAPI.getCart = (callback) => {
+  console.log('getcart', callback)
+  request
+    .get('/cart.js')
+    .end((err, res) => {
+      let cart = JSON.parse(res.text)
+      if ((typeof callback) === 'function') {
+        callback(cart)
+      } else {
+        RicherAPI.onCartUpdate(cart)
+      }
     })
 }
 
@@ -42,10 +60,16 @@ let Richer = {
 
     const itemAddedCallback = (product) => {
       console.log('yo', product)
+
+      RicherAPI.getCart(cartUpdateCallback)
     }
 
     const itemErrorCallback = (XMLHttpRequest, textStatus) => {
       console.log('error family')
+    }
+
+    const cartUpdateCallback = (cart) => {
+      console.log('cart', cart)
     }
   }
 }
