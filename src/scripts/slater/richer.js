@@ -1,12 +1,20 @@
 // Handles all the things ajax cart related,
 // based around the timber ajax cart, minus the jquery
 import serialize from 'form-serialize'
+import request from 'superagent'
 
 const RicherAPI = {}
 
 RicherAPI.addItemFromForm = (form, callback, errorCallback) => {
   form = serialize(form, {hash: true})
   console.log('serialized', form)
+  request
+    .post('/cart/add.js')
+    .send(form)
+    .end((err, res) => {
+      if (err) console.log(err)
+      console.log('hey', res)
+    })
 }
 
 let Richer = {
