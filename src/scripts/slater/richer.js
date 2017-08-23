@@ -1,28 +1,44 @@
 // Handles all the things ajax cart related,
 // based around the timber ajax cart, minus the jquery
 import serialize from 'form-serialize'
-import request from 'superagent'
+import fetch from 'unfetch'
 
 const RicherAPI = {}
 
 RicherAPI.onCartUpdate = (cart) => {
-  console.log('on update', cart.item_count)
+  console.log('items in the cart?', cart.item_count)
 }
 
 RicherAPI.addItemFromForm = (form, callback, errorCallback) => {
   form = serialize(form, {hash: true})
-  console.log('serialized', form)
-  request
-    .post('/cart/add.js')
-    .send(form)
-    .end((err, res) => {
-      if (err) errorCallback(err)
-      callback(res)
+  fetch('/cart/add.js', {
+    method: 'POST',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(form)
+  })
+    .then( r => {
+      if ((typeof callback) === 'function') {
+        callback(r.json())
+      } else {
+        RicherAPI.onCartUpdate(r.json())
+      }
     })
 }
 
 RicherAPI.getCart = (callback) => {
-  console.log('getcart', callback)
+  fetch('/cart.js', { credentials: 'same-origin' })
+    .then( r => r.json() )
+    .then( cart => {
+      if ((typeof callback) === 'function') {
+        callback(cart)
+      } else {
+        RicherAPI.onCartUpdate(cart)
+      }
+    })
+
   request
     .get('/cart.js')
     .end((err, res) => {
@@ -72,6 +88,7 @@ const Richer = () => {
     }
 
     const cartUpdateCallback = (cart) => {
+      RicherAPI.onCartUpdate(cart)
       console.log('cart', cart)
     }
   }

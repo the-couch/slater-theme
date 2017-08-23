@@ -1,5 +1,6 @@
 const path = require('path');
 var webpack = require( 'webpack' );
+// var DashboardPlugin = require('webpack-dashboard/plugin');
 
 module.exports = {
    entry: {
@@ -7,16 +8,17 @@ module.exports = {
    },
    output: {
       path: path.resolve(__dirname, 'src/scripts/'),
+      pathinfo: true,
       filename: 'compiled.bundle.js'
    },
     plugins: [
         new webpack.NoEmitOnErrorsPlugin()
+        // new DashboardPlugin()
     ],
    resolve: {
       extensions: ['.js', '.jsx'],
       alias: {
          components: path.resolve(__dirname, 'src/scripts/src/', 'components'),
-         sections: path.resolve(__dirname, 'src/scripts/src/', 'sections'),
          slater: path.resolve(__dirname, 'src/scripts/src/', 'slater'),
          templates: path.resolve(__dirname, 'src/scripts/src/', 'templates'),
       },
@@ -40,13 +42,7 @@ module.exports = {
                   presets: ['es2015']
                }
             }
-         },
-          {
-             test: /\.handlebars$/,
-             use: {
-                loader: 'handlebars-loader'
-             }
-          }
+         }
       ]
    }
 };
