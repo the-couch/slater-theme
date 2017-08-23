@@ -38,28 +38,24 @@ RicherAPI.getCart = (callback) => {
         RicherAPI.onCartUpdate(cart)
       }
     })
-
-  request
-    .get('/cart.js')
-    .end((err, res) => {
-      let cart = JSON.parse(res.text)
-      if ((typeof callback) === 'function') {
-        callback(cart)
-      } else {
-        RicherAPI.onCartUpdate(cart)
-      }
-    })
 }
 
-const Richer = () => {
-  const dom = {
-    addToCart: document.querySelectorAll('.js-add-to-cart'),
-    addToCartForm: document.getElementById('AddToCartForm'),
-    cartContainer: document.getElementById('CartContainer')
+const byId = (selector) => {
+  return document.getElementById(selector)
+}
+
+const Richer = (options = {}) => {
+  const defaults = {
+    addToCart: '.js-add-to-cart', // classname
+    addToCartForm: 'AddToCartForm', // id
+    cartContainer: 'CartContainer', // id
+    items: []
   }
 
-  const config = {
-    items: []
+  const config = Object.assign({}, defaults, options)
+
+  const dom = {
+    addToCartForm: byId(config.addToCartForm)
   }
 
   const init = (options) => {
@@ -77,9 +73,7 @@ const Richer = () => {
       RicherAPI.addItemFromForm(e.target, itemAddedCallback, itemErrorCallback)
     })
 
-    const itemAddedCallback = (product) => {
-      console.log('yo', product)
-
+    const itemAddedCallback = () => {
       RicherAPI.getCart(cartUpdateCallback)
     }
 

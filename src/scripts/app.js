@@ -4,7 +4,11 @@ let App = {
   init() {
     console.log('spaghetti')
     // RickCARRRRRT
-    let richCart = new Richer()
+    let cartOptions = {
+      cartContainer: 'CartContainer', // Accepts an ID
+      addToCartFrom: 'addToCartFrom' // Accepts an ID
+    }
+    let richCart = new Richer(cartOptions)
     richCart.init()
   }
 }
