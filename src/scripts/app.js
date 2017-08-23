@@ -3,7 +3,9 @@ import Richer from './slater/richer'
 let App = {
   init() {
     console.log('spaghetti')
-    Richer.init()
+    // RickCARRRRRT
+    let richCart = new Richer()
+    richCart.init()
   }
 }
 

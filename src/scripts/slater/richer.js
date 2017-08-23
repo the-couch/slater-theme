@@ -35,20 +35,23 @@ RicherAPI.getCart = (callback) => {
     })
 }
 
-let Richer = {
-  dom: {
+const Richer = () => {
+  const dom = {
     addToCart: document.querySelectorAll('.js-add-to-cart'),
     addToCartForm: document.getElementById('AddToCartForm'),
     cartContainer: document.getElementById('CartContainer')
-  },
-  config: {
+  }
+
+  const config = {
     items: []
-  },
-  init(options) {
-    this.dom.addToCartForm ? this.AddToCart() : null
-  },
-  AddToCart() {
-    const form = this.dom.addToCartForm
+  }
+
+  const init = (options) => {
+    dom.addToCartForm ? AddToCart() : null
+  }
+
+  const AddToCart = () => {
+    const form = dom.addToCartForm
 
     form.addEventListener('submit', (e) => {
       e.preventDefault()
@@ -72,6 +75,10 @@ let Richer = {
       console.log('cart', cart)
     }
   }
+
+  return {
+    init
+  }
 }
 
-export default Richer
+module.exports = Richer
