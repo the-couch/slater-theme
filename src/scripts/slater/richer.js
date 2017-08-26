@@ -51,7 +51,8 @@ const Richer = (options = {}) => {
     addToCartForm: 'AddToCartForm', // id
     cartContainer: 'CartContainer', // id
     cartCounter: 'CartCounter', // id
-    items: []
+    items: [],
+    moneyFormat: '${{amount}}'
   }
 
   const config = Object.assign({}, defaults, options)
@@ -108,18 +109,66 @@ const Richer = (options = {}) => {
       return
     }
 
-    var el = cartBlock(cart.items, update)
+    var el = cartBlock(cart.items, cart, update)
 
-    function cartBlock (items, onclick) {
+    function cartBlock (items, cart, onclick) {
       return yo`
         <div>
           ${items.map((item) => {
+            // If product has no image use shopify no image, otherwise grab the thumb
+            let img = '//cdn.shopify.com/s/assets/admin/no-image-medium-cc9732cb976dd349a0df1d39816fbcc7.gif'
+            img = item.image ? item.image.replace(/(\.[^.]*)$/, "_small$1").replace('http:', '') : img
+
+            // Define our cart object (easier to visualize)
+            const prod = {
+              key: item.key,
+              image: img,
+              url: item.url,
+              name: item.product_title,
+              variation: item.variant_title,
+              properties: item.properties,
+              itemAdd: item.quantity + 1,
+              itemMinus: item.quantity - 1,
+              itemQty: item.quantity,
+              price: slate.Currency.formatMoney(item.price, config.moneyFormat),
+              vendor: item.vendor,
+              linePrice: slate.Currency.formatMoney(item.line_price, config.moneyFormat),
+              originalLinePrice: slate.Currency.formatMoney(item.original_line_price, config.moneyFormat),
+              discounts: item.discounts,
+              discountsApplied: item.line_price === item.original_line_price ? false : true
+            }
+
+
+
             return yo`
-              <div onclick=${() => onclick(item)}>taco</div>
+              <div onclick=${() => onclick(item)}>
+                <div>
+                  <img src='${prod.image}' alt='${prod.name}' />
+                </div>
+                <div>
+                  <h5><a href='${prod.url}'>${prod.name}</a></h5>
+                  ${realPrice(prod.discountsApplied, prod.originalLinePrice, prod.linePrice)}
+                </div>
+              </div>
             `
           })}
         </div>
       `
+    }
+
+    function realPrice(discountsApplied, originalLinePrice, linePrice) {
+      if (discountsApplied) {
+        return yo`
+          <div>
+            <small className='strike'>${originalLinePrice}</small>
+            <br /><span>${linePrice}</span>
+          </div>
+        `
+      } else {
+        return yo`
+          <span>${linePrice}</span>
+        `
+      }
     }
 
     function update (event) {
