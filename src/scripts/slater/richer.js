@@ -135,7 +135,8 @@ const Richer = (options = {}) => {
 
     var el = cartBlock(cart.items, cart, update)
 
-    function cartBlock (items, cart, onclick) {
+    function cartBlock (items, cart, qtyControl) {
+      console.log(cart)
       return yo`
         <div>
           ${items.map((item) => {
@@ -143,13 +144,23 @@ const Richer = (options = {}) => {
             const product = cleanProduct(item, config)
 
             return yo`
-              <div onclick=${() => onclick(item)}>
-                <div>
-                  <img src='${product.image}' alt='${product.name}' />
+              <div>
+                <div class='f jcb'>
+                  <div>
+                    <img src='${product.image}' alt='${product.name}' />
+                  </div>
+                  <div>
+                    <h5><a href='${product.url}'>${product.name}</a></h5>
+                    ${product.variation ? yo`<span>${product.variation}</span>` : null}
+                    ${realPrice(product.discountsApplied, product.originalLinePrice, product.linePrice)}
+                  </div>
+                  <div>
+                    <div onclick=${() => qtyControl(item, product.itemQty, 'decrease')}>Decrease</div>
+                    <div>Qty: ${product.itemQty}<div>
+                  </div>
                 </div>
                 <div>
-                  <h5><a href='${product.url}'>${product.name}</a></h5>
-                  ${realPrice(product.discountsApplied, product.originalLinePrice, product.linePrice)}
+                  <h5>Subtotal: ${slate.Currency.formatMoney(cart.total_price)}</h5>
                 </div>
               </div>
             `
@@ -173,8 +184,11 @@ const Richer = (options = {}) => {
       }
     }
 
-    function update (event) {
-      console.log('update', event)
+    function update (item, quantity, direction) {
+      console.log(item, quantity, direction)
+
+      let newCart = cartBlock(cart.items, cart, update)
+      yo.update(el, newCart)
     }
 
     cartContainer.appendChild(el)
