@@ -214,14 +214,12 @@ const Richer = (options = {}) => {
     }
 
     function update (item, quantity) {
-      RicherAPI.changeItem((item.index + 1), quantity, bagel)
-
-      let newCart = cartBlock(cart.items, cart, update)
-      yo.update(el, newCart)
+      RicherAPI.changeItem((item.index + 1), quantity, refreshCart)
     }
 
-    function bagel (cart) {
-      console.log('sup?', cart)
+    function refreshCart (cart) {
+      let newCart = cartBlock(cart.items, cart, update)
+      yo.update(el, newCart)
     }
 
     cartContainer.appendChild(el)
