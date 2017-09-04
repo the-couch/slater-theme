@@ -9,9 +9,6 @@
     {% if settings.favicon != blank %}
       <link rel="shortcut icon" href="{{ settings.favicon | img_url: '32x32' }}" type="image/png">
     {% endif %}
-    {% if page_description %}
-      <meta name="description" content="{{ page_description | escape }}">
-    {% endif %}
 
     {% capture seo_title %}
       {{ page_title }}
@@ -27,11 +24,13 @@
     {% endcapture %}
     <title>{{ seo_title }}</title>
 
-    {% include 'social-meta-tags' %}
+    {% include 'head-meta' %}
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
-    {{ 'main.css' | asset_url | stylesheet_tag }}
+    {% if template.directory == 'customers' %}
+      <script src="{{ 'shopify_common.js' | shopify_asset_url }}" defer="defer"></script>
+    {% endif %}
 
     <script>
       window.theme = {
@@ -44,9 +43,7 @@
       }
     </script>
 
-    {% if template.directory == 'customers' %}
-      <script src="{{ 'shopify_common.js' | shopify_asset_url }}" defer="defer"></script>
-    {% endif %}
+    {{ 'main.css' | asset_url | stylesheet_tag }}
 
     {{ content_for_header }}
   </head>
@@ -55,13 +52,8 @@
 
     <main role="main" id="root">
       {{ content_for_layout }}
+      {% section 'footer' %}
     </main>
-
-    {% section 'footer' %}
-
-    {% include 'ajax-cart-template' %}
-
-    <div data-component='hero'></div>
 
     <script src="{{ 'index.js' | asset_url }}" defer="defer"></script>
   </body>
