@@ -1,17 +1,21 @@
-import Richer from './slater/richer'
+const init = types => (ctx = document) => {
+  for (let type in types) {
+    const attr = 'data-' + type
+    const nodes = [].slice.call(ctx.querySelectorAll(`[${attr}]`))
 
-let App = {
-  init() {
-    console.log('spaghetti')
-    // RickCARRRRRT
-    let cartOptions = {
-      cartContainer: 'CartContainer', // Accepts an ID
-      addToCartFrom: 'AddToCartFrom', // Accepts an ID
-      cartCounter: 'CartCounter', // Accepts an ID
+    for (let i = 0; i < nodes.length; i++) {
+      try {
+        require(types[type] + nodes[i].getAttribute(attr) + '.js').default(nodes[i])
+      } catch (e) {
+        console.error(e)
+      }
     }
-    let richCart = new Richer(cartOptions)
-    richCart.init()
   }
 }
 
-App.init()
+document.addEventListener('DOMContentLoaded', e => {
+  init({
+    component: './components/',
+    section: './sections/'
+  })()
+})

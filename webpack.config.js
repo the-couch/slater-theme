@@ -1,48 +1,45 @@
-const path = require('path');
-var webpack = require( 'webpack' );
-// var DashboardPlugin = require('webpack-dashboard/plugin');
+const webpack = require('webpack')
+const path = require('path')
+const LodashModuleReplacementPlugin = require('lodash-webpack-plugin')
+const p = process.env.NODE_ENV === 'production'
 
 module.exports = {
-   entry: {
-      app: path.resolve(__dirname, 'src/scripts/',  'app.js'),
-   },
-   output: {
-      path: path.resolve(__dirname, 'src/scripts/'),
-      pathinfo: true,
-      filename: 'compiled.bundle.js'
-   },
-    plugins: [
-        new webpack.NoEmitOnErrorsPlugin()
-        // new DashboardPlugin()
-    ],
-   resolve: {
-      extensions: ['.js', '.jsx'],
-      alias: {
-         components: path.resolve(__dirname, 'src/scripts/src/', 'components'),
-         slater: path.resolve(__dirname, 'src/scripts/src/', 'slater'),
-         templates: path.resolve(__dirname, 'src/scripts/src/', 'templates'),
+  target: 'web',
+  devtool: 'source-map',
+  entry: path.join(__dirname, 'src/scripts/app.js'),
+  output: {
+    path: path.join(__dirname, 'src/assets'),
+    filename: 'index.js'
+  },
+  module: {
+    rules: [
+      {
+        enforce: 'pre',
+        test: /\.js?$/,
+        loader: 'standard-loader',
+        exclude: /node_modules/,
+        options: {
+          parser: 'babel-eslint'
+        }
       },
-   },
-   module: {
-
-      loaders: [
-        {
-          test: /\.js$/,
-          include: path.resolve(__dirname),
-          loader: 'babel',
-          query: require('./babel')
-        },
-      ],
-      rules: [
-         {
-            test: /\.js$/,
-            use: {
-               loader: 'babel-loader',
-               options: {
-                  presets: ['es2015']
-               }
-            }
-         }
-      ]
-   }
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        include: path.join(__dirname, 'src/scripts'),
+        loaders: ['babel-loader']
+      },
+    ]
+  },
+  resolve: {
+    alias: {
+      slater: path.resolve(__dirname, 'src/scripts/src/', 'slater'),
+      components: path.resolve(__dirname, 'src/scripts/src/', 'components'),
+      templates: path.resolve(__dirname, 'src/scripts/src/', 'templates'),
+    },
+  },
+  plugins: p ? [
+    new webpack.NoEmitOnErrorsPlugin(),
+    new LodashModuleReplacementPlugin,
+    new webpack.optimize.OccurrenceOrderPlugin()
+  ] : []
 };
