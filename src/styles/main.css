@@ -1,3 +1,5 @@
-body {
-  font-size: 100%;
+// Shopify Overrides
+.shopify-preview-bar {
+  display: none !important;
 }
+
