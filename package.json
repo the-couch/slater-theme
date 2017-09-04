@@ -20,6 +20,7 @@
   },
   "dependencies": {
     "form-serialize": "^0.7.2",
+    "richer": "^0.2.0",
     "uglify-js": "^3.0.27",
     "unfetch": "^3.0.0",
     "webpack": "^3.5.2",

@@ -4736,10 +4736,6 @@ portscanner@^1.0.0:
   dependencies:
     async "1.5.2"
 
-preact@^8.2.1:
-  version "8.2.1"
-  resolved "https://registry.yarnpkg.com/preact/-/preact-8.2.1.tgz#674243df0c847884d019834044aa2fcd311e72ed"
-
 prepend-http@^1.0.1:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/prepend-http/-/prepend-http-1.0.4.tgz#d4f4562b0ce3696e41ac52d0e002e57a635dc6dc"
@@ -5132,6 +5128,10 @@ resp-modifier@6.0.2:
   dependencies:
     debug "^2.2.0"
     minimatch "^3.0.2"
+
+richer@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/richer/-/richer-0.2.0.tgz#08d2ffdb8bcb12b2f309e90a917066c2dd81f0a3"
 
 right-align@^0.1.1:
   version "0.1.3"
