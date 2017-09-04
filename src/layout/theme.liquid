@@ -6,16 +6,12 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="theme-color" content="{{ settings.color_primary }}">
     <link rel="canonical" href="{{ canonical_url }}">
-
     {% if settings.favicon != blank %}
       <link rel="shortcut icon" href="{{ settings.favicon | img_url: '32x32' }}" type="image/png">
     {% endif %}
-
     {% if page_description %}
       <meta name="description" content="{{ page_description | escape }}">
     {% endif %}
-
-    {% include 'social-meta-tags' %}
 
     {% capture seo_title %}
       {{ page_title }}
@@ -31,6 +27,8 @@
     {% endcapture %}
     <title>{{ seo_title }}</title>
 
+    {% include 'social-meta-tags' %}
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
     {{ 'main.css' | asset_url | stylesheet_tag }}
@@ -43,7 +41,7 @@
           unavailable: {{ 'products.product.unavailable' | t | json }}
         },
         moneyFormat: {{ shop.money_format | json }}
-      };
+      }
     </script>
 
     {% if template.directory == 'customers' %}
@@ -54,9 +52,8 @@
   </head>
   <body id="{{ page_title | handle }}">
     {% section 'header' %}
-    {% section 's-cart' %}
 
-    <main role="main" id="MainContent">
+    <main role="main" id="root">
       {{ content_for_layout }}
     </main>
 
