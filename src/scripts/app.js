@@ -16,6 +16,6 @@ const init = types => (ctx = document) => {
 document.addEventListener('DOMContentLoaded', e => {
   init({
     component: './components/',
-    section: './sections/'
+    page: './pages/'
   })()
 })

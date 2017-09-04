@@ -7,6 +7,10 @@
     ['module-resolver', {
       'root': ['.'],
       'alias': {
+        'slater': './src/scripts/slater',
+        'components': './src/scripts/components',
+        'pages': './src/scripts/pages',
+        'templates': './src/scripts/templates'
       }
     }]
   ],

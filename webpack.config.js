@@ -32,9 +32,10 @@ module.exports = {
   },
   resolve: {
     alias: {
-      slater: path.resolve(__dirname, 'src/scripts/src/', 'slater'),
-      components: path.resolve(__dirname, 'src/scripts/src/', 'components'),
-      templates: path.resolve(__dirname, 'src/scripts/src/', 'templates'),
+      slater: path.join(__dirname, 'src/scripts/', 'slater'),
+      components: path.join(__dirname, 'src/scripts/', 'components'),
+      pages: path.join(__dirname, 'src/scripts/', 'pages'),
+      templates: path.join(__dirname, 'src/scripts/', 'templates'),
     },
   },
   plugins: p ? [
