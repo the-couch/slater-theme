@@ -1,3 +1,6 @@
+
+ /* eslint-disable */
+
 slate.Sections = function Sections() {
   this.constructors = {};
   this.instances = [];

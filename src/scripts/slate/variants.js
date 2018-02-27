@@ -9,6 +9,8 @@
  * @namespace variants
  */
 
+ /* eslint-disable */
+
 slate.Variants = (function() {
 
   /**

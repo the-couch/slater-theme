@@ -6,6 +6,8 @@
    * @namespace product
  */
 
+ /* eslint-disable */
+
 theme.Product = (function() {
 
   var selectors = {

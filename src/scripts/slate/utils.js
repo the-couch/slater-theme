@@ -6,6 +6,8 @@
  * @namespace utils
  */
 
+  /* eslint-disable */
+
 slate.utils = {
 
   /**

@@ -1,0 +1,10 @@
+.slater{}
+
+body{
+  background:orange;
+}
+
+.shopify-preview-bar,
+#preview-bar-iframe{
+  display:none !important;
+}

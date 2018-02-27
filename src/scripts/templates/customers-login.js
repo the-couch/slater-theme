@@ -6,6 +6,8 @@
  * @namespace password
  */
 
+ /* eslint-disable */
+
 theme.customerLogin = (function() {
   var config = {
     recoverPasswordForm: '#RecoverPassword',

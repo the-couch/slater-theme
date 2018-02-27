@@ -2,20 +2,22 @@
   "name": "slater",
   "version": "0.0.1",
   "scripts": {
-    "start": "webpack -p --watch",
+    "start": "slater watch",
     "dev": "concurrently 'npm run watch:theme' 'npm run watch:js' 'npm run watch:css'",
-    "build": "npm run build:js && npm run build:css && npm run build:theme",
+    "build": "npm run build:js && npm run build:css",
+    "watch:assets": "concurrently 'npm run watch:js' 'npm run watch:css'",
     "build:theme": "theme upload",
     "watch:theme": "theme watch",
     "build:js": "NODE_ENV=production webpack --progress -p",
     "watch:js": "NODE_ENV=development webpack -w",
-    "build:css": "NODE_ENV=production postcss src/styles/main.css -o src/assets/main.css",
-    "watch:css": "NODE_ENV=development postcss src/styles/main.css -w -o src/assets/main.css"
+    "build:css": "NODE_ENV=production postcss styles/main.css -o src/assets/main.css",
+    "watch:css": "NODE_ENV=development postcss styles/main.css -w -o src/assets/main.css"
   },
   "author": "iamkevingreen",
   "license": "MIT",
   "devDependencies": {
     "@shopify/slate-tools": "0.3.3",
+    "@slater/cli": "^0.1.2",
     "babel-core": "^6.25.0",
     "babel-eslint": "^7.2.3",
     "babel-loader": "^7.0.0",

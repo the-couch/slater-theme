@@ -7,6 +7,8 @@
  * @namespace customerAddresses
  */
 
+  /* eslint-disable */
+
 theme.customerAddresses = (function() {
   var $newAddressForm = $('#AddressNewForm');
 

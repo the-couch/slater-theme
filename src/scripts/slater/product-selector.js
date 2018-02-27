@@ -37,7 +37,7 @@ export default function ProductSelector (
     on: ev.on,
     destroy () {
       options.forEach(opt => {
-        opt.removeEventListener('change', updateSelect)
+        // opt.removeEventListener('change', updateSelect)
       })
     }
   }
