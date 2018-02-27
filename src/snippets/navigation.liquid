@@ -18,7 +18,7 @@
           </ul>
         </li>
       {% else %}
-        <li class=" {% if link.active %}active mr1{% endif %}">
+        <li class=" {% if link.active %}active{% endif %} mr1">
           <a href="{{ link.url }}" class="">{{ link.title }}</a>
         </li>
       {% endif %}

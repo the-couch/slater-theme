@@ -1,4 +1,4 @@
-<div data-page='product' data-section-id="{{ section.id }}" data-section-type="product" data-enable-history-state="true" itemscope itemtype="http://schema.org/Product">
+<div class='px1 container--xl mha' data-page='product' data-section-id="{{ section.id }}" data-section-type="product" data-enable-history-state="true" itemscope itemtype="http://schema.org/Product">
 
   {%- assign current_variant = product.selected_or_first_available_variant -%}
   {%- assign featured_image = current_variant.featured_image | default: product.featured_image -%}
@@ -104,9 +104,15 @@
     {{ product.description }}
   </div>
 
+  {% comment %}
+
+    Commenting out social sharing for now
+
   {% if section.settings.show_share_buttons %}
     {% include 'social-sharing', share_title: product.title, share_permalink: product.url, share_image: product %}
   {% endif %}
+
+  {% endcomment %}
 
   {% unless product == empty %}
     <script type="application/json" data-product-json>
