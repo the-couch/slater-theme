@@ -2,7 +2,6 @@ const webpack = require('webpack')
 const path = require('path')
 const LodashModuleReplacementPlugin = require('lodash-webpack-plugin')
 const p = process.env.NODE_ENV === 'production'
-const DashboardPlugin = require('webpack-dashboard/plugin')
 
 module.exports = {
   target: 'web',
@@ -43,6 +42,5 @@ module.exports = {
     new webpack.NoEmitOnErrorsPlugin(),
     new LodashModuleReplacementPlugin,
     new webpack.optimize.OccurrenceOrderPlugin(),
-    new DashboardPlugin()
   ] : []
 };

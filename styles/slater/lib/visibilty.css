@@ -1,0 +1,36 @@
+.hide {
+  display: none;
+}
+.hide--s {
+  @media (--s) {
+    display: none;
+  }
+}
+.hide--m {
+  @media (--m) {
+    display: none;
+  }
+}
+.hide--l {
+  @media (--l) {
+    display: none;
+  }
+}
+.show--s {
+  display: none;
+  @media (--s) {
+    display: block;
+  }
+}
+.show--m {
+  display: none;
+  @media (--m) {
+    display: block;
+  }
+}
+.show--l {
+  display: none;
+  @media (--l) {
+    display: block;
+  }
+}

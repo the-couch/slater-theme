@@ -1,3 +1,3 @@
 export default props => {
-  console.log('taco', props)
+  console.log('header', props)
 }

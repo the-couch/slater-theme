@@ -1,0 +1,8 @@
+:root {
+  --fast: 200ms;
+  --slow: 400ms;
+  --ease: ease-in-out;
+  --cubic: cubic-bezier(.01,.57,.13,1);
+  --shadow:  0 15px 35px -10px rgba(0,0,0,0.15);
+  --video-shadow:  0 25px 50px -20px rgba(0,0,0,0.15);
+}

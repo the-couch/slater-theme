@@ -1,0 +1,47 @@
+.container--c {
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.container--l {
+  max-width: 1280px;
+}
+
+.container--xl {
+  max-width: 1480px;
+}
+
+.outer {
+  width: 100%;
+  padding-left: 1.5em;
+  padding-right: 1.5em;
+  @media (--m) {
+    padding-left: 3em;
+    padding-right: 3em;
+  }
+}
+.outer--v {
+  padding-top: 1.5em;
+  padding-bottom: 1.5em;
+}
+.container {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.container--s {
+  max-width: 480px;
+  width: 100%;
+}
+
+.container--a {
+  max-width: 630px;
+}
+
+.container--m {
+  max-width: 700px;
+}
+
+.container--mm {
+  max-width: 890px;
+}

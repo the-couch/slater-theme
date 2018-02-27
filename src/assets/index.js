@@ -369,7 +369,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 
 exports.default = function (props) {
-  console.log('taco', props);
+  console.log('header', props);
 };
 
 /***/ }),
