@@ -7,17 +7,9 @@
 <div data-section-id="{{ section.id }}" data-component="header">
   <header role="banner">
     <div class="f jcb aic px1">
-      {% if template.name == 'index' %}
-        <h1 itemscope itemtype="http://schema.org/Organization">
-      {% else %}
-        <div class="h1" itemscope itemtype="http://schema.org/Organization">
-      {% endif %}
-      <h1><em>Slater</em></h1>
-      {% if template.name == 'index' %}
-        </h1>
-      {% else %}
-        </div>
-      {% endif %}
+      <h1 itemscope itemtype="http://schema.org/Organization">
+        <em>Slater</em>
+      </h1>
 
       {% if shop.customer_accounts_enabled %}
         <ul>
