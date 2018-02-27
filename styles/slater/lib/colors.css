@@ -1,0 +1,25 @@
+:root {
+  --white: #F4F4F4;
+  --gray-medium: #EAEAEA;
+  --ruby: #BB3136;
+}
+
+.cw {
+  color: var(--white);
+}
+
+.cgm {
+  color: var(--white);
+}
+
+.bg-w {
+  background-color: var(--white);
+}
+
+.bg-gm {
+  background-color: var(--gray-medium);
+}
+
+.bg-r {
+  background-color: var(--ruby);
+}

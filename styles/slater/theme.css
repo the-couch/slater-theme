@@ -1,6 +1,7 @@
 /* Default Slater Theme */
 @import 'lib/reset';
 @import 'lib/var';
+@import 'lib/colors';
 @import 'lib/breakpoint';
 @import 'lib/align';
 @import 'lib/display';

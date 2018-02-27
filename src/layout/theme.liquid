@@ -46,6 +46,12 @@
     {{ content_for_header }}
   </head>
   <body id="{{ page_title | handle }}">
+    <!-- Remove for production -->
+      <div class='px1 ac bg-r'>
+        <h4><a class='cw' href="https://github.com/the-couch/slater-theme">Download this starter theme</a></h4>
+      </div>
+    <!-- End Remove for production -->
+
     {% section 'header' %}
 
     <main role="main" id="root">
