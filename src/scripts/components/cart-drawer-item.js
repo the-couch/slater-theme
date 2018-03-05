@@ -1,15 +1,24 @@
-import { removeItem } from 'slater/cart'
+import { removeItem, updateAddon } from 'slater/cart'
 
 export default item => {
   const button = item.getElementsByTagName('button')[0]
+  const decrease = item.querySelector('.js-remove-single')
+  const increase = item.querySelector('.js-add-single')
+  const currentQty = item.querySelector('.js-single-quantity').innerHTML
   const id = item.getAttribute('data-id')
 
-  console.log('hey?')
-
   button.addEventListener('click', e => {
-    console.log('clicky')
     e.preventDefault()
-
     removeItem(id)
+  })
+
+  decrease.addEventListener('click', e => {
+    e.preventDefault()
+    updateAddon(id, parseInt(currentQty) - 1)
+  })
+
+  increase.addEventListener('click', e => {
+    e.preventDefault()
+    updateAddon(id, parseInt(currentQty) + 1)
   })
 }

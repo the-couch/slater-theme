@@ -167,7 +167,8 @@ function updateAddon(id, quantity) {
     var items = _ref3.items;
 
     for (var i = 0; i < items.length; i++) {
-      if (items[i].variant_id === id) {
+      console.log('hey updating?', items, id);
+      if (items[i].variant_id === parseInt(id)) {
         return changeAddon(i + 1, quantity); // shopify cart is a 1-based index
       }
     }
@@ -355,7 +356,7 @@ function createItem(_ref) {
   var img = image ? (0, _images.getSizedImageUrl)(image.replace('_' + (0, _images.imageSize)(image), ''), '200x' // TODO hacky af
   ) : 'https://source.unsplash.com/R9OS29xJb-8/2000x1333';
 
-  return '\n<div class=\'cart-drawer__item\' data-component=\'cart-drawer-item\' data-id=' + id + '>\n  <div class=\'f aic\'>\n    <a href=\'' + url + '\'>\n      <img src=\'' + img + '\' />\n    </a>\n    <div class=\'__content pl1 f fill-h ais jcb\'>\n      <div>\n        <a href=\'' + url + '\' class=\'serif mv0 p mv0\'>' + title + '</a>\n        <div class=\'small sans track mt025 mb05 book\'>' + (0, _currency.formatMoney)(price) + '</div>\n        ' + (color ? '<div class=\'xsmall sans caps track cm mv025 book\'>' + color.split(':')[0] + '</div>' : '') + '\n      </div>\n\n      <button class=\'button--reset\'>' + X + '</button>\n    </div>\n  </div>\n</div>\n';
+  return '\n<div class=\'cart-drawer__item\' data-component=\'cart-drawer-item\' data-id=' + id + '>\n  <div class=\'f aic\'>\n    <a href=\'' + url + '\'>\n      <img src=\'' + img + '\' />\n    </a>\n    <div class=\'__content pl1 f fill-h ais jcb\'>\n      <div>\n        <a href=\'' + url + '\' class=\'serif mv0 p mv0\'>' + title + '</a>\n        <div class=\'small sans track mt025 mb05 book\'>' + (0, _currency.formatMoney)(price) + '</div>\n        <div class=\'f aic\'>\n          <div class=\'cart-quantity js-remove-single px05\'>-</div>\n          <div class=\'js-single-quantity\'>' + quantity + '</div>\n          <div class=\'cart-quantity js-add-single px05\'>+</div>\n        </div>\n        ' + (color ? '<div class=\'xsmall sans caps track cm mv025 book\'>' + color.split(':')[0] + '</div>' : '') + '\n      </div>\n\n      <button class=\'button--reset\'>' + X + '</button>\n    </div>\n  </div>\n</div>\n';
 }
 
 function renderItems(items) {
@@ -407,6 +408,11 @@ exports.default = function (outer) {
 
   (0, _cart.on)('updated', function (_ref2) {
     var cart = _ref2.cart;
+
+    isOpen ? render() : open();
+  });
+  (0, _cart.on)('addon', function (_ref3) {
+    var cart = _ref3.cart;
 
     isOpen ? render() : open();
   });
@@ -1906,15 +1912,24 @@ var _cart = __webpack_require__(0);
 
 exports.default = function (item) {
   var button = item.getElementsByTagName('button')[0];
+  var decrease = item.querySelector('.js-remove-single');
+  var increase = item.querySelector('.js-add-single');
+  var currentQty = item.querySelector('.js-single-quantity').innerHTML;
   var id = item.getAttribute('data-id');
 
-  console.log('hey?');
-
   button.addEventListener('click', function (e) {
-    console.log('clicky');
     e.preventDefault();
-
     (0, _cart.removeItem)(id);
+  });
+
+  decrease.addEventListener('click', function (e) {
+    e.preventDefault();
+    (0, _cart.updateAddon)(id, parseInt(currentQty) - 1);
+  });
+
+  increase.addEventListener('click', function (e) {
+    e.preventDefault();
+    (0, _cart.updateAddon)(id, parseInt(currentQty) + 1);
   });
 };
 

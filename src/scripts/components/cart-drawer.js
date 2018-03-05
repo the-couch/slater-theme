@@ -29,6 +29,11 @@ function createItem ({
       <div>
         <a href='${url}' class='serif mv0 p mv0'>${title}</a>
         <div class='small sans track mt025 mb05 book'>${formatMoney(price)}</div>
+        <div class='f aic'>
+          <div class='cart-quantity js-remove-single px05'>-</div>
+          <div class='js-single-quantity'>${quantity}</div>
+          <div class='cart-quantity js-add-single px05'>+</div>
+        </div>
         ${color ? `<div class='xsmall sans caps track cm mv025 book'>${color.split(':')[0]}</div>` : ``}
       </div>
 
@@ -91,6 +96,9 @@ export default outer => {
   }
 
   on('updated', ({ cart }) => {
+    isOpen ? render() : open()
+  })
+  on('addon', ({ cart }) => {
     isOpen ? render() : open()
   })
   overlay.addEventListener('click', close)

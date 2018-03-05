@@ -1,3 +1,7 @@
+.cart-quantity {
+  cursor: pointer;
+}
+
 .cart-drawer-outer {
   display: none;
 
