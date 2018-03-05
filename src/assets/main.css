@@ -128,10 +128,97 @@ ul.list{
 .fill, .right{ right:0 }
 .fill-h{ width:100% }
 .fill-v{ height:100% }
-.slater{}
-body{
-  background:#f4f4f4;
+.cart-drawer-outer{
+  display:none;
 }
+.cart-drawer-outer.is-active{
+    display:block;
+  }
+.cart-drawer-outer.is-visible .cart-drawer{
+      -webkit-transform:translateX(0);
+              transform:translateX(0);
+    }
+.cart-drawer-outer.is-visible .cart-drawer-overlay{
+      opacity:0.8;
+    }
+.cart-drawer-overlay{
+  opacity:0;
+  transition:all 400ms ease-in-out;
+}
+.cart-drawer{
+  max-width:500px;
+  transition:all 400ms ease-in-out;
+  -webkit-transform:translateX(100%);
+          transform:translateX(100%);
+  -webkit-box-orient:vertical;
+  -webkit-box-direction:normal;
+      -ms-flex-direction:column;
+          flex-direction:column;
+  padding-bottom:160px;
+}
+.cart-drawer header{
+    border-bottom:1px solid #EAEAEA;
+    height:75px;
+  }
+@media (min-width: 56.26em){
+.cart-drawer header{
+      height:100px
+  }
+    }
+.cart-drawer header button{
+      height:30px;
+      width:30px;
+    }
+.cart-drawer header button:focus{
+        outline:1px dashed #EAEAEA;
+      }
+.cart-drawer header button svg{
+        height:15px;
+        width:15px;
+      }
+.cart-drawer__items{
+  overflow:auto;
+  padding-top:75px;
+}
+@media (min-width: 56.26em){
+.cart-drawer__items{
+    padding-top:100px
+}
+  }
+.cart-drawer__items svg.loader{
+    width:100px;
+    height:100px;
+    -webkit-animation-duration:1.5s;
+            animation-duration:1.5s;
+    -webkit-animation-name:pulse;
+            animation-name:pulse;
+    -webkit-animation-iteration-count:infinite;
+            animation-iteration-count:infinite;
+  }
+.cart-drawer__item{
+  padding:2em 0 1.5em;
+  border-top:1px solid #EAEAEA;
+}
+.cart-drawer__item:first-child{
+    border-top:0;
+  }
+.cart-drawer__item img{
+    width:90px;
+  }
+.cart-drawer__item button{
+    top:1.5em;
+  }
+.cart-drawer__item button svg{
+      width:10px;
+      height:10px;
+    }
+.cart-drawer__item__remove{
+  top:1.5em;
+}
+.cart-drawer__item__remove svg{
+    width:10px;
+    height:10px;
+  }
 .shopify-preview-bar,
 #preview-bar-iframe{
   display:none !important;

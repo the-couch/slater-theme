@@ -1,3 +1,5 @@
+import * as scripts from 'micromanager'
+
 const init = types => (ctx = document) => {
   for (let type in types) {
     const attr = 'data-' + type
@@ -19,6 +21,16 @@ document.addEventListener('DOMContentLoaded', e => {
     page: './pages/'
   })()
 })
+
+/**
+ * Script management
+ */
+scripts.init({
+  component: 'components/',
+  util: 'util/'
+})
+
+scripts.mount()
 
 console.groupCollapsed('Slater credits 🍝')
 console.log('Development by The Couch https://thecouch.nyc')

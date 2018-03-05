@@ -124,7 +124,7 @@ export function fetchCart () {
 export function updateItem (id, quantity) {
   return fetchCart().then(({ items }) => {
     for (let i = 0; i < items.length; i++) {
-      if (items[i].variant_id === id) {
+      if (items[i].variant_id === parseInt(id)) {
         return changeItem(i + 1, quantity) // shopify cart is a 1-based index
       }
     }

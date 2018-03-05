@@ -33,6 +33,7 @@ module.exports = {
   resolve: {
     alias: {
       slater: path.join(__dirname, 'src/scripts/', 'slater'),
+      micromanagerRoot: path.join(__dirname, 'src/scripts'),
       components: path.join(__dirname, 'src/scripts/', 'components'),
       pages: path.join(__dirname, 'src/scripts/', 'pages'),
       templates: path.join(__dirname, 'src/scripts/', 'templates'),

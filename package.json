@@ -45,6 +45,7 @@
   },
   "dependencies": {
     "form-serialize": "^0.7.2",
+    "micromanager": "^1.0.1",
     "mitt": "^1.1.2",
     "richer": "^0.2.0",
     "unfetch": "^3.0.0",
