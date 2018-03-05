@@ -1,4 +1,4 @@
 # other configuration excluded from example...
 exclude_patterns:
-- "assets/*.js"
-- "assets/*.css"
+- "src/assets/*.js"
+- "src/assets/*.css"
