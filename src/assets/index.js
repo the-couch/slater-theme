@@ -2615,7 +2615,9 @@ exports.default = function (outer) {
   var recoverLink = outer.querySelector('.js-recover-trigger');
   var cancelRecoverLink = outer.querySelector('.js-recover-cancel');
 
+  /* eslint-disable */
   var recoverIsTarget = window.location.hash.match(/\#recover/) ? true : false;
+  /* eslint-enable */
 
   var successMessage = outer.querySelector('.js-recover-success') !== null;
 

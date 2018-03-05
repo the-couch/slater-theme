@@ -4,11 +4,13 @@ export default outer => {
   const recoverLink = outer.querySelector('.js-recover-trigger')
   const cancelRecoverLink = outer.querySelector('.js-recover-cancel')
 
+  /* eslint-disable */
   const recoverIsTarget = window.location.hash.match(/\#recover/) ? true : false
+  /* eslint-enable */
 
   const successMessage = outer.querySelector('.js-recover-success') !== null
 
-  if (recoverIsTarget || successMessage){
+  if (recoverIsTarget || successMessage) {
     login.style.display = 'none'
     recover.style.display = 'block'
   } else {
