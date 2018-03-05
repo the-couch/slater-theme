@@ -31,6 +31,16 @@ In two separate windows run the watch command (this is to allow us to use our ow
 
 `npm run start` - manages theme refresh/upload
 
+## Custom Routing
+
+We're using operator to extend pjax style routing throughout the theme. This can be used to fetch/cache/handle transitions between routes. This can also help us init/code split specific javascript to specific routes (for example a flickity slideshow).
+
+The code for handling this is found in `lib/router`
+
+We use the `afterRender` and `beforeRender` methods for handling page transitions
+
+To block a custom route add the `no-ajax` class to the url element.
+
 ## Why
 I think slate is awesome, but I don't like that it's a closed box, I love the flexibility of things like react-create-app because it let's you actually eject the project and extend it. So this is a bit of a hack but I think y'all enjoy it. If you don't like it though, you don't have to use it ;)
 
