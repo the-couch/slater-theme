@@ -19,14 +19,14 @@
 {%- endcapture -%}
 
 {%- capture cx -%}
-  input-wrapper fill-h
+  input-wrapper x
   {{ className }}
 {%- endcapture -%}
 
 <div class='{{ cx }}' data-component='input-text'>
   <input
-    id=''
-    class='sans h6 fill-h'
+    id='{{ id }}'
+    class='sans p x'
     type='{{ type }}'
     name='{{ name }}'
     placeholder='{{ placeholder }}'
@@ -36,6 +36,6 @@
     spellcheck='{{ spellcheck }}'
     required='{{ required }}'
   />
-  <label class='sans caps small'>{{ label }}</label>
+  <label for='{{ id }}' class='sans caps small track medium hide'>{{ label }}</label>
   <span></span>
 </div>

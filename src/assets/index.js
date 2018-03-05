@@ -303,7 +303,7 @@ function mount() {
       var name = nodes[i].getAttribute(attr);
 
       try {
-        var instance = __webpack_require__(27)("./" + path + '/' + name + '.js').default(nodes[i]);
+        var instance = __webpack_require__(28)("./" + path + '/' + name + '.js').default(nodes[i]);
 
         nodes[i].removeAttribute(attr);
 
@@ -374,7 +374,7 @@ var init = function init(types) {
 
       for (var i = 0; i < nodes.length; i++) {
         try {
-          __webpack_require__(28)(types[type] + nodes[i].getAttribute(attr) + '.js').default(nodes[i]);
+          __webpack_require__(29)(types[type] + nodes[i].getAttribute(attr) + '.js').default(nodes[i]);
         } catch (e) {
           console.error(e);
         }
@@ -419,7 +419,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _operator = __webpack_require__(22);
+var _operator = __webpack_require__(23);
 
 var _operator2 = _interopRequireDefault(_operator);
 
@@ -1952,6 +1952,32 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+exports.default = function (div) {
+  var theme = div.getAttribute('data-theme');
+  var header = document.getElementById('header');
+
+  if (!/light|dark/.test(theme)) {
+    return console.warn('Header theme must be either \'light\' or \'dark\', not ' + theme + '.');
+  }
+
+  if (theme === 'light') {
+    header.classList.add('header--light');
+  } else {
+    header.classList.remove('header--light');
+  }
+};
+
+/***/ }),
+/* 23 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 exports.default = operator;
@@ -1964,17 +1990,17 @@ var _unfetch = __webpack_require__(9);
 
 var _unfetch2 = _interopRequireDefault(_unfetch);
 
-var _scrollRestoration = __webpack_require__(23);
+var _scrollRestoration = __webpack_require__(24);
 
 var _scrollRestoration2 = _interopRequireDefault(_scrollRestoration);
 
-var _cache = __webpack_require__(24);
+var _cache = __webpack_require__(25);
 
 var _cache2 = _interopRequireDefault(_cache);
 
-var _util = __webpack_require__(25);
+var _util = __webpack_require__(26);
 
-var _routes = __webpack_require__(26);
+var _routes = __webpack_require__(27);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -2195,14 +2221,14 @@ function operator(_ref) {
 }
 
 /***/ }),
-/* 23 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 var _extends=Object.assign||function(a){for(var c,b=1;b<arguments.length;b++)for(var d in c=arguments[b],c)Object.prototype.hasOwnProperty.call(c,d)&&(a[d]=c[d]);return a},scroll=function(a){return window.scrollTo(0,a)},state=function(){return history.state?history.state.scrollPosition:0},save=function(){var a=0<arguments.length&&arguments[0]!==void 0?arguments[0]:null;history.replaceState(_extends({},history.state,{scrollPosition:a||pageYOffset||scrollY}),'')},restore=function(){var a=0<arguments.length&&arguments[0]!==void 0?arguments[0]:null,b=state();a?a(b):scroll(b)},init=function(){'scrollRestoration'in history&&(history.scrollRestoration='manual',scroll(state()),onbeforeunload=function onbeforeunload(){return save()})};Object.defineProperty(exports,'__esModule',{value:!0});exports.default='undefined'==typeof window?{}:{init:init,save:save,restore:restore,state:state};
 
 /***/ }),
-/* 24 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2228,7 +2254,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 25 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2346,7 +2372,7 @@ function evalScripts(newDom, existingDom) {
 }
 
 /***/ }),
-/* 26 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2485,56 +2511,17 @@ function executeRoute(pathname, routes, done) {
 }
 
 /***/ }),
-/* 27 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var map = {
-	"./app.js": 2,
-	"./components/cart-drawer-item.js": 10,
-	"./components/cart-drawer.js": 11,
-	"./components/header.js": 12,
-	"./components/hero.js": 13,
-	"./components/product.js": 14,
-	"./lib/router.js": 3,
-	"./pages/product.js": 15,
-	"./sections/product.js": 16,
-	"./slate/sections.js": 17,
-	"./slate/utils.js": 18,
-	"./slate/variants.js": 19,
-	"./slater/cart.js": 0,
-	"./slater/currency.js": 6,
-	"./slater/images.js": 5,
-	"./slater/product-selector.js": 8,
-	"./slater/utils.js": 7,
-	"./templates/customers-addresses.js": 20,
-	"./templates/customers-login.js": 21
-};
-function webpackContext(req) {
-	return __webpack_require__(webpackContextResolve(req));
-};
-function webpackContextResolve(req) {
-	var id = map[req];
-	if(!(id + 1)) // check for number or string
-		throw new Error("Cannot find module '" + req + "'.");
-	return id;
-};
-webpackContext.keys = function webpackContextKeys() {
-	return Object.keys(map);
-};
-webpackContext.resolve = webpackContextResolve;
-module.exports = webpackContext;
-webpackContext.id = 27;
-
-/***/ }),
 /* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var map = {
 	"./app.js": 2,
+	"./components/account-login.js": 30,
 	"./components/cart-drawer-item.js": 10,
 	"./components/cart-drawer.js": 11,
 	"./components/header.js": 12,
 	"./components/hero.js": 13,
+	"./components/input-text.js": 31,
 	"./components/product.js": 14,
 	"./lib/router.js": 3,
 	"./pages/product.js": 15,
@@ -2548,7 +2535,8 @@ var map = {
 	"./slater/product-selector.js": 8,
 	"./slater/utils.js": 7,
 	"./templates/customers-addresses.js": 20,
-	"./templates/customers-login.js": 21
+	"./templates/customers-login.js": 21,
+	"./util/theme-provider.js": 22
 };
 function webpackContext(req) {
 	return __webpack_require__(webpackContextResolve(req));
@@ -2565,6 +2553,130 @@ webpackContext.keys = function webpackContextKeys() {
 webpackContext.resolve = webpackContextResolve;
 module.exports = webpackContext;
 webpackContext.id = 28;
+
+/***/ }),
+/* 29 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var map = {
+	"./app.js": 2,
+	"./components/account-login.js": 30,
+	"./components/cart-drawer-item.js": 10,
+	"./components/cart-drawer.js": 11,
+	"./components/header.js": 12,
+	"./components/hero.js": 13,
+	"./components/input-text.js": 31,
+	"./components/product.js": 14,
+	"./lib/router.js": 3,
+	"./pages/product.js": 15,
+	"./sections/product.js": 16,
+	"./slate/sections.js": 17,
+	"./slate/utils.js": 18,
+	"./slate/variants.js": 19,
+	"./slater/cart.js": 0,
+	"./slater/currency.js": 6,
+	"./slater/images.js": 5,
+	"./slater/product-selector.js": 8,
+	"./slater/utils.js": 7,
+	"./templates/customers-addresses.js": 20,
+	"./templates/customers-login.js": 21,
+	"./util/theme-provider.js": 22
+};
+function webpackContext(req) {
+	return __webpack_require__(webpackContextResolve(req));
+};
+function webpackContextResolve(req) {
+	var id = map[req];
+	if(!(id + 1)) // check for number or string
+		throw new Error("Cannot find module '" + req + "'.");
+	return id;
+};
+webpackContext.keys = function webpackContextKeys() {
+	return Object.keys(map);
+};
+webpackContext.resolve = webpackContextResolve;
+module.exports = webpackContext;
+webpackContext.id = 29;
+
+/***/ }),
+/* 30 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+exports.default = function (outer) {
+  var login = outer.querySelector('.js-login-dialog');
+  var recover = outer.querySelector('.js-recover-dialog');
+  var recoverLink = outer.querySelector('.js-recover-trigger');
+  var cancelRecoverLink = outer.querySelector('.js-recover-cancel');
+
+  var recoverIsTarget = window.location.hash.match(/\#recover/) ? true : false;
+
+  var successMessage = outer.querySelector('.js-recover-success') !== null;
+
+  if (recoverIsTarget || successMessage) {
+    login.style.display = 'none';
+    recover.style.display = 'block';
+  } else {
+    login.style.display = 'block';
+  }
+
+  recoverLink.addEventListener('click', function (e) {
+    e.preventDefault();
+    login.style.display = 'none';
+    recover.style.display = 'block';
+  });
+
+  cancelRecoverLink.addEventListener('click', function (e) {
+    e.preventDefault();
+    recover.style.display = 'none';
+    login.style.display = 'block';
+  });
+};
+
+/***/ }),
+/* 31 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+exports.default = function (wrapper) {
+  var input = wrapper.getElementsByTagName('input')[0];
+
+  function handleAddRemove(e) {
+    e.target.value ? add() : remove();
+  }
+
+  function add() {
+    wrapper.classList.add('has-value');
+  }
+
+  function remove() {
+    wrapper.classList.remove('has-value');
+  }
+
+  input.addEventListener('change', handleAddRemove);
+  input.addEventListener('blur', handleAddRemove);
+  input.addEventListener('focus', add);
+
+  return {
+    unmount: function unmount() {
+      input.removeEventListener('change', handleAddRemove);
+      input.removeEventListener('blur', handleAddRemove);
+      input.removeEventListener('focus', add);
+    }
+  };
+};
 
 /***/ })
 /******/ ]);

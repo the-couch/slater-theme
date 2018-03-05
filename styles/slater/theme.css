@@ -7,6 +7,7 @@
 @import 'lib/display';
 @import 'lib/flexbox';
 @import 'lib/lists';
+@import 'lib/visibilty';
 @import 'lib/spacing';
 @import 'lib/z-index';
 @import 'lib/positioning';

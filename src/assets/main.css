@@ -55,6 +55,48 @@ ol.list{
 ul.list{
   list-style:disc;
 }
+.hide{
+  display:none;
+}
+@media (min-width: 37.5em){
+.hide--s{
+    display:none
+}
+  }
+@media (min-width: 56.26em){
+.hide--m{
+    display:none
+}
+  }
+@media (min-width: 75em){
+.hide--l{
+    display:none
+}
+  }
+.show--s{
+  display:none;
+}
+@media (min-width: 37.5em){
+.show--s{
+    display:block
+}
+  }
+.show--m{
+  display:none;
+}
+@media (min-width: 56.26em){
+.show--m{
+    display:block
+}
+  }
+.show--l{
+  display:none;
+}
+@media (min-width: 75em){
+.show--l{
+    display:block
+}
+  }
 .mha, .mxa{ margin-left:auto }
 .mha, .mxa{ margin-right:auto }
 .mva, .mxa{ margin-top:auto }
