@@ -21,6 +21,48 @@ html, body{ margin:0 }
 .aj{ text-align:justify }
 .block{ display:block }
 .inline-block{ display:inline-block }
+.container--c{
+  margin-right:auto;
+  margin-left:auto;
+}
+.container--l{
+  max-width:1280px;
+}
+.container--xl{
+  max-width:1480px;
+}
+.outer{
+  width:100%;
+  padding-left:1.5em;
+  padding-right:1.5em;
+}
+@media (min-width: 56.26em){
+.outer{
+    padding-left:3em;
+    padding-right:3em
+}
+  }
+.outer--v{
+  padding-top:1.5em;
+  padding-bottom:1.5em;
+}
+.container{
+  margin-left:auto;
+  margin-right:auto;
+}
+.container--s{
+  max-width:480px;
+  width:100%;
+}
+.container--a{
+  max-width:630px;
+}
+.container--m{
+  max-width:700px;
+}
+.container--mm{
+  max-width:890px;
+}
 .f{ display:-webkit-box; display:-ms-flexbox; display:flex }
 .fw{ -ms-flex-wrap:wrap; flex-wrap:wrap }
 .ais{ -webkit-box-align:start; -ms-flex-align:start; align-items:flex-start }

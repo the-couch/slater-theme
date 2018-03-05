@@ -1,45 +1,57 @@
-<div class='container--xl mha px1'>
-  <h1>{{ 'customer.account.title' | t }}</h1>
+{% include 'theme-provider' with theme: 'dark' %}
 
-  <h2>{{ 'customer.orders.title' | t }}</h2>
+<div class='container--l mha px1'>
+  <div class='account-wrapper'>
+    {%
+    include 'account-titles' with
+    title: 'My Account'
+    %}
 
-  {% paginate customer.orders by 20 %}
-    {% if customer.orders.size != 0 %}
-      <table class="responsive-table">
-        <thead>
-          <tr>
-            <th>{{ 'customer.orders.order_number' | t }}</th>
-            <th>{{ 'customer.orders.date' | t }}</th>
-            <th>{{ 'customer.orders.payment_status' | t }}</th>
-            <th>{{ 'customer.orders.fulfillment_status' | t }}</th>
-            <th>{{ 'customer.orders.total' | t }}</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for order in customer.orders %}
-            <tr class="responsive-table-row">
-              <td data-label="{{ 'customer.orders.order_number' | t }}">{{ order.name | link_to: order.customer_url }}</td>
-              <td data-label="{{ 'customer.orders.date' | t }}">{{ order.created_at | date: format: 'month_day_year' }}</td>
-              <td data-label="{{ 'customer.orders.payment_status' | t }}">{{ order.financial_status_label }}</td>
-              <td data-label="{{ 'customer.orders.fulfillment_status' | t }}">{{ order.fulfillment_status_label }}</td>
-              <td data-label="{{ 'customer.orders.total' | t }}">{{ order.total_price | money }}</td>
-            </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-    {% else %}
-      <p>{{ 'customer.orders.none' | t }}</p>
-    {% endif %}
+    <section class='account-home outer mt2'>
+      <div class='container--s mha'>
+        <h2 class='h5 mt0 caps medium'>Order History</h2>
 
-    {% if paginate.pages > 1 %}
-      {% include 'pagination' %}
-    {% endif %}
+        <hr class='cgm mb1 mt025'>
 
-  {% endpaginate %}
+        {% paginate customer.orders by 99 %}
 
-  <h2>{{ 'customer.account.details' | t }}</h2>
+          {% if customer.orders.size != 0 %}
 
-  {{ customer.default_address | format_address }}
+            <ul class='account-home__orders'>
+              {% for order in customer.orders %}
+                <li class='account-home__order block mb1'>
+                  <div class='x f aic jcb h5 mb05'>
+                    <a href='{{ order.customer_url }}' class='link--underline mr1 medium'>
+                      {{order.name}}
+                    </a>
 
-  <a href="/account/addresses">{{ 'customer.account.view_addresses' | t }} ({{ customer.addresses_count }})</a>
+                    <span class='cg h6'>{{order.created_at | date: '%b %d, %Y'}}</span>
+                  </div>
+
+                  <div class='h6'>
+                    <div>
+                      <span class='medium mr05'>Payment:</span><span>{{order.financial_status_label}}</span>
+                    </div>
+                    <div>
+                      <span class='medium mr05'>Shipping:</span><span>{{order.fulfillment_status_label}}</span>
+                    </div>
+                  </div>
+
+                  <div class='h6 bold mt05'>
+                    <span>Total:</span><span>{{order.total_price | money}}</span>
+                  </div>
+                </li>
+              {% endfor %}
+            </ul>
+
+          {% else %}
+            <p class='align-c px2 bg-cg1'>You don't have any orders yet!</p>
+          {% endif %}
+
+          {% include 'pagination' %}
+        {% endpaginate %}
+      </div>
+    </section>
+  </div>
+
 </div>

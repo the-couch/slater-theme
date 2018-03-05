@@ -5,6 +5,7 @@
 @import 'lib/breakpoint';
 @import 'lib/align';
 @import 'lib/display';
+@import 'lib/containers';
 @import 'lib/flexbox';
 @import 'lib/lists';
 @import 'lib/visibilty';
