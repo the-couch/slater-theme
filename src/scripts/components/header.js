@@ -13,6 +13,9 @@ export default header => {
   on('updated', ({ cart }) => {
     cartCount.innerHTML = cart.item_count
   })
+  on('addon', ({ cart }) => {
+    cartCount.innerHTML = cart.item_count
+  })
   /**
  // * Cart opening
  // */

@@ -1,4 +1,4 @@
-import { removeItem, updateAddon } from 'slater/cart'
+import { removeAddon, updateAddon } from 'slater/cart'
 
 export default item => {
   const button = item.getElementsByTagName('button')[0]
@@ -9,7 +9,7 @@ export default item => {
 
   button.addEventListener('click', e => {
     e.preventDefault()
-    removeItem(id)
+    removeAddon(id)
   })
 
   decrease.addEventListener('click', e => {

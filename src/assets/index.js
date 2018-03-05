@@ -75,14 +75,10 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.on = undefined;
 exports.addVariant = addVariant;
-exports.addAddOn = addAddOn;
-exports.addAddOnById = addAddOnById;
 exports.updateAddon = updateAddon;
 exports.removeAddon = removeAddon;
 exports.addItemById = addItemById;
 exports.fetchCart = fetchCart;
-exports.updateItem = updateItem;
-exports.removeItem = removeItem;
 
 var _unfetch = __webpack_require__(9);
 
@@ -119,52 +115,9 @@ function addVariant(variant, quantity) {
   });
 }
 
-function addAddOn(variant, quantity) {
-  var numAvailable = variant.inventory_policy === 'deny' && variant.inventory_management === 'shopify' ? variant.inventory_quantity : null; // null means they can add as many as they want
-
+function updateAddon(id, quantity) {
   return fetchCart().then(function (_ref2) {
     var items = _ref2.items;
-
-    var existing = items.filter(function (item) {
-      return item.id === variant.id;
-    })[0] || {};
-    var numRequested = (existing.quantity || 0) + quantity;
-
-    if (numAvailable !== null && numRequested > numAvailable) {
-      var err = 'There are only ' + numAvailable + ' of that product available, requested ' + numRequested + '.';
-      ev.emit('error', err);
-      throw new Error(err);
-    } else {
-      return addAddOnById(variant.id, quantity);
-    }
-  });
-}
-/**
- * Warning: this does not check available products first
- */
-function addAddOnById(id, quantity) {
-  ev.emit('updating');
-
-  return (0, _unfetch2.default)('/cart/add.js', {
-    method: 'POST',
-    credentials: 'include',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ id: id, quantity: quantity })
-  }).then(function (r) {
-    return r.json();
-  }).then(function (item) {
-    return fetchCart().then(function (cart) {
-      ev.emit('addon', { item: item, cart: cart });
-      return { item: item, cart: cart };
-    });
-  });
-}
-
-function updateAddon(id, quantity) {
-  return fetchCart().then(function (_ref3) {
-    var items = _ref3.items;
 
     for (var i = 0; i < items.length; i++) {
       if (items[i].variant_id === parseInt(id)) {
@@ -228,40 +181,6 @@ function fetchCart() {
   });
 }
 
-function updateItem(id, quantity) {
-  return fetchCart().then(function (_ref4) {
-    var items = _ref4.items;
-
-    for (var i = 0; i < items.length; i++) {
-      if (items[i].variant_id === parseInt(id)) {
-        return changeItem(i + 1, quantity); // shopify cart is a 1-based index
-      }
-    }
-  });
-}
-
-function removeItem(id) {
-  return updateItem(id, 0);
-}
-
-function changeItem(line, quantity) {
-  ev.emit('updating');
-
-  return (0, _unfetch2.default)('/cart/change.js', {
-    method: 'POST',
-    credentials: 'include',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ line: line, quantity: quantity })
-  }).then(function (res) {
-    return res.json();
-  }).then(function (cart) {
-    ev.emit('updated', { item: null, cart: cart });
-    return cart;
-  });
-}
-
 /***/ }),
 /* 1 */
 /***/ (function(module, exports, __webpack_require__) {
@@ -303,7 +222,7 @@ function mount() {
       var name = nodes[i].getAttribute(attr);
 
       try {
-        var instance = __webpack_require__(28)("./" + path + '/' + name + '.js').default(nodes[i]);
+        var instance = __webpack_require__(30)("./" + path + '/' + name + '.js').default(nodes[i]);
 
         nodes[i].removeAttribute(attr);
 
@@ -374,7 +293,7 @@ var init = function init(types) {
 
       for (var i = 0; i < nodes.length; i++) {
         try {
-          __webpack_require__(29)(types[type] + nodes[i].getAttribute(attr) + '.js').default(nodes[i]);
+          __webpack_require__(31)(types[type] + nodes[i].getAttribute(attr) + '.js').default(nodes[i]);
         } catch (e) {
           console.error(e);
         }
@@ -419,7 +338,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _operator = __webpack_require__(23);
+var _operator = __webpack_require__(25);
 
 var _operator2 = _interopRequireDefault(_operator);
 
@@ -965,6 +884,49 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+exports.default = function (outer) {
+  var login = outer.querySelector('.js-login-dialog');
+  var recover = outer.querySelector('.js-recover-dialog');
+  var recoverLink = outer.querySelector('.js-recover-trigger');
+  var cancelRecoverLink = outer.querySelector('.js-recover-cancel');
+
+  /* eslint-disable */
+  var recoverIsTarget = window.location.hash.match(/\#recover/) ? true : false;
+  /* eslint-enable */
+
+  var successMessage = outer.querySelector('.js-recover-success') !== null;
+
+  if (recoverIsTarget || successMessage) {
+    login.style.display = 'none';
+    recover.style.display = 'block';
+  } else {
+    login.style.display = 'block';
+  }
+
+  recoverLink.addEventListener('click', function (e) {
+    e.preventDefault();
+    login.style.display = 'none';
+    recover.style.display = 'block';
+  });
+
+  cancelRecoverLink.addEventListener('click', function (e) {
+    e.preventDefault();
+    recover.style.display = 'none';
+    login.style.display = 'block';
+  });
+};
+
+/***/ }),
+/* 11 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
 var _cart = __webpack_require__(0);
 
 exports.default = function (item) {
@@ -976,7 +938,7 @@ exports.default = function (item) {
 
   button.addEventListener('click', function (e) {
     e.preventDefault();
-    (0, _cart.removeItem)(id);
+    (0, _cart.removeAddon)(id);
   });
 
   decrease.addEventListener('click', function (e) {
@@ -991,7 +953,7 @@ exports.default = function (item) {
 };
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1100,7 +1062,7 @@ exports.default = function (outer) {
 };
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1129,6 +1091,11 @@ exports.default = function (header) {
   });
   (0, _cart.on)('updated', function (_ref) {
     var cart = _ref.cart;
+
+    cartCount.innerHTML = cart.item_count;
+  });
+  (0, _cart.on)('addon', function (_ref2) {
+    var cart = _ref2.cart;
 
     cartCount.innerHTML = cart.item_count;
   });
@@ -1167,7 +1134,7 @@ exports.default = function (header) {
 };
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1182,7 +1149,46 @@ exports.default = function (props) {
 };
 
 /***/ }),
-/* 14 */
+/* 15 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+exports.default = function (wrapper) {
+  var input = wrapper.getElementsByTagName('input')[0];
+
+  function handleAddRemove(e) {
+    e.target.value ? add() : remove();
+  }
+
+  function add() {
+    wrapper.classList.add('has-value');
+  }
+
+  function remove() {
+    wrapper.classList.remove('has-value');
+  }
+
+  input.addEventListener('change', handleAddRemove);
+  input.addEventListener('blur', handleAddRemove);
+  input.addEventListener('focus', add);
+
+  return {
+    unmount: function unmount() {
+      input.removeEventListener('change', handleAddRemove);
+      input.removeEventListener('blur', handleAddRemove);
+      input.removeEventListener('focus', add);
+    }
+  };
+};
+
+/***/ }),
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1229,7 +1235,7 @@ exports.default = function (el) {
 };
 
 /***/ }),
-/* 15 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1254,7 +1260,7 @@ exports.default = function (el) {
 };
 
 /***/ }),
-/* 16 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1416,7 +1422,7 @@ exports.default = function (props) {
 // })();
 
 /***/ }),
-/* 17 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1523,7 +1529,7 @@ slate.Sections.prototype = $.extend({}, slate.Sections.prototype, {
 });
 
 /***/ }),
-/* 18 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1614,7 +1620,7 @@ slate.utils = {
 };
 
 /***/ }),
-/* 19 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1807,7 +1813,7 @@ slate.Variants = function () {
 }();
 
 /***/ }),
-/* 20 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1871,7 +1877,7 @@ theme.customerAddresses = function () {
 }();
 
 /***/ }),
-/* 21 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1942,7 +1948,7 @@ theme.customerLogin = function () {
 }();
 
 /***/ }),
-/* 22 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1968,7 +1974,7 @@ exports.default = function (div) {
 };
 
 /***/ }),
-/* 23 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1990,17 +1996,17 @@ var _unfetch = __webpack_require__(9);
 
 var _unfetch2 = _interopRequireDefault(_unfetch);
 
-var _scrollRestoration = __webpack_require__(24);
+var _scrollRestoration = __webpack_require__(26);
 
 var _scrollRestoration2 = _interopRequireDefault(_scrollRestoration);
 
-var _cache = __webpack_require__(25);
+var _cache = __webpack_require__(27);
 
 var _cache2 = _interopRequireDefault(_cache);
 
-var _util = __webpack_require__(26);
+var _util = __webpack_require__(28);
 
-var _routes = __webpack_require__(27);
+var _routes = __webpack_require__(29);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -2221,14 +2227,14 @@ function operator(_ref) {
 }
 
 /***/ }),
-/* 24 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 var _extends=Object.assign||function(a){for(var c,b=1;b<arguments.length;b++)for(var d in c=arguments[b],c)Object.prototype.hasOwnProperty.call(c,d)&&(a[d]=c[d]);return a},scroll=function(a){return window.scrollTo(0,a)},state=function(){return history.state?history.state.scrollPosition:0},save=function(){var a=0<arguments.length&&arguments[0]!==void 0?arguments[0]:null;history.replaceState(_extends({},history.state,{scrollPosition:a||pageYOffset||scrollY}),'')},restore=function(){var a=0<arguments.length&&arguments[0]!==void 0?arguments[0]:null,b=state();a?a(b):scroll(b)},init=function(){'scrollRestoration'in history&&(history.scrollRestoration='manual',scroll(state()),onbeforeunload=function onbeforeunload(){return save()})};Object.defineProperty(exports,'__esModule',{value:!0});exports.default='undefined'==typeof window?{}:{init:init,save:save,restore:restore,state:state};
 
 /***/ }),
-/* 25 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2254,7 +2260,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 26 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2372,7 +2378,7 @@ function evalScripts(newDom, existingDom) {
 }
 
 /***/ }),
-/* 27 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2511,174 +2517,92 @@ function executeRoute(pathname, routes, done) {
 }
 
 /***/ }),
-/* 28 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var map = {
-	"./app.js": 2,
-	"./components/account-login.js": 30,
-	"./components/cart-drawer-item.js": 10,
-	"./components/cart-drawer.js": 11,
-	"./components/header.js": 12,
-	"./components/hero.js": 13,
-	"./components/input-text.js": 31,
-	"./components/product.js": 14,
-	"./lib/router.js": 3,
-	"./pages/product.js": 15,
-	"./sections/product.js": 16,
-	"./slate/sections.js": 17,
-	"./slate/utils.js": 18,
-	"./slate/variants.js": 19,
-	"./slater/cart.js": 0,
-	"./slater/currency.js": 6,
-	"./slater/images.js": 5,
-	"./slater/product-selector.js": 8,
-	"./slater/utils.js": 7,
-	"./templates/customers-addresses.js": 20,
-	"./templates/customers-login.js": 21,
-	"./util/theme-provider.js": 22
-};
-function webpackContext(req) {
-	return __webpack_require__(webpackContextResolve(req));
-};
-function webpackContextResolve(req) {
-	var id = map[req];
-	if(!(id + 1)) // check for number or string
-		throw new Error("Cannot find module '" + req + "'.");
-	return id;
-};
-webpackContext.keys = function webpackContextKeys() {
-	return Object.keys(map);
-};
-webpackContext.resolve = webpackContextResolve;
-module.exports = webpackContext;
-webpackContext.id = 28;
-
-/***/ }),
-/* 29 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var map = {
-	"./app.js": 2,
-	"./components/account-login.js": 30,
-	"./components/cart-drawer-item.js": 10,
-	"./components/cart-drawer.js": 11,
-	"./components/header.js": 12,
-	"./components/hero.js": 13,
-	"./components/input-text.js": 31,
-	"./components/product.js": 14,
-	"./lib/router.js": 3,
-	"./pages/product.js": 15,
-	"./sections/product.js": 16,
-	"./slate/sections.js": 17,
-	"./slate/utils.js": 18,
-	"./slate/variants.js": 19,
-	"./slater/cart.js": 0,
-	"./slater/currency.js": 6,
-	"./slater/images.js": 5,
-	"./slater/product-selector.js": 8,
-	"./slater/utils.js": 7,
-	"./templates/customers-addresses.js": 20,
-	"./templates/customers-login.js": 21,
-	"./util/theme-provider.js": 22
-};
-function webpackContext(req) {
-	return __webpack_require__(webpackContextResolve(req));
-};
-function webpackContextResolve(req) {
-	var id = map[req];
-	if(!(id + 1)) // check for number or string
-		throw new Error("Cannot find module '" + req + "'.");
-	return id;
-};
-webpackContext.keys = function webpackContextKeys() {
-	return Object.keys(map);
-};
-webpackContext.resolve = webpackContextResolve;
-module.exports = webpackContext;
-webpackContext.id = 29;
-
-/***/ }),
 /* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-exports.default = function (outer) {
-  var login = outer.querySelector('.js-login-dialog');
-  var recover = outer.querySelector('.js-recover-dialog');
-  var recoverLink = outer.querySelector('.js-recover-trigger');
-  var cancelRecoverLink = outer.querySelector('.js-recover-cancel');
-
-  /* eslint-disable */
-  var recoverIsTarget = window.location.hash.match(/\#recover/) ? true : false;
-  /* eslint-enable */
-
-  var successMessage = outer.querySelector('.js-recover-success') !== null;
-
-  if (recoverIsTarget || successMessage) {
-    login.style.display = 'none';
-    recover.style.display = 'block';
-  } else {
-    login.style.display = 'block';
-  }
-
-  recoverLink.addEventListener('click', function (e) {
-    e.preventDefault();
-    login.style.display = 'none';
-    recover.style.display = 'block';
-  });
-
-  cancelRecoverLink.addEventListener('click', function (e) {
-    e.preventDefault();
-    recover.style.display = 'none';
-    login.style.display = 'block';
-  });
+var map = {
+	"./app.js": 2,
+	"./components/account-login.js": 10,
+	"./components/cart-drawer-item.js": 11,
+	"./components/cart-drawer.js": 12,
+	"./components/header.js": 13,
+	"./components/hero.js": 14,
+	"./components/input-text.js": 15,
+	"./components/product.js": 16,
+	"./lib/router.js": 3,
+	"./pages/product.js": 17,
+	"./sections/product.js": 18,
+	"./slate/sections.js": 19,
+	"./slate/utils.js": 20,
+	"./slate/variants.js": 21,
+	"./slater/cart.js": 0,
+	"./slater/currency.js": 6,
+	"./slater/images.js": 5,
+	"./slater/product-selector.js": 8,
+	"./slater/utils.js": 7,
+	"./templates/customers-addresses.js": 22,
+	"./templates/customers-login.js": 23,
+	"./util/theme-provider.js": 24
 };
+function webpackContext(req) {
+	return __webpack_require__(webpackContextResolve(req));
+};
+function webpackContextResolve(req) {
+	var id = map[req];
+	if(!(id + 1)) // check for number or string
+		throw new Error("Cannot find module '" + req + "'.");
+	return id;
+};
+webpackContext.keys = function webpackContextKeys() {
+	return Object.keys(map);
+};
+webpackContext.resolve = webpackContextResolve;
+module.exports = webpackContext;
+webpackContext.id = 30;
 
 /***/ }),
 /* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-exports.default = function (wrapper) {
-  var input = wrapper.getElementsByTagName('input')[0];
-
-  function handleAddRemove(e) {
-    e.target.value ? add() : remove();
-  }
-
-  function add() {
-    wrapper.classList.add('has-value');
-  }
-
-  function remove() {
-    wrapper.classList.remove('has-value');
-  }
-
-  input.addEventListener('change', handleAddRemove);
-  input.addEventListener('blur', handleAddRemove);
-  input.addEventListener('focus', add);
-
-  return {
-    unmount: function unmount() {
-      input.removeEventListener('change', handleAddRemove);
-      input.removeEventListener('blur', handleAddRemove);
-      input.removeEventListener('focus', add);
-    }
-  };
+var map = {
+	"./app.js": 2,
+	"./components/account-login.js": 10,
+	"./components/cart-drawer-item.js": 11,
+	"./components/cart-drawer.js": 12,
+	"./components/header.js": 13,
+	"./components/hero.js": 14,
+	"./components/input-text.js": 15,
+	"./components/product.js": 16,
+	"./lib/router.js": 3,
+	"./pages/product.js": 17,
+	"./sections/product.js": 18,
+	"./slate/sections.js": 19,
+	"./slate/utils.js": 20,
+	"./slate/variants.js": 21,
+	"./slater/cart.js": 0,
+	"./slater/currency.js": 6,
+	"./slater/images.js": 5,
+	"./slater/product-selector.js": 8,
+	"./slater/utils.js": 7,
+	"./templates/customers-addresses.js": 22,
+	"./templates/customers-login.js": 23,
+	"./util/theme-provider.js": 24
 };
+function webpackContext(req) {
+	return __webpack_require__(webpackContextResolve(req));
+};
+function webpackContextResolve(req) {
+	var id = map[req];
+	if(!(id + 1)) // check for number or string
+		throw new Error("Cannot find module '" + req + "'.");
+	return id;
+};
+webpackContext.keys = function webpackContextKeys() {
+	return Object.keys(map);
+};
+webpackContext.resolve = webpackContextResolve;
+module.exports = webpackContext;
+webpackContext.id = 31;
 
 /***/ })
 /******/ ]);
