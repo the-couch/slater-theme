@@ -1,6 +1,7 @@
 const webpack = require('webpack')
 const path = require('path')
 const LodashModuleReplacementPlugin = require('lodash-webpack-plugin')
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 const p = process.env.NODE_ENV === 'production'
 
 module.exports = {
@@ -42,7 +43,8 @@ module.exports = {
   },
   plugins: p ? [
     new webpack.NoEmitOnErrorsPlugin(),
-    new LodashModuleReplacementPlugin,
+    new LodashModuleReplacementPlugin(),
+    new UglifyJsPlugin(),
     new webpack.optimize.OccurrenceOrderPlugin()
   ] : []
 };

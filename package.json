@@ -1,6 +1,6 @@
 {
   "name": "slater",
-  "version": "0.0.1",
+  "version": "0.3.0",
   "scripts": {
     "start": "slater watch",
     "dev": "concurrently 'npm run watch:theme' 'npm run watch:js' 'npm run watch:css'",
@@ -40,6 +40,7 @@
     "postcss-nested": "^2.0.2",
     "standard": "^10.0.2",
     "standard-loader": "^6.0.1",
+    "uglifyjs-webpack-plugin": "^1.2.2",
     "webpack": "^3.0.0",
     "webpack-dashboard": "^1.0.0-5"
   },
