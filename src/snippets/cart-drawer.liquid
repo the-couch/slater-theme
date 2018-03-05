@@ -1,18 +1,18 @@
 <section class='cart-drawer-outer fix fill z10' data-component='cart-drawer'>
   <div class='cart-drawer-overlay abs fill bg-gm js-overlay'></div>
-  <div class='cart-drawer fill-h abs top right bottom bg-w js-drawer f'>
-    <header class='outer fill-h abs top left f aic'>
-      <div class='f aic rel fill-h'>
+  <div class='cart-drawer fill-y abs top right bottom bg-w js-drawer f'>
+    <header class='outer fill-y abs top left f aic'>
+      <div class='f aic rel fill-y'>
         <button class='abs left button--reset js-close'>
           {% include 'icon-chevron' with left: true, className: 'abs mxa fill' %}
         </button>
 
-        <h3 class='mv0 serif ac fill-h'>Your Cart</h3>
+        <h3 class='mv0 serif ac fill-y'>Your Cart</h3>
       </div>
     </header>
 
-    <div class='cart-drawer__items outer outer--v fill-v fill-h'>
-      <div class='js-items rel fill-v fill-h'>
+    <div class='cart-drawer__items outer outer--v fill-x fill-y'>
+      <div class='js-items rel fill-x fill-y'>
         <div class='abs fill'>
           <svg viewBox="0 0 100 86" class='loader abs fill mxa cg'>
             <use xlink:href="#logo"></use>
@@ -29,7 +29,7 @@
       tag: 'a',
       cta: 'Checkout',
       href: '/checkout',
-      className: 'fill-h no-ajax'
+      className: 'fill-y no-ajax'
       %}
     </footer>
   </div>
