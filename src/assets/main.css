@@ -222,6 +222,20 @@ ul.list{
     width:10px;
     height:10px;
   }
+.page-transition{
+  transition:all 400ms ease-in-out;
+  height:100vh;
+  width:100vw;
+  position:fixed;
+  top:0;
+  left:0;
+  -webkit-transform:translateY(100%);
+          transform:translateY(100%);
+}
+.page-transition.cover{
+    -webkit-transform:translateY(0);
+            transform:translateY(0);
+  }
 .shopify-preview-bar,
 #preview-bar-iframe{
   display:none !important;

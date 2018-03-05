@@ -66,7 +66,6 @@ export function addAddOnById (id, quantity) {
 export function updateAddon (id, quantity) {
   return fetchCart().then(({ items }) => {
     for (let i = 0; i < items.length; i++) {
-      console.log('hey updating?', items, id)
       if (items[i].variant_id === parseInt(id)) {
         return changeAddon(i + 1, quantity) // shopify cart is a 1-based index
       }

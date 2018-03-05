@@ -27,7 +27,7 @@ module.exports = {
         exclude: /node_modules/,
         include: path.join(__dirname, 'src/scripts'),
         loaders: ['babel-loader']
-      },
+      }
     ]
   },
   resolve: {
@@ -37,11 +37,12 @@ module.exports = {
       components: path.join(__dirname, 'src/scripts/', 'components'),
       pages: path.join(__dirname, 'src/scripts/', 'pages'),
       templates: path.join(__dirname, 'src/scripts/', 'templates'),
-    },
+      lib: path.join(__dirname, 'src/scripts/', 'lib')
+    }
   },
   plugins: p ? [
     new webpack.NoEmitOnErrorsPlugin(),
     new LodashModuleReplacementPlugin,
-    new webpack.optimize.OccurrenceOrderPlugin(),
+    new webpack.optimize.OccurrenceOrderPlugin()
   ] : []
 };

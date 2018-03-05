@@ -27,7 +27,9 @@ export function preload (images, size) {
  * @param {string} path - An image url
  */
 export function loadImage (path) {
+  /* eslint-disable */
   new Image().src = path
+  /* eslint-enable */
 }
 
 /**
@@ -37,7 +39,9 @@ export function loadImage (path) {
  * @returns {null}
  */
 export function imageSize (src) {
+  /* eslint-disable */
   var match = src.match(/.+_((?:pico|icon|thumb|small|compact|medium|large|grande)|\d{1,4}x\d{0,4}|x\d{1,4})[_\.@]/)
+  /* esling-enable */
 
   if (match) {
     return match[1]

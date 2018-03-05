@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 1);
+/******/ 	return __webpack_require__(__webpack_require__.s = 2);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -84,11 +84,11 @@ exports.fetchCart = fetchCart;
 exports.updateItem = updateItem;
 exports.removeItem = removeItem;
 
-var _unfetch = __webpack_require__(20);
+var _unfetch = __webpack_require__(9);
 
 var _unfetch2 = _interopRequireDefault(_unfetch);
 
-var _mitt = __webpack_require__(8);
+var _mitt = __webpack_require__(4);
 
 var _mitt2 = _interopRequireDefault(_mitt);
 
@@ -167,7 +167,6 @@ function updateAddon(id, quantity) {
     var items = _ref3.items;
 
     for (var i = 0; i < items.length; i++) {
-      console.log('hey updating?', items, id);
       if (items[i].variant_id === parseInt(id)) {
         return changeAddon(i + 1, quantity); // shopify cart is a 1-based index
       }
@@ -270,11 +269,100 @@ function changeItem(line, quantity) {
 "use strict";
 
 
-var _micromanager = __webpack_require__(7);
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.init = init;
+exports.mount = mount;
+exports.unmount = unmount;
+var types = {};
+
+var __cache = {};
+
+function log(level, msg) {
+  var _console;
+
+  for (var _len = arguments.length, args = Array(_len > 2 ? _len - 2 : 0), _key = 2; _key < _len; _key++) {
+    args[_key - 2] = arguments[_key];
+  }
+
+  (_console = console)[level].apply(_console, ['⚙️ micromanager -', msg].concat(args));
+}
+
+function init(t) {
+  types = t;
+}
+
+function mount() {
+  for (var type in types) {
+    var attr = 'data-' + type;
+    var nodes = [].slice.call(document.querySelectorAll('[' + attr + ']'));
+    var path = types[type].replace(/^\/|\/$/, '');
+
+    for (var i = 0; i < nodes.length; i++) {
+      var name = nodes[i].getAttribute(attr);
+
+      try {
+        var instance = __webpack_require__(27)("./" + path + '/' + name + '.js').default(nodes[i]);
+
+        nodes[i].removeAttribute(attr);
+
+        if (instance) {
+          this.cache.set(instance.displayName || name, instance);
+        }
+      } catch (e) {
+        log('error', name + ' threw an error\n\n', e);
+      }
+    }
+  }
+}
+
+function unmount() {
+  for (var key in __cache) {
+    var instance = __cache[key];
+    if (instance.unmount) {
+      instance.unmount();
+      delete __cache[key];
+    }
+  }
+}
+
+var cache = exports.cache = {
+  set: function set(id, instance) {
+    if (__cache[id]) log('warn', 'a duplicate key ' + id + ' was found in the cache. This instance will be overwritten.');
+    __cache[id] = instance;
+  },
+  get: function get(id) {
+    try {
+      return __cache[id];
+    } catch (e) {
+      log('warn', 'can\'t find ' + id + ' in the cache', e);
+      return null;
+    }
+  },
+  dump: function dump() {
+    return __cache;
+  }
+};
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _router = __webpack_require__(3);
+
+var _router2 = _interopRequireDefault(_router);
+
+var _micromanager = __webpack_require__(1);
 
 var scripts = _interopRequireWildcard(_micromanager);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var init = function init(types) {
   return function () {
@@ -286,7 +374,7 @@ var init = function init(types) {
 
       for (var i = 0; i < nodes.length; i++) {
         try {
-          __webpack_require__(21)(types[type] + nodes[i].getAttribute(attr) + '.js').default(nodes[i]);
+          __webpack_require__(28)(types[type] + nodes[i].getAttribute(attr) + '.js').default(nodes[i]);
         } catch (e) {
           console.error(e);
         }
@@ -312,12 +400,16 @@ scripts.init({
 
 scripts.mount();
 
+_router2.default.on('afterRender', function () {
+  console.log('route rendered!');
+});
+
 console.groupCollapsed('Slater credits 🍝');
 console.log('Development by The Couch https://thecouch.nyc');
 console.groupEnd();
 
 /***/ }),
-/* 2 */
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -327,106 +419,140 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _micromanager = __webpack_require__(7);
+var _operator = __webpack_require__(22);
+
+var _operator2 = _interopRequireDefault(_operator);
+
+var _micromanager = __webpack_require__(1);
 
 var scripts = _interopRequireWildcard(_micromanager);
 
-var _cart = __webpack_require__(0);
-
-var _images = __webpack_require__(3);
-
-var _currency = __webpack_require__(4);
-
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
-function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var X = '<svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentcolor" stroke-width="3" style="display:inline-block;vertical-align:middle;overflow:visible;"><path d="M1.0606601717798212 1.0606601717798212 L14.939339828220179 14.939339828220179"></path><path d="M14.939339828220179 1.0606601717798212 L1.0606601717798212 14.939339828220179"></path></svg>';
+var router = (0, _operator2.default)({
+  transitionSpeed: 400,
+  routes: {}
+});
 
-function createItem(_ref) {
-  var id = _ref.variant_id,
-      title = _ref.product_title,
-      price = _ref.line_price,
-      color = _ref.variant_title,
-      image = _ref.image,
-      url = _ref.url,
-      quantity = _ref.quantity,
-      item = _objectWithoutProperties(_ref, ['variant_id', 'product_title', 'line_price', 'variant_title', 'image', 'url', 'quantity']);
+router.addRoute('*', function () {
+  var cache = scripts.cache.dump();
+  var modules = [];
 
-  var img = image ? (0, _images.getSizedImageUrl)(image.replace('_' + (0, _images.imageSize)(image), ''), '200x' // TODO hacky af
-  ) : 'https://source.unsplash.com/R9OS29xJb-8/2000x1333';
-
-  return '\n<div class=\'cart-drawer__item\' data-component=\'cart-drawer-item\' data-id=' + id + '>\n  <div class=\'f aic\'>\n    <a href=\'' + url + '\'>\n      <img src=\'' + img + '\' />\n    </a>\n    <div class=\'__content pl1 f fill-h ais jcb\'>\n      <div>\n        <a href=\'' + url + '\' class=\'serif mv0 p mv0\'>' + title + '</a>\n        <div class=\'small sans track mt025 mb05 book\'>' + (0, _currency.formatMoney)(price) + '</div>\n        <div class=\'f aic\'>\n          <div class=\'cart-quantity js-remove-single px05\'>-</div>\n          <div class=\'js-single-quantity\'>' + quantity + '</div>\n          <div class=\'cart-quantity js-add-single px05\'>+</div>\n        </div>\n        ' + (color ? '<div class=\'xsmall sans caps track cm mv025 book\'>' + color.split(':')[0] + '</div>' : '') + '\n      </div>\n\n      <button class=\'button--reset\'>' + X + '</button>\n    </div>\n  </div>\n</div>\n';
-}
-
-function renderItems(items) {
-  return items.length > 0 ? items.reduce(function (markup, item) {
-    markup += createItem(item);
-    return markup;
-  }, '') : '<div class=\'pv1\'><p class=\'pv1 mv05 sans small cm i ac\'>Your cart is empty</p></div>';
-}
-
-exports.default = function (outer) {
-  var isOpen = false;
-
-  var overlay = outer.querySelector('.js-overlay');
-  var closeButton = outer.querySelector('.js-close');
-  var subtotal = outer.querySelector('.js-subtotal');
-  var itemsRoot = outer.querySelector('.js-items');
-  var loading = itemsRoot.innerHTML;
-
-  function render() {
-    (0, _cart.fetchCart)().then(function (cart) {
-      itemsRoot.innerHTML = renderItems(cart.items);
-      subtotal.innerHTML = (0, _currency.formatMoney)(cart.total_price);
-      setTimeout(function () {
-        scripts.mount();
-      }, 0);
-    });
+  for (var key in cache) {
+    modules.push(cache[key]);
   }
 
-  function open() {
-    outer.classList.add('is-active');
+  return Promise.all(modules.map(function (mod) {
+    return mod.leave ? mod.leave() : mod;
+  }));
+});
 
-    itemsRoot.innerHTML = loading;
+/**
+ * Remount scripts on new routes
+ */
+router.on('afterRender', function (requestedRoute) {
+  scripts.unmount();
 
-    setTimeout(function () {
-      outer.classList.add('is-visible');
-      isOpen = true;
-      setTimeout(render, 10);
-    }, 50);
-  }
+  var cartDrawer = scripts.cache.get('cart-drawer');
+  cartDrawer && cartDrawer.close();
+  // const nav = scripts.cache.get('mobileNav')
+  // nav && nav.close()
 
-  function close() {
-    outer.classList.remove('is-visible');
+  var pageTransition = document.getElementById('pageTransition');
+  setTimeout(function () {
+    pageTransition.classList.remove('cover');
+  }, 600);
 
-    setTimeout(function () {
-      outer.classList.remove('is-active');
-      isOpen = false;
-    }, 400);
-  }
+  setTimeout(function () {
+    scripts.mount();
+  }, 0);
+});
 
-  (0, _cart.on)('updated', function (_ref2) {
-    var cart = _ref2.cart;
+router.on('beforeRender', function (requestedRoute) {
+  var root = document.getElementById('root');
+  var pageTransition = document.getElementById('pageTransition');
 
-    isOpen ? render() : open();
-  });
-  (0, _cart.on)('addon', function (_ref3) {
-    var cart = _ref3.cart;
+  root.classList.add('moving');
+  pageTransition.classList.add('cover');
+  setTimeout(function () {
+    console.log('waiting game');
+  }, 700);
+});
 
-    isOpen ? render() : open();
-  });
-  overlay.addEventListener('click', close);
-  closeButton.addEventListener('click', close);
-
-  return {
-    open: open,
-    close: close
-  };
-};
+exports.default = router;
 
 /***/ }),
-/* 3 */
+/* 4 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//      
+// An event handler can take an optional event argument
+// and should not return a value
+                                          
+// An array of all currently registered event handlers for a type
+                                            
+// A map of event types and their corresponding event handlers.
+                        
+                                   
+  
+
+/** Mitt: Tiny (~200b) functional event emitter / pubsub.
+ *  @name mitt
+ *  @returns {Mitt}
+ */
+function mitt(all                 ) {
+	all = all || Object.create(null);
+
+	return {
+		/**
+		 * Register an event handler for the given type.
+		 *
+		 * @param  {String} type	Type of event to listen for, or `"*"` for all events
+		 * @param  {Function} handler Function to call in response to given event
+		 * @memberOf mitt
+		 */
+		on: function on(type        , handler              ) {
+			(all[type] || (all[type] = [])).push(handler);
+		},
+
+		/**
+		 * Remove an event handler for the given type.
+		 *
+		 * @param  {String} type	Type of event to unregister `handler` from, or `"*"`
+		 * @param  {Function} handler Handler function to remove
+		 * @memberOf mitt
+		 */
+		off: function off(type        , handler              ) {
+			if (all[type]) {
+				all[type].splice(all[type].indexOf(handler) >>> 0, 1);
+			}
+		},
+
+		/**
+		 * Invoke all handlers for the given type.
+		 * If present, `"*"` handlers are invoked after type-matched handlers.
+		 *
+		 * @param {String} type  The event type to invoke
+		 * @param {Any} [evt]  Any value (object is recommended and powerful), passed to each handler
+		 * @memberof mitt
+		 */
+		emit: function emit(type        , evt     ) {
+			(all[type] || []).map(function (handler) { handler(evt); });
+			(all['*'] || []).map(function (handler) { handler(type, evt); });
+		}
+	};
+}
+
+/* harmony default export */ __webpack_exports__["default"] = (mitt);
+//# sourceMappingURL=mitt.es.js.map
+
+
+/***/ }),
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -469,7 +595,9 @@ function preload(images, size) {
  * @param {string} path - An image url
  */
 function loadImage(path) {
+  /* eslint-disable */
   new Image().src = path;
+  /* eslint-enable */
 }
 
 /**
@@ -479,7 +607,9 @@ function loadImage(path) {
  * @returns {null}
  */
 function imageSize(src) {
+  /* eslint-disable */
   var match = src.match(/.+_((?:pico|icon|thumb|small|compact|medium|large|grande)|\d{1,4}x\d{0,4}|x\d{1,4})[_\.@]/);
+  /* esling-enable */
 
   if (match) {
     return match[1];
@@ -521,7 +651,7 @@ function removeProtocol(path) {
 }
 
 /***/ }),
-/* 4 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -532,7 +662,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.formatMoney = formatMoney;
 
-var _utils = __webpack_require__(5);
+var _utils = __webpack_require__(7);
 
 /**
  * Currency Helpers
@@ -604,7 +734,7 @@ function formatMoney(cents) {
 }
 
 /***/ }),
-/* 5 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -700,7 +830,7 @@ function defaultTo(value, defaultValue) {
 }
 
 /***/ }),
-/* 6 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -711,7 +841,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = ProductSelector;
 
-var _mitt = __webpack_require__(8);
+var _mitt = __webpack_require__(4);
 
 var _mitt2 = _interopRequireDefault(_mitt);
 
@@ -761,158 +891,71 @@ function ProductSelector() {
 }
 
 /***/ }),
-/* 7 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.init = init;
-exports.mount = mount;
-exports.unmount = unmount;
-var types = {};
-
-var __cache = {};
-
-function log(level, msg) {
-  var _console;
-
-  for (var _len = arguments.length, args = Array(_len > 2 ? _len - 2 : 0), _key = 2; _key < _len; _key++) {
-    args[_key - 2] = arguments[_key];
-  }
-
-  (_console = console)[level].apply(_console, ['⚙️ micromanager -', msg].concat(args));
-}
-
-function init(t) {
-  types = t;
-}
-
-function mount() {
-  for (var type in types) {
-    var attr = 'data-' + type;
-    var nodes = [].slice.call(document.querySelectorAll('[' + attr + ']'));
-    var path = types[type].replace(/^\/|\/$/, '');
-
-    for (var i = 0; i < nodes.length; i++) {
-      var name = nodes[i].getAttribute(attr);
-
-      try {
-        var instance = __webpack_require__(19)("./" + path + '/' + name + '.js').default(nodes[i]);
-
-        nodes[i].removeAttribute(attr);
-
-        if (instance) {
-          this.cache.set(instance.displayName || name, instance);
-        }
-      } catch (e) {
-        log('error', name + ' threw an error\n\n', e);
-      }
-    }
-  }
-}
-
-function unmount() {
-  for (var key in __cache) {
-    var instance = __cache[key];
-    if (instance.unmount) {
-      instance.unmount();
-      delete __cache[key];
-    }
-  }
-}
-
-var cache = exports.cache = {
-  set: function set(id, instance) {
-    if (__cache[id]) log('warn', 'a duplicate key ' + id + ' was found in the cache. This instance will be overwritten.');
-    __cache[id] = instance;
-  },
-  get: function get(id) {
-    try {
-      return __cache[id];
-    } catch (e) {
-      log('warn', 'can\'t find ' + id + ' in the cache', e);
-      return null;
-    }
-  },
-  dump: function dump() {
-    return __cache;
-  }
-};
-
-/***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//      
-// An event handler can take an optional event argument
-// and should not return a value
-                                          
-// An array of all currently registered event handlers for a type
-                                            
-// A map of event types and their corresponding event handlers.
-                        
-                                   
-  
+var index = typeof fetch=='function' ? fetch.bind() : function(url, options) {
+	options = options || {};
+	return new Promise( function (resolve, reject) {
+		var request = new XMLHttpRequest();
 
-/** Mitt: Tiny (~200b) functional event emitter / pubsub.
- *  @name mitt
- *  @returns {Mitt}
- */
-function mitt(all                 ) {
-	all = all || Object.create(null);
+		request.open(options.method || 'get', url);
 
-	return {
-		/**
-		 * Register an event handler for the given type.
-		 *
-		 * @param  {String} type	Type of event to listen for, or `"*"` for all events
-		 * @param  {Function} handler Function to call in response to given event
-		 * @memberOf mitt
-		 */
-		on: function on(type        , handler              ) {
-			(all[type] || (all[type] = [])).push(handler);
-		},
-
-		/**
-		 * Remove an event handler for the given type.
-		 *
-		 * @param  {String} type	Type of event to unregister `handler` from, or `"*"`
-		 * @param  {Function} handler Handler function to remove
-		 * @memberOf mitt
-		 */
-		off: function off(type        , handler              ) {
-			if (all[type]) {
-				all[type].splice(all[type].indexOf(handler) >>> 0, 1);
-			}
-		},
-
-		/**
-		 * Invoke all handlers for the given type.
-		 * If present, `"*"` handlers are invoked after type-matched handlers.
-		 *
-		 * @param {String} type  The event type to invoke
-		 * @param {Any} [evt]  Any value (object is recommended and powerful), passed to each handler
-		 * @memberof mitt
-		 */
-		emit: function emit(type        , evt     ) {
-			(all[type] || []).map(function (handler) { handler(evt); });
-			(all['*'] || []).map(function (handler) { handler(type, evt); });
+		for (var i in options.headers) {
+			request.setRequestHeader(i, options.headers[i]);
 		}
-	};
-}
 
-/* harmony default export */ __webpack_exports__["default"] = (mitt);
-//# sourceMappingURL=mitt.es.js.map
+		request.withCredentials = options.credentials=='include';
+
+		request.onload = function () {
+			resolve(response());
+		};
+
+		request.onerror = reject;
+
+		request.send(options.body);
+
+		function response() {
+			var keys = [],
+				all = [],
+				headers = {},
+				header;
+
+			request.getAllResponseHeaders().replace(/^(.*?):\s*([\s\S]*?)$/gm, function (m, key, value) {
+				keys.push(key = key.toLowerCase());
+				all.push([key, value]);
+				header = headers[key];
+				headers[key] = header ? (header + "," + value) : value;
+			});
+
+			return {
+				ok: (request.status/200|0) == 1,		// 200-299
+				status: request.status,
+				statusText: request.statusText,
+				url: request.responseURL,
+				clone: response,
+				text: function () { return Promise.resolve(request.responseText); },
+				json: function () { return Promise.resolve(request.responseText).then(JSON.parse); },
+				blob: function () { return Promise.resolve(new Blob([request.response])); },
+				headers: {
+					keys: function () { return keys; },
+					entries: function () { return all; },
+					get: function (n) { return headers[n.toLowerCase()]; },
+					has: function (n) { return n.toLowerCase() in headers; }
+				}
+			};
+		}
+	});
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (index);
+//# sourceMappingURL=unfetch.es.js.map
 
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -922,7 +965,152 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _micromanager = __webpack_require__(7);
+var _cart = __webpack_require__(0);
+
+exports.default = function (item) {
+  var button = item.getElementsByTagName('button')[0];
+  var decrease = item.querySelector('.js-remove-single');
+  var increase = item.querySelector('.js-add-single');
+  var currentQty = item.querySelector('.js-single-quantity').innerHTML;
+  var id = item.getAttribute('data-id');
+
+  button.addEventListener('click', function (e) {
+    e.preventDefault();
+    (0, _cart.removeItem)(id);
+  });
+
+  decrease.addEventListener('click', function (e) {
+    e.preventDefault();
+    (0, _cart.updateAddon)(id, parseInt(currentQty) - 1);
+  });
+
+  increase.addEventListener('click', function (e) {
+    e.preventDefault();
+    (0, _cart.updateAddon)(id, parseInt(currentQty) + 1);
+  });
+};
+
+/***/ }),
+/* 11 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _micromanager = __webpack_require__(1);
+
+var scripts = _interopRequireWildcard(_micromanager);
+
+var _cart = __webpack_require__(0);
+
+var _images = __webpack_require__(5);
+
+var _currency = __webpack_require__(6);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+
+var X = '<svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentcolor" stroke-width="3" style="display:inline-block;vertical-align:middle;overflow:visible;"><path d="M1.0606601717798212 1.0606601717798212 L14.939339828220179 14.939339828220179"></path><path d="M14.939339828220179 1.0606601717798212 L1.0606601717798212 14.939339828220179"></path></svg>';
+
+function createItem(_ref) {
+  var id = _ref.variant_id,
+      title = _ref.product_title,
+      price = _ref.line_price,
+      color = _ref.variant_title,
+      image = _ref.image,
+      url = _ref.url,
+      quantity = _ref.quantity,
+      item = _objectWithoutProperties(_ref, ['variant_id', 'product_title', 'line_price', 'variant_title', 'image', 'url', 'quantity']);
+
+  var img = image ? (0, _images.getSizedImageUrl)(image.replace('_' + (0, _images.imageSize)(image), ''), '200x' // TODO hacky af
+  ) : 'https://source.unsplash.com/R9OS29xJb-8/2000x1333';
+
+  return '\n<div class=\'cart-drawer__item\' data-component=\'cart-drawer-item\' data-id=' + id + '>\n  <div class=\'f aic\'>\n    <a href=\'' + url + '\'>\n      <img src=\'' + img + '\' />\n    </a>\n    <div class=\'__content pl1 f fill-h ais jcb\'>\n      <div>\n        <a href=\'' + url + '\' class=\'serif mv0 p mv0\'>' + title + '</a>\n        <div class=\'small sans track mt025 mb05 book\'>' + (0, _currency.formatMoney)(price) + '</div>\n        <div class=\'f aic\'>\n          <div class=\'cart-quantity js-remove-single px05\'>-</div>\n          <div class=\'js-single-quantity\'>' + quantity + '</div>\n          <div class=\'cart-quantity js-add-single px05\'>+</div>\n        </div>\n        ' + (color ? '<div class=\'xsmall sans caps track cm mv025 book\'>' + color.split(':')[0] + '</div>' : '') + '\n      </div>\n\n      <button class=\'button--reset\'>' + X + '</button>\n    </div>\n  </div>\n</div>\n';
+}
+
+function renderItems(items) {
+  return items.length > 0 ? items.reduce(function (markup, item) {
+    markup += createItem(item);
+    return markup;
+  }, '') : '<div class=\'pv1\'><p class=\'pv1 mv05 sans small cm i ac\'>Your cart is empty</p></div>';
+}
+
+exports.default = function (outer) {
+  var isOpen = false;
+
+  var overlay = outer.querySelector('.js-overlay');
+  var closeButton = outer.querySelector('.js-close');
+  var subtotal = outer.querySelector('.js-subtotal');
+  var itemsRoot = outer.querySelector('.js-items');
+  var loading = itemsRoot.innerHTML;
+
+  function render() {
+    (0, _cart.fetchCart)().then(function (cart) {
+      itemsRoot.innerHTML = renderItems(cart.items);
+      subtotal.innerHTML = (0, _currency.formatMoney)(cart.total_price);
+      setTimeout(function () {
+        scripts.mount();
+      }, 0);
+    });
+  }
+
+  function open() {
+    outer.classList.add('is-active');
+
+    itemsRoot.innerHTML = loading;
+
+    setTimeout(function () {
+      outer.classList.add('is-visible');
+      isOpen = true;
+      setTimeout(render, 10);
+    }, 50);
+  }
+
+  function close() {
+    outer.classList.remove('is-visible');
+
+    setTimeout(function () {
+      outer.classList.remove('is-active');
+      isOpen = false;
+    }, 400);
+  }
+
+  (0, _cart.on)('updated', function (_ref2) {
+    var cart = _ref2.cart;
+
+    isOpen ? render() : open();
+  });
+  (0, _cart.on)('addon', function (_ref3) {
+    var cart = _ref3.cart;
+
+    isOpen ? render() : open();
+  });
+  overlay.addEventListener('click', close);
+  closeButton.addEventListener('click', close);
+
+  return {
+    open: open,
+    close: close
+  };
+};
+
+/***/ }),
+/* 12 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _micromanager = __webpack_require__(1);
 
 var scripts = _interopRequireWildcard(_micromanager);
 
@@ -979,7 +1167,7 @@ exports.default = function (header) {
 };
 
 /***/ }),
-/* 10 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -994,7 +1182,7 @@ exports.default = function (props) {
 };
 
 /***/ }),
-/* 11 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1041,7 +1229,7 @@ exports.default = function (el) {
 };
 
 /***/ }),
-/* 12 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1051,7 +1239,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _productSelector = __webpack_require__(6);
+var _productSelector = __webpack_require__(8);
 
 var _productSelector2 = _interopRequireDefault(_productSelector);
 
@@ -1066,7 +1254,7 @@ exports.default = function (el) {
 };
 
 /***/ }),
-/* 13 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1228,7 +1416,7 @@ exports.default = function (props) {
 // })();
 
 /***/ }),
-/* 14 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1335,7 +1523,7 @@ slate.Sections.prototype = $.extend({}, slate.Sections.prototype, {
 });
 
 /***/ }),
-/* 15 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1426,7 +1614,7 @@ slate.utils = {
 };
 
 /***/ }),
-/* 16 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1619,7 +1807,7 @@ slate.Variants = function () {
 }();
 
 /***/ }),
-/* 17 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1683,7 +1871,7 @@ theme.customerAddresses = function () {
 }();
 
 /***/ }),
-/* 18 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1754,150 +1942,6 @@ theme.customerLogin = function () {
 }();
 
 /***/ }),
-/* 19 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var map = {
-	"./app.js": 1,
-	"./components/cart-drawer-item.js": 22,
-	"./components/cart-drawer.js": 2,
-	"./components/header.js": 9,
-	"./components/hero.js": 10,
-	"./components/product.js": 11,
-	"./pages/product.js": 12,
-	"./sections/product.js": 13,
-	"./slate/sections.js": 14,
-	"./slate/utils.js": 15,
-	"./slate/variants.js": 16,
-	"./slater/cart.js": 0,
-	"./slater/currency.js": 4,
-	"./slater/images.js": 3,
-	"./slater/product-selector.js": 6,
-	"./slater/utils.js": 5,
-	"./templates/customers-addresses.js": 17,
-	"./templates/customers-login.js": 18
-};
-function webpackContext(req) {
-	return __webpack_require__(webpackContextResolve(req));
-};
-function webpackContextResolve(req) {
-	var id = map[req];
-	if(!(id + 1)) // check for number or string
-		throw new Error("Cannot find module '" + req + "'.");
-	return id;
-};
-webpackContext.keys = function webpackContextKeys() {
-	return Object.keys(map);
-};
-webpackContext.resolve = webpackContextResolve;
-module.exports = webpackContext;
-webpackContext.id = 19;
-
-/***/ }),
-/* 20 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-var index = typeof fetch=='function' ? fetch.bind() : function(url, options) {
-	options = options || {};
-	return new Promise( function (resolve, reject) {
-		var request = new XMLHttpRequest();
-
-		request.open(options.method || 'get', url);
-
-		for (var i in options.headers) {
-			request.setRequestHeader(i, options.headers[i]);
-		}
-
-		request.withCredentials = options.credentials=='include';
-
-		request.onload = function () {
-			resolve(response());
-		};
-
-		request.onerror = reject;
-
-		request.send(options.body);
-
-		function response() {
-			var keys = [],
-				all = [],
-				headers = {},
-				header;
-
-			request.getAllResponseHeaders().replace(/^(.*?):\s*([\s\S]*?)$/gm, function (m, key, value) {
-				keys.push(key = key.toLowerCase());
-				all.push([key, value]);
-				header = headers[key];
-				headers[key] = header ? (header + "," + value) : value;
-			});
-
-			return {
-				ok: (request.status/200|0) == 1,		// 200-299
-				status: request.status,
-				statusText: request.statusText,
-				url: request.responseURL,
-				clone: response,
-				text: function () { return Promise.resolve(request.responseText); },
-				json: function () { return Promise.resolve(request.responseText).then(JSON.parse); },
-				blob: function () { return Promise.resolve(new Blob([request.response])); },
-				headers: {
-					keys: function () { return keys; },
-					entries: function () { return all; },
-					get: function (n) { return headers[n.toLowerCase()]; },
-					has: function (n) { return n.toLowerCase() in headers; }
-				}
-			};
-		}
-	});
-};
-
-/* harmony default export */ __webpack_exports__["default"] = (index);
-//# sourceMappingURL=unfetch.es.js.map
-
-
-/***/ }),
-/* 21 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var map = {
-	"./app.js": 1,
-	"./components/cart-drawer-item.js": 22,
-	"./components/cart-drawer.js": 2,
-	"./components/header.js": 9,
-	"./components/hero.js": 10,
-	"./components/product.js": 11,
-	"./pages/product.js": 12,
-	"./sections/product.js": 13,
-	"./slate/sections.js": 14,
-	"./slate/utils.js": 15,
-	"./slate/variants.js": 16,
-	"./slater/cart.js": 0,
-	"./slater/currency.js": 4,
-	"./slater/images.js": 3,
-	"./slater/product-selector.js": 6,
-	"./slater/utils.js": 5,
-	"./templates/customers-addresses.js": 17,
-	"./templates/customers-login.js": 18
-};
-function webpackContext(req) {
-	return __webpack_require__(webpackContextResolve(req));
-};
-function webpackContextResolve(req) {
-	var id = map[req];
-	if(!(id + 1)) // check for number or string
-		throw new Error("Cannot find module '" + req + "'.");
-	return id;
-};
-webpackContext.keys = function webpackContextKeys() {
-	return Object.keys(map);
-};
-webpackContext.resolve = webpackContextResolve;
-module.exports = webpackContext;
-webpackContext.id = 21;
-
-/***/ }),
 /* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1908,30 +1952,619 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _cart = __webpack_require__(0);
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-exports.default = function (item) {
-  var button = item.getElementsByTagName('button')[0];
-  var decrease = item.querySelector('.js-remove-single');
-  var increase = item.querySelector('.js-add-single');
-  var currentQty = item.querySelector('.js-single-quantity').innerHTML;
-  var id = item.getAttribute('data-id');
+exports.default = operator;
 
-  button.addEventListener('click', function (e) {
-    e.preventDefault();
-    (0, _cart.removeItem)(id);
+var _mitt = __webpack_require__(4);
+
+var _mitt2 = _interopRequireDefault(_mitt);
+
+var _unfetch = __webpack_require__(9);
+
+var _unfetch2 = _interopRequireDefault(_unfetch);
+
+var _scrollRestoration = __webpack_require__(23);
+
+var _scrollRestoration2 = _interopRequireDefault(_scrollRestoration);
+
+var _cache = __webpack_require__(24);
+
+var _cache2 = _interopRequireDefault(_cache);
+
+var _util = __webpack_require__(25);
+
+var _routes = __webpack_require__(26);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function operator(_ref) {
+  var _ref$root = _ref.root,
+      root = _ref$root === undefined ? 'root' : _ref$root,
+      _ref$transitionSpeed = _ref.transitionSpeed,
+      transitionSpeed = _ref$transitionSpeed === undefined ? 0 : _ref$transitionSpeed,
+      _ref$routes = _ref.routes,
+      routes = _ref$routes === undefined ? {} : _ref$routes,
+      _ref$evaluateScripts = _ref.evaluateScripts,
+      evaluateScripts = _ref$evaluateScripts === undefined ? false : _ref$evaluateScripts;
+
+  if (!window.history.pushState) {
+    return console.error('operator: the history API is unavailable, aborting.');
+  }
+
+  /**
+   * Take control of scroll position
+   */
+  _scrollRestoration2.default.init();
+
+  /**
+   * Changed via enable()/disable() methods
+   */
+  var ajaxDisabled = false;
+
+  /**
+   * Emitter instance
+   */
+  var ev = (0, _mitt2.default)();
+
+  /**
+   * Map over routes to create pattern
+   * matching handlers
+   */
+  routes = Object.keys(routes).map(function (k) {
+    return (0, _routes.createRoute)(k, routes[k]);
   });
 
-  decrease.addEventListener('click', function (e) {
+  /**
+   * Update active links to match initial
+   * page load
+   */
+  (0, _util.setActiveLinks)(_util.location.href);
+
+  /**
+   * @param {string} markup The new markup from a successful request
+   * @param {string} href The new URL
+   * @param {boolean} isPopstate True if render is called via popstate, false otherwise
+   */
+  function render(markup, href, isPopstate) {
+    var mountNode = document.getElementById(root);
+    var oldDom = document;
+    var newDom = new window.DOMParser().parseFromString(markup, 'text/html');
+    var title = newDom.title;
+
+    ev.emit('beforeRender', href);
+
+    document.documentElement.classList.add('operator-is-transitioning');
+    mountNode.style.height = mountNode.clientHeight + 'px';
+
+    /**
+     * After transition out, render new page
+     * and (optionally) push a new history location
+     */
+    setTimeout(function () {
+      mountNode.innerHTML = newDom.getElementById(root).innerHTML;
+
+      /**
+       * If a popstate event occurred, we don't
+       * need to manually create a new history
+       * location: it's already there from
+       * a previous navigation
+       */
+      !isPopstate && instance.push(href, title);
+
+      /**
+       * Finish up
+       */
+      setTimeout(function () {
+        mountNode.style.height = '';
+        document.documentElement.classList.remove('operator-is-transitioning');
+        (0, _util.setActiveLinks)(href);
+        ev.emit('afterRender', href);
+        evaluateScripts && (0, _util.evalScripts)(newDom, oldDom);
+        _scrollRestoration2.default.restore();
+      }, 0);
+    }, transitionSpeed);
+  }
+
+  function handleClick(e) {
+    if (ajaxDisabled) return;
+
+    var target = e.target;
+
+    /**
+     * Find link that was clicked
+     */
+    while (target && !(target.href && target.nodeName === 'A')) {
+      target = target.parentNode;
+    }
+
+    /**
+     * Validate URL
+     */
+    var href = (0, _util.getValidPath)(e, target);
+
+    if (href) {
+      e.preventDefault();
+
+      if ((0, _util.isSameURL)(href)) {
+        if ((0, _util.isHash)(href)) {
+          instance.push(href);
+          ev.emit('afterRender', href);
+        }
+
+        return;
+      }
+
+      /**
+       * Only save on clicks, not on popstate
+       */
+      _scrollRestoration2.default.save();
+
+      instance.go(href);
+
+      return false;
+    }
+  }
+
+  /**
+   * Notes on popstate:
+   *  - catches hashchange
+   *  - must validate url before AJAX
+   */
+  function onPopstate(e) {
+    if (ajaxDisabled) return;
+
     e.preventDefault();
-    (0, _cart.updateAddon)(id, parseInt(currentQty) - 1);
+
+    /**
+     * If it's a back button, the
+     * target should be a window object.
+     * Otherwise this could be a hash
+     * link or otherwise.
+     */
+    var path = e.target.window ? e.target.window.location.href : (0, _util.getValidPath)(e, e.target);
+
+    if (path) {
+      instance.go(e.target.location.href, true); // set isPopstate to true
+
+      return false;
+    }
+  }
+
+  var instance = _extends({}, ev, {
+    go: function go(href, isPopstate) {
+      var _this = this;
+
+      href = (0, _util.getAnchor)(href).href; // ensure it's a full address
+
+      (0, _routes.executeRoute)(href, routes, function (redirect) {
+        if (redirect) return _this.go(redirect);
+
+        _this.prefetch(href).then(function (markup) {
+          return render(markup, href, isPopstate);
+        });
+      });
+    },
+    push: function push(route) {
+      var title = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : document.title;
+
+      window.history.pushState({}, title, route);
+      document.title = title;
+    },
+    prefetch: function prefetch(route) {
+      var cached = _cache2.default.get(route);
+      return cached ? Promise.resolve(cached) : (0, _unfetch2.default)(route, { credentials: 'include' }).then(function (res) {
+        return res.text();
+      }).then(function (markup) {
+        _cache2.default.set(route, markup);
+        return markup;
+      });
+    },
+    addRoute: function addRoute(route, handler) {
+      routes.push((0, _routes.createRoute)(route, handler));
+    },
+    disable: function disable() {
+      ajaxDisabled = true;
+    },
+    enable: function enable() {
+      ajaxDisabled = false;
+    },
+    isEnabled: function isEnabled() {
+      return ajaxDisabled;
+    },
+    destroy: function destroy() {
+      document.body.removeEventListener('click', handleClick);
+      window.removeEventListener('popstate', onPopstate);
+    }
   });
 
-  increase.addEventListener('click', function (e) {
-    e.preventDefault();
-    (0, _cart.updateAddon)(id, parseInt(currentQty) + 1);
+  document.body.addEventListener('click', handleClick);
+  window.addEventListener('popstate', onPopstate);
+
+  /**
+   * Runs any applicable routes on page load,
+   * restore scroll (if saved at history.state.scrollPosition)
+   * *after* routes are fired
+   */
+  (0, _routes.executeRoute)(window.location.pathname, routes, function (redirect) {
+    if (redirect) return instance.go(redirect);
+    _scrollRestoration2.default.restore();
   });
+
+  return instance;
+}
+
+/***/ }),
+/* 23 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+var _extends=Object.assign||function(a){for(var c,b=1;b<arguments.length;b++)for(var d in c=arguments[b],c)Object.prototype.hasOwnProperty.call(c,d)&&(a[d]=c[d]);return a},scroll=function(a){return window.scrollTo(0,a)},state=function(){return history.state?history.state.scrollPosition:0},save=function(){var a=0<arguments.length&&arguments[0]!==void 0?arguments[0]:null;history.replaceState(_extends({},history.state,{scrollPosition:a||pageYOffset||scrollY}),'')},restore=function(){var a=0<arguments.length&&arguments[0]!==void 0?arguments[0]:null,b=state();a?a(b):scroll(b)},init=function(){'scrollRestoration'in history&&(history.scrollRestoration='manual',scroll(state()),onbeforeunload=function onbeforeunload(){return save()})};Object.defineProperty(exports,'__esModule',{value:!0});exports.default='undefined'==typeof window?{}:{init:init,save:save,restore:restore,state:state};
+
+/***/ }),
+/* 24 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+var cache = {};
+
+exports.default = {
+  set: function set(route, markup) {
+    cache = _extends({}, cache, _defineProperty({}, route, markup));
+  },
+  get: function get(route) {
+    return cache[route];
+  }
 };
+
+/***/ }),
+/* 25 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.getOrigin = getOrigin;
+exports.getAnchor = getAnchor;
+exports.sanitize = sanitize;
+exports.isHash = isHash;
+exports.isSameURL = isSameURL;
+exports.isSameOrigin = isSameOrigin;
+exports.getValidPath = getValidPath;
+exports.setActiveLinks = setActiveLinks;
+exports.evalScripts = evalScripts;
+var location = exports.location = window.location;
+
+function getOrigin(loc) {
+  var _ref = loc || window.location,
+      protocol = _ref.protocol,
+      host = _ref.host;
+
+  return protocol + '//' + host;
+}
+
+function getAnchor(url) {
+  var a = document.createElement('a');
+  a.href = url;
+  return a;
+}
+
+/**
+ * @param {string} url Raw URL to parse
+ * @return {string} URL sans origin
+ */
+function sanitize(url) {
+  var route = url.replace(new RegExp(getOrigin()), '');
+  return route;
+}
+
+function isHash(href) {
+  return (/#/.test(href)
+  );
+}
+
+function isSameURL(href) {
+  return window.location.search === getAnchor(href).search && window.location.pathname === getAnchor(href).pathname;
+}
+
+function isSameOrigin(href) {
+  return getOrigin() === getOrigin(getAnchor(href));
+}
+
+function getValidPath(e, target) {
+  if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+  if (!target) return;
+  if (!target.href) return;
+  if (target.target === '_blank') return;
+  if (!isSameOrigin(target.href)) return;
+  if (target.classList.contains('no-ajax')) return;
+  return target.href;
+}
+
+var activeLinks = [];
+
+function setActiveLinks(href) {
+  var route = getAnchor(href).pathname;
+  var regex = /^\/$/.test(route) ? RegExp(/^\/$/) : new RegExp(route);
+
+  for (var i = 0; i < activeLinks.length; i++) {
+    activeLinks[i].classList.remove('is-active');
+  }
+
+  activeLinks = [].slice.call(document.querySelectorAll('[href$="' + route + '"]'));
+
+  for (var _i = 0; _i < activeLinks.length; _i++) {
+    if (regex.test(sanitize(activeLinks[_i].href))) {
+      activeLinks[_i].classList.add('is-active');
+    }
+  }
+}
+
+function evalScripts(newDom, existingDom) {
+  var existing = Array.prototype.slice.call(existingDom.getElementsByTagName('script'));
+  var scripts = newDom.getElementsByTagName('script');
+
+  var _loop = function _loop(i) {
+    if (existing.filter(function (e) {
+      return e.isEqualNode(scripts[i]);
+    }).length > 0) {
+      return 'continue';
+    }
+
+    var s = document.createElement('script');
+
+    for (var a = 0; a < scripts[i].attributes.length; a++) {
+      var attr = scripts[i].attributes[a];
+      s.setAttribute(attr.name, attr.value);
+    }
+
+    if (!s.src) {
+      s.innerHTML = scripts[i].innerHTML;
+    }
+
+    document.body.appendChild(s);
+  };
+
+  for (var i = 0; i < scripts.length; i++) {
+    var _ret = _loop(i);
+
+    if (_ret === 'continue') continue;
+  }
+}
+
+/***/ }),
+/* 26 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.collectParams = collectParams;
+exports.createRoute = createRoute;
+exports.executeRoute = executeRoute;
+/**
+ * route utils lifted and adapted from
+ * dush-router by @@tunnckoCore
+ * @see https://github.com/tunnckoCore/dush-router
+ */
+function collectParams(r, pathname) {
+  var match = null;
+
+  pathname.replace(r.regex, function () {
+    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    var _loop = function _loop(i) {
+      r.keys.forEach(function (key) {
+        r.params[key] = args[i];
+      });
+      match = true;
+    };
+
+    for (var i = 1; i < args.length - 2; i++) {
+      _loop(i);
+    }
+  });
+
+  return match ? r.params : match;
+}
+
+function createRoute(route, handler) {
+  var keys = [];
+
+  var regex = new RegExp(route.replace(/\*/g, '(?:.*)').replace(/([:*])(\w+)/g, function (key) {
+    keys.push(key.slice(1));
+    return '([\\w-]+)';
+  }) + '(?:[\/|?\w+]$|$)' + '$', 'ig');
+
+  return {
+    route: route,
+    handler: handler,
+    regex: regex,
+    keys: keys,
+    params: {},
+    match: function match(pathname) {
+      return regex.test(pathname) ? collectParams(this, pathname) : false;
+    }
+  };
+}
+
+function executeRoute(pathname, routes, done) {
+  if (routes.length < 1) return done && done();
+
+  var handlers = [];
+
+  /**
+   * If we have configured routes,
+   * check them and fire any handlers
+   */
+  var _iteratorNormalCompletion = true;
+  var _didIteratorError = false;
+  var _iteratorError = undefined;
+
+  try {
+    for (var _iterator = routes[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+      var route = _step.value;
+
+      var params = route.match(pathname);
+      /**
+       * params will return be `null` if
+       * there was a match, but not parametized
+       * route params. If params is `false`,
+       * it means a no-match, so skip the handler
+       */
+      if (params === false) {
+        continue;
+      }
+
+      handlers.push(route.handler(params || {}, pathname));
+    }
+  } catch (err) {
+    _didIteratorError = true;
+    _iteratorError = err;
+  } finally {
+    try {
+      if (!_iteratorNormalCompletion && _iterator.return) {
+        _iterator.return();
+      }
+    } finally {
+      if (_didIteratorError) {
+        throw _iteratorError;
+      }
+    }
+  }
+
+  Promise.all(handlers).then(function (responses) {
+    var _iteratorNormalCompletion2 = true;
+    var _didIteratorError2 = false;
+    var _iteratorError2 = undefined;
+
+    try {
+      for (var _iterator2 = responses[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+        var response = _step2.value;
+
+        if (typeof response === 'string') return done(response); // handle redirect
+        if (response === false && window.location.pathname !== pathname) {
+          return window.location = pathname;
+        }
+      }
+    } catch (err) {
+      _didIteratorError2 = true;
+      _iteratorError2 = err;
+    } finally {
+      try {
+        if (!_iteratorNormalCompletion2 && _iterator2.return) {
+          _iterator2.return();
+        }
+      } finally {
+        if (_didIteratorError2) {
+          throw _iteratorError2;
+        }
+      }
+    }
+
+    done && done();
+  });
+}
+
+/***/ }),
+/* 27 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var map = {
+	"./app.js": 2,
+	"./components/cart-drawer-item.js": 10,
+	"./components/cart-drawer.js": 11,
+	"./components/header.js": 12,
+	"./components/hero.js": 13,
+	"./components/product.js": 14,
+	"./lib/router.js": 3,
+	"./pages/product.js": 15,
+	"./sections/product.js": 16,
+	"./slate/sections.js": 17,
+	"./slate/utils.js": 18,
+	"./slate/variants.js": 19,
+	"./slater/cart.js": 0,
+	"./slater/currency.js": 6,
+	"./slater/images.js": 5,
+	"./slater/product-selector.js": 8,
+	"./slater/utils.js": 7,
+	"./templates/customers-addresses.js": 20,
+	"./templates/customers-login.js": 21
+};
+function webpackContext(req) {
+	return __webpack_require__(webpackContextResolve(req));
+};
+function webpackContextResolve(req) {
+	var id = map[req];
+	if(!(id + 1)) // check for number or string
+		throw new Error("Cannot find module '" + req + "'.");
+	return id;
+};
+webpackContext.keys = function webpackContextKeys() {
+	return Object.keys(map);
+};
+webpackContext.resolve = webpackContextResolve;
+module.exports = webpackContext;
+webpackContext.id = 27;
+
+/***/ }),
+/* 28 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var map = {
+	"./app.js": 2,
+	"./components/cart-drawer-item.js": 10,
+	"./components/cart-drawer.js": 11,
+	"./components/header.js": 12,
+	"./components/hero.js": 13,
+	"./components/product.js": 14,
+	"./lib/router.js": 3,
+	"./pages/product.js": 15,
+	"./sections/product.js": 16,
+	"./slate/sections.js": 17,
+	"./slate/utils.js": 18,
+	"./slate/variants.js": 19,
+	"./slater/cart.js": 0,
+	"./slater/currency.js": 6,
+	"./slater/images.js": 5,
+	"./slater/product-selector.js": 8,
+	"./slater/utils.js": 7,
+	"./templates/customers-addresses.js": 20,
+	"./templates/customers-login.js": 21
+};
+function webpackContext(req) {
+	return __webpack_require__(webpackContextResolve(req));
+};
+function webpackContextResolve(req) {
+	var id = map[req];
+	if(!(id + 1)) // check for number or string
+		throw new Error("Cannot find module '" + req + "'.");
+	return id;
+};
+webpackContext.keys = function webpackContextKeys() {
+	return Object.keys(map);
+};
+webpackContext.resolve = webpackContextResolve;
+module.exports = webpackContext;
+webpackContext.id = 28;
 
 /***/ })
 /******/ ]);

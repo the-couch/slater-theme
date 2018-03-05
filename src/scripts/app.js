@@ -1,3 +1,4 @@
+import router from 'lib/router'
 import * as scripts from 'micromanager'
 
 const init = types => (ctx = document) => {
@@ -31,6 +32,10 @@ scripts.init({
 })
 
 scripts.mount()
+
+router.on('afterRender', () => {
+  console.log('route rendered!')
+})
 
 console.groupCollapsed('Slater credits 🍝')
 console.log('Development by The Couch https://thecouch.nyc')
