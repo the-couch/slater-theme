@@ -28,6 +28,7 @@ Duplicate the `config-sample.yml` and grab the creds from your shopify theme.
 In two separate windows run the watch command (this is to allow us to use our own build process on top of Shopify Slate).
 
 `npm run watch:assets` - watches js and css
+
 `npm run start` - manages theme refresh/upload
 
 ## Why

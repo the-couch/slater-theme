@@ -19,3 +19,7 @@ document.addEventListener('DOMContentLoaded', e => {
     page: './pages/'
   })()
 })
+
+console.groupCollapsed('Slater credits 🍝')
+console.log('Development by The Couch https://thecouch.nyc')
+console.groupEnd()
