@@ -2,7 +2,7 @@
   "name": "slater",
   "version": "0.3.0",
   "scripts": {
-    "start": "slater watch",
+    "start": "slate watch",
     "dev": "concurrently 'npm run watch:theme' 'npm run watch:js' 'npm run watch:css'",
     "build": "npm run build:js && npm run build:css",
     "watch:assets": "concurrently 'npm run watch:js' 'npm run watch:css'",
