@@ -8,7 +8,7 @@
     "watch:assets": "concurrently 'npm run watch:js' 'npm run watch:css'",
     "build:theme": "theme upload",
     "watch:theme": "theme watch",
-    "build:js": "NODE_ENV=production webpack --progress -p",
+    "build:js": "NODE_ENV=production webpack --progress",
     "watch:js": "NODE_ENV=development webpack -w",
     "build:css": "NODE_ENV=production postcss styles/main.css -o src/assets/main.css",
     "watch:css": "NODE_ENV=development postcss styles/main.css -w -o src/assets/main.css"
