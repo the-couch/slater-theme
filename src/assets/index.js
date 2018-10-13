@@ -323,7 +323,7 @@ _router2.default.on('afterRender', function () {
   console.log('route rendered!');
 });
 
-console.groupCollapsed('Slater credits 🍝');
+console.groupCollapsed('Slater credits 🍝 pew pew');
 console.log('Development by The Couch https://thecouch.nyc');
 console.groupEnd();
 
@@ -2521,7 +2521,6 @@ function executeRoute(pathname, routes, done) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var map = {
-	"./app.js": 2,
 	"./components/account-login.js": 10,
 	"./components/cart-drawer-item.js": 11,
 	"./components/cart-drawer.js": 12,
@@ -2529,6 +2528,7 @@ var map = {
 	"./components/hero.js": 14,
 	"./components/input-text.js": 15,
 	"./components/product.js": 16,
+	"./index.js": 2,
 	"./lib/router.js": 3,
 	"./pages/product.js": 17,
 	"./sections/product.js": 18,
@@ -2565,7 +2565,6 @@ webpackContext.id = 30;
 /***/ (function(module, exports, __webpack_require__) {
 
 var map = {
-	"./app.js": 2,
 	"./components/account-login.js": 10,
 	"./components/cart-drawer-item.js": 11,
 	"./components/cart-drawer.js": 12,
@@ -2573,6 +2572,7 @@ var map = {
 	"./components/hero.js": 14,
 	"./components/input-text.js": 15,
 	"./components/product.js": 16,
+	"./index.js": 2,
 	"./lib/router.js": 3,
 	"./pages/product.js": 17,
 	"./sections/product.js": 18,

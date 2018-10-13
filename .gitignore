@@ -11,6 +11,8 @@ node_modules
 dist
 upload
 deploy.log
+build/*
+build
 config.yml
 
 # Compiled source #

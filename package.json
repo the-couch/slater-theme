@@ -1,9 +1,10 @@
 {
   "name": "slater",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "scripts": {
-    "start": "slate watch",
-    "dev": "concurrently 'npm run watch:theme' 'npm run watch:js' 'npm run watch:css'",
+    "start": "slater watch",
+    "deploy:production": "npm run build && slater deploy --env production",
+    "dev": "concurrently 'slater watch' 'npm run watch:js' 'npm run watch:css'",
     "build": "npm run build:js && npm run build:css",
     "watch:assets": "concurrently 'npm run watch:js' 'npm run watch:css'",
     "build:theme": "theme upload",
@@ -16,8 +17,7 @@
   "author": "iamkevingreen",
   "license": "MIT",
   "devDependencies": {
-    "@shopify/slate-tools": "0.3.3",
-    "@slater/cli": "^0.1.2",
+    "@slater/cli": "^0.6.2",
     "babel-core": "^6.25.0",
     "babel-eslint": "^7.2.3",
     "babel-loader": "^7.0.0",

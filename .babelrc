@@ -9,6 +9,7 @@
       'alias': {
         'slater': './src/scripts/slater',
         'components': './src/scripts/components',
+        'lib': './src/scripts/lib',
         'pages': './src/scripts/pages',
         'templates': './src/scripts/templates'
       }

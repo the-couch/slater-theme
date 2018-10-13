@@ -15,3 +15,7 @@
 
 @import 'components/cart-drawer';
 @import 'components/page-transition';
+
+ body {
+   background-color: orange;
+ }
