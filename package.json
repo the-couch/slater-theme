@@ -3,7 +3,7 @@
   "version": "0.3.1",
   "scripts": {
     "start": "slater watch",
-    "deploy:production": "npm run build && slater deploy --env production",
+    "deploy:production": "slater deploy --env production",
     "dev": "concurrently 'slater watch' 'npm run watch:js' 'npm run watch:css'",
     "build": "npm run build:js && npm run build:css",
     "watch:assets": "concurrently 'npm run watch:js' 'npm run watch:css'",
@@ -49,6 +49,7 @@
     "micromanager": "^1.0.1",
     "mitt": "^1.1.2",
     "operator.js": "^3.5.4",
+    "picoapp": "^2.0.2",
     "unfetch": "^3.0.0"
   }
 }

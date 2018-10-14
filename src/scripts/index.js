@@ -1,5 +1,5 @@
 import router from './lib/router'
-import * as scripts from 'micromanager'
+import picoapp from 'picoapp'
 
 const init = types => (ctx = document) => {
   for (let type in types) {
@@ -16,28 +16,39 @@ const init = types => (ctx = document) => {
   }
 }
 
-document.addEventListener('DOMContentLoaded', e => {
-  init({
-    component: './components/',
-    page: './pages/'
-  })()
+// document.addEventListener('DOMContentLoaded', e => {
+//   init({
+//     component: './components/',
+//     page: './pages/'
+//   })()
+// })
+//
+// /**
+//  * Script management
+//  */
+// scripts.init({
+//   component: 'components/',
+//   util: 'util/'
+// })
+//
+// scripts.mount()
+
+import header from './components/header.js'
+
+const app = picoapp({
+  header
 })
 
-/**
- * Script management
- */
-scripts.init({
-  component: 'components/',
-  util: 'util/'
-})
-
-scripts.mount()
-
+app.mount()
 
 router.on('afterRender', () => {
   console.log('route rendered!')
+  app.unmount()
+  setTimeout(() => {
+    app.mount()
+  }, 0)
 })
 
-console.groupCollapsed('Slater credits 🍝 pew pew')
+console.groupCollapsed('Slater credits 🍝  pew')
 console.log('Development by The Couch https://thecouch.nyc')
 console.groupEnd()

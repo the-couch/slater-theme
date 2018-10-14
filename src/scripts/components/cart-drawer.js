@@ -55,6 +55,8 @@ function renderItems (items) {
   )
 }
 
+console.log('cart drawer file')
+
 export default outer => {
   let isOpen = false
 

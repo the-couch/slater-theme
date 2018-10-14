@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 2);
+/******/ 	return __webpack_require__(__webpack_require__.s = 1);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -84,7 +84,7 @@ var _unfetch = __webpack_require__(9);
 
 var _unfetch2 = _interopRequireDefault(_unfetch);
 
-var _mitt = __webpack_require__(4);
+var _mitt = __webpack_require__(3);
 
 var _mitt2 = _interopRequireDefault(_mitt);
 
@@ -188,98 +188,17 @@ function fetchCart() {
 "use strict";
 
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.init = init;
-exports.mount = mount;
-exports.unmount = unmount;
-var types = {};
-
-var __cache = {};
-
-function log(level, msg) {
-  var _console;
-
-  for (var _len = arguments.length, args = Array(_len > 2 ? _len - 2 : 0), _key = 2; _key < _len; _key++) {
-    args[_key - 2] = arguments[_key];
-  }
-
-  (_console = console)[level].apply(_console, ['⚙️ micromanager -', msg].concat(args));
-}
-
-function init(t) {
-  types = t;
-}
-
-function mount() {
-  for (var type in types) {
-    var attr = 'data-' + type;
-    var nodes = [].slice.call(document.querySelectorAll('[' + attr + ']'));
-    var path = types[type].replace(/^\/|\/$/, '');
-
-    for (var i = 0; i < nodes.length; i++) {
-      var name = nodes[i].getAttribute(attr);
-
-      try {
-        var instance = __webpack_require__(30)("./" + path + '/' + name + '.js').default(nodes[i]);
-
-        nodes[i].removeAttribute(attr);
-
-        if (instance) {
-          this.cache.set(instance.displayName || name, instance);
-        }
-      } catch (e) {
-        log('error', name + ' threw an error\n\n', e);
-      }
-    }
-  }
-}
-
-function unmount() {
-  for (var key in __cache) {
-    var instance = __cache[key];
-    if (instance.unmount) {
-      instance.unmount();
-      delete __cache[key];
-    }
-  }
-}
-
-var cache = exports.cache = {
-  set: function set(id, instance) {
-    if (__cache[id]) log('warn', 'a duplicate key ' + id + ' was found in the cache. This instance will be overwritten.');
-    __cache[id] = instance;
-  },
-  get: function get(id) {
-    try {
-      return __cache[id];
-    } catch (e) {
-      log('warn', 'can\'t find ' + id + ' in the cache', e);
-      return null;
-    }
-  },
-  dump: function dump() {
-    return __cache;
-  }
-};
-
-/***/ }),
-/* 2 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _router = __webpack_require__(3);
+var _router = __webpack_require__(2);
 
 var _router2 = _interopRequireDefault(_router);
 
-var _micromanager = __webpack_require__(1);
+var _picoapp = __webpack_require__(10);
 
-var scripts = _interopRequireWildcard(_micromanager);
+var _picoapp2 = _interopRequireDefault(_picoapp);
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+var _header = __webpack_require__(4);
+
+var _header2 = _interopRequireDefault(_header);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -293,7 +212,7 @@ var init = function init(types) {
 
       for (var i = 0; i < nodes.length; i++) {
         try {
-          __webpack_require__(31)(types[type] + nodes[i].getAttribute(attr) + '.js').default(nodes[i]);
+          __webpack_require__(30)(types[type] + nodes[i].getAttribute(attr) + '.js').default(nodes[i]);
         } catch (e) {
           console.error(e);
         }
@@ -302,33 +221,43 @@ var init = function init(types) {
   };
 };
 
-document.addEventListener('DOMContentLoaded', function (e) {
-  init({
-    component: './components/',
-    page: './pages/'
-  })();
+// document.addEventListener('DOMContentLoaded', e => {
+//   init({
+//     component: './components/',
+//     page: './pages/'
+//   })()
+// })
+//
+// /**
+//  * Script management
+//  */
+// scripts.init({
+//   component: 'components/',
+//   util: 'util/'
+// })
+//
+// scripts.mount()
+
+var app = (0, _picoapp2.default)({
+  header: _header2.default
 });
 
-/**
- * Script management
- */
-scripts.init({
-  component: 'components/',
-  util: 'util/'
-});
-
-scripts.mount();
+app.mount();
 
 _router2.default.on('afterRender', function () {
   console.log('route rendered!');
+  app.unmount();
+  setTimeout(function () {
+    app.mount();
+  }, 0);
 });
 
-console.groupCollapsed('Slater credits 🍝 pew pew');
+console.groupCollapsed('Slater credits 🍝  pew');
 console.log('Development by The Couch https://thecouch.nyc');
 console.groupEnd();
 
 /***/ }),
-/* 3 */
+/* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -342,51 +271,36 @@ var _operator = __webpack_require__(25);
 
 var _operator2 = _interopRequireDefault(_operator);
 
-var _micromanager = __webpack_require__(1);
-
-var scripts = _interopRequireWildcard(_micromanager);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+// import * as scripts from 'micromanager'
 
 var router = (0, _operator2.default)({
   transitionSpeed: 400,
   routes: {}
 });
 
-router.addRoute('*', function () {
-  var cache = scripts.cache.dump();
-  var modules = [];
+// router.addRoute('*', () => {
+//   const cache = scripts.cache.dump()
+//   let modules = []
+//
+//   for (let key in cache) {
+//     modules.push(cache[key])
+//   }
+//
+//   return Promise.all(modules.map(mod => {
+//     return mod.leave ? mod.leave() : mod
+//   }))
+// })
 
-  for (var key in cache) {
-    modules.push(cache[key]);
-  }
-
-  return Promise.all(modules.map(function (mod) {
-    return mod.leave ? mod.leave() : mod;
-  }));
-});
-
-/**
- * Remount scripts on new routes
- */
 router.on('afterRender', function (requestedRoute) {
-  scripts.unmount();
-
-  var cartDrawer = scripts.cache.get('cart-drawer');
-  cartDrawer && cartDrawer.close();
-  // const nav = scripts.cache.get('mobileNav')
-  // nav && nav.close()
+  // const cartDrawer = scripts.cache.get('cart-drawer')
+  // cartDrawer && cartDrawer.close()
 
   var pageTransition = document.getElementById('pageTransition');
   setTimeout(function () {
     pageTransition.classList.remove('cover');
   }, 600);
-
-  setTimeout(function () {
-    scripts.mount();
-  }, 0);
 });
 
 router.on('beforeRender', function (requestedRoute) {
@@ -403,7 +317,7 @@ router.on('beforeRender', function (requestedRoute) {
 exports.default = router;
 
 /***/ }),
-/* 4 */
+/* 3 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -471,6 +385,77 @@ function mitt(all                 ) {
 
 
 /***/ }),
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _cart = __webpack_require__(0);
+
+var _picoapp = __webpack_require__(10);
+
+exports.default = (0, _picoapp.component)(function (_ref) {
+  var header = _ref.node;
+
+  // Handle cart count hard hit
+  console.log('hey header?');
+  var cartCount = header.querySelector('.js-cart-count');
+  var cart = (0, _cart.fetchCart)();
+  cart.then(function (res) {
+    /* eslint-disable */
+    res ? cartCount.innerHTML = res.item_count : null;
+    /* eslint-enable */
+  });
+  (0, _cart.on)('updated', function (_ref2) {
+    var cart = _ref2.cart;
+
+    cartCount.innerHTML = cart.item_count;
+  });
+  (0, _cart.on)('addon', function (_ref3) {
+    var cart = _ref3.cart;
+
+    cartCount.innerHTML = cart.item_count;
+  });
+  /**
+  // * Cart opening
+  // */
+  var cartToggles = header.querySelectorAll('.js-cart-drawer-toggle');
+  var _iteratorNormalCompletion = true;
+  var _didIteratorError = false;
+  var _iteratorError = undefined;
+
+  try {
+    for (var _iterator = cartToggles[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+      var toggle = _step.value;
+
+      toggle.addEventListener('click', function (e) {
+        e.preventDefault();
+        var cartDrawer = scripts.cache.get('cart-drawer');
+        cartDrawer.open();
+      });
+    }
+  } catch (err) {
+    _didIteratorError = true;
+    _iteratorError = err;
+  } finally {
+    try {
+      if (!_iteratorNormalCompletion && _iterator.return) {
+        _iterator.return();
+      }
+    } finally {
+      if (_didIteratorError) {
+        throw _iteratorError;
+      }
+    }
+  }
+});
+
+/***/ }),
 /* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -480,93 +465,55 @@ function mitt(all                 ) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.preload = preload;
-exports.loadImage = loadImage;
-exports.imageSize = imageSize;
-exports.getSizedImageUrl = getSizedImageUrl;
-exports.removeProtocol = removeProtocol;
-/**
- * Image Helper Functions
- * -----------------------------------------------------------------------------
- * A collection of functions that help with basic image operations.
- *
- */
+exports.default = ProductSelector;
 
-/**
- * Preloads an image in memory and uses the browsers cache to store it until needed.
- *
- * @param {Array} images - A list of image urls
- * @param {String} size - A shopify image size attribute
- */
-function preload(images, size) {
-  if (typeof images === 'string') {
-    images = [images];
-  }
+var _mitt = __webpack_require__(3);
 
-  for (var i = 0; i < images.length; i++) {
-    var image = images[i];
-    loadImage(getSizedImageUrl(image, size));
-  }
-}
+var _mitt2 = _interopRequireDefault(_mitt);
 
-/**
- * Loads and caches an image in the browsers cache.
- * @param {string} path - An image url
- */
-function loadImage(path) {
-  /* eslint-disable */
-  new Image().src = path;
-  /* eslint-enable */
-}
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-/**
- * Find the Shopify image attribute size
- *
- * @param {string} src
- * @returns {null}
- */
-function imageSize(src) {
-  /* eslint-disable */
-  var match = src.match(/.+_((?:pico|icon|thumb|small|compact|medium|large|grande)|\d{1,4}x\d{0,4}|x\d{1,4})[_\.@]/);
-  /* esling-enable */
+function ProductSelector() {
+  var config = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {
+    main: '[data-product-select]',
+    options: '[data-single-option-selector]',
+    data: '[data-product-json]'
+  };
 
-  if (match) {
-    return match[1];
-  } else {
-    return null;
-  }
-}
+  var ev = (0, _mitt2.default)();
 
-/**
- * Adds a Shopify size attribute to a URL
- *
- * @param src
- * @param size
- * @returns {*}
- */
-function getSizedImageUrl(src, size) {
-  if (size === null) {
-    return src;
-  }
+  var main = document.querySelector(config.main);
+  var options = [].slice.call(document.querySelectorAll(config.options));
+  var data = JSON.parse(document.querySelector(config.data).innerHTML);
 
-  if (size === 'master') {
-    return removeProtocol(src);
-  }
+  options.forEach(function (opt) {
+    return opt.addEventListener('change', function (e) {
+      var val = options.reduce(function (res, opt, i) {
+        res += i < options.length - 1 ? opt.value + ' / ' : opt.value;
+        return res;
+      }, '');
 
-  var match = src.match(/\.(jpg|jpeg|gif|png|bmp|bitmap|tiff|tif)(\?v=\d+)?$/i);
+      for (var i = 0; i < main.options.length; i++) {
+        if (main.options[i].text === val) {
+          main.selectedIndex = i;
+          break;
+        }
+      }
 
-  if (match) {
-    var prefix = src.split(match[0]);
-    var suffix = match[0];
+      ev.emit('update', data.variants.filter(function (v) {
+        return v.title === val;
+      })[0]);
+    });
+  });
 
-    return removeProtocol(prefix[0] + '_' + size + suffix);
-  } else {
-    return null;
-  }
-}
-
-function removeProtocol(path) {
-  return path.replace(/http(s)?:/, '');
+  return {
+    on: ev.on,
+    destroy: function destroy() {
+      options.forEach(function (opt) {
+        // opt.removeEventListener('change', updateSelect)
+      });
+    }
+  };
 }
 
 /***/ }),
@@ -758,55 +705,93 @@ function defaultTo(value, defaultValue) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = ProductSelector;
+exports.preload = preload;
+exports.loadImage = loadImage;
+exports.imageSize = imageSize;
+exports.getSizedImageUrl = getSizedImageUrl;
+exports.removeProtocol = removeProtocol;
+/**
+ * Image Helper Functions
+ * -----------------------------------------------------------------------------
+ * A collection of functions that help with basic image operations.
+ *
+ */
 
-var _mitt = __webpack_require__(4);
+/**
+ * Preloads an image in memory and uses the browsers cache to store it until needed.
+ *
+ * @param {Array} images - A list of image urls
+ * @param {String} size - A shopify image size attribute
+ */
+function preload(images, size) {
+  if (typeof images === 'string') {
+    images = [images];
+  }
 
-var _mitt2 = _interopRequireDefault(_mitt);
+  for (var i = 0; i < images.length; i++) {
+    var image = images[i];
+    loadImage(getSizedImageUrl(image, size));
+  }
+}
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+/**
+ * Loads and caches an image in the browsers cache.
+ * @param {string} path - An image url
+ */
+function loadImage(path) {
+  /* eslint-disable */
+  new Image().src = path;
+  /* eslint-enable */
+}
 
-function ProductSelector() {
-  var config = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {
-    main: '[data-product-select]',
-    options: '[data-single-option-selector]',
-    data: '[data-product-json]'
-  };
+/**
+ * Find the Shopify image attribute size
+ *
+ * @param {string} src
+ * @returns {null}
+ */
+function imageSize(src) {
+  /* eslint-disable */
+  var match = src.match(/.+_((?:pico|icon|thumb|small|compact|medium|large|grande)|\d{1,4}x\d{0,4}|x\d{1,4})[_\.@]/);
+  /* esling-enable */
 
-  var ev = (0, _mitt2.default)();
+  if (match) {
+    return match[1];
+  } else {
+    return null;
+  }
+}
 
-  var main = document.querySelector(config.main);
-  var options = [].slice.call(document.querySelectorAll(config.options));
-  var data = JSON.parse(document.querySelector(config.data).innerHTML);
+/**
+ * Adds a Shopify size attribute to a URL
+ *
+ * @param src
+ * @param size
+ * @returns {*}
+ */
+function getSizedImageUrl(src, size) {
+  if (size === null) {
+    return src;
+  }
 
-  options.forEach(function (opt) {
-    return opt.addEventListener('change', function (e) {
-      var val = options.reduce(function (res, opt, i) {
-        res += i < options.length - 1 ? opt.value + ' / ' : opt.value;
-        return res;
-      }, '');
+  if (size === 'master') {
+    return removeProtocol(src);
+  }
 
-      for (var i = 0; i < main.options.length; i++) {
-        if (main.options[i].text === val) {
-          main.selectedIndex = i;
-          break;
-        }
-      }
+  var match = src.match(/\.(jpg|jpeg|gif|png|bmp|bitmap|tiff|tif)(\?v=\d+)?$/i);
 
-      ev.emit('update', data.variants.filter(function (v) {
-        return v.title === val;
-      })[0]);
-    });
-  });
+  if (match) {
+    var prefix = src.split(match[0]);
+    var suffix = match[0];
 
-  return {
-    on: ev.on,
-    destroy: function destroy() {
-      options.forEach(function (opt) {
-        // opt.removeEventListener('change', updateSelect)
-      });
-    }
-  };
+    return removeProtocol(prefix[0] + '_' + size + suffix);
+  } else {
+    return null;
+  }
+}
+
+function removeProtocol(path) {
+  return path.replace(/http(s)?:/, '');
 }
 
 /***/ }),
@@ -875,6 +860,17 @@ var index = typeof fetch=='function' ? fetch.bind() : function(url, options) {
 
 /***/ }),
 /* 10 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "component", function() { return n; });
+function t(t,n,e){return{node:t,actions:n,hydrate:e.hydrate,get state(){return e.state}}}function n(n){return function(e,r,o){var u=n(t(e,r,o))||{};return u.onStateChange&&o.listen(u.onStateChange),u}}/* harmony default export */ __webpack_exports__["default"] = (function(n,e,r){void 0===n&&(n={}),void 0===r&&(r={});var o=[],u=function(t){var n=Object.assign({},t),e=[],r=[];return{get state(){return n},hydrate:function(t){return n=Object.assign({},n,"function"==typeof t?t(n):t),function(t){for(var o=0,u=e;o<u.length;o+=1)(0,u[o])(n);for(;r.length;)r.pop()(n);t&&t()}},listen:function(t){return e.indexOf(t)<0&&e.push(t),function(){return e.splice(e.indexOf(t),1)}},once:function(t){r.indexOf(t)<0&&r.push(t)},reset:function(){n=t},replace:function(t){n=t}}}(e||{}),i=Object.keys(r).reduce(function(t,n){return t[n]=function(t){return Promise.resolve(r[n](t)(u.state)).then(function(t){return u.hydrate(t)()})},t},{});return{actions:i,hydrate:u.hydrate,get state(){return u.state},add:function(t){Object.assign(n,t)},mount:function(t){void 0===t&&(t="data-component"),t=[].concat(t);for(var e=0;e<t.length;e++)for(var r=t[e],c=[].slice.call(document.querySelectorAll("["+r+"]"));c.length;)for(var a=c.pop(),f=a.getAttribute(r).split(/\s/),s=0;s<f.length;s++){var l=n[f[s]];if(l){a.removeAttribute(r);try{o.push(l(a,i,u))}catch(t){console.error("picoapp - "+f[s]+" failed - "+(t.message||t),t.stack)}}}},unmount:function(){return Promise.all(o.filter(function(t){return t.onUnmount}).map(function(n){var e=n.onUnmount;return Promise.resolve("function"==typeof e?e(t(n.node,i,u)):null)})).then(function(){o=o.filter(function(t){return!t.onUnmount}).filter(function(t){return!document.documentElement.contains(t.node)})})}}});;
+//# sourceMappingURL=picoapp.es.js.map
+
+
+/***/ }),
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -917,7 +913,7 @@ exports.default = function (outer) {
 };
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -953,7 +949,7 @@ exports.default = function (item) {
 };
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -963,13 +959,13 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _micromanager = __webpack_require__(1);
+var _micromanager = __webpack_require__(31);
 
 var scripts = _interopRequireWildcard(_micromanager);
 
 var _cart = __webpack_require__(0);
 
-var _images = __webpack_require__(5);
+var _images = __webpack_require__(8);
 
 var _currency = __webpack_require__(6);
 
@@ -1059,78 +1055,6 @@ exports.default = function (outer) {
     open: open,
     close: close
   };
-};
-
-/***/ }),
-/* 13 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _micromanager = __webpack_require__(1);
-
-var scripts = _interopRequireWildcard(_micromanager);
-
-var _cart = __webpack_require__(0);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-exports.default = function (header) {
-  // Handle cart count hard hit
-  var cartCount = header.querySelector('.js-cart-count');
-  var cart = (0, _cart.fetchCart)();
-  cart.then(function (res) {
-    /* eslint-disable */
-    res ? cartCount.innerHTML = res.item_count : null;
-    /* eslint-enable */
-  });
-  (0, _cart.on)('updated', function (_ref) {
-    var cart = _ref.cart;
-
-    cartCount.innerHTML = cart.item_count;
-  });
-  (0, _cart.on)('addon', function (_ref2) {
-    var cart = _ref2.cart;
-
-    cartCount.innerHTML = cart.item_count;
-  });
-  /**
-  // * Cart opening
-  // */
-  var cartToggles = header.querySelectorAll('.js-cart-drawer-toggle');
-  var _iteratorNormalCompletion = true;
-  var _didIteratorError = false;
-  var _iteratorError = undefined;
-
-  try {
-    for (var _iterator = cartToggles[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-      var toggle = _step.value;
-
-      toggle.addEventListener('click', function (e) {
-        e.preventDefault();
-        var cartDrawer = scripts.cache.get('cart-drawer');
-        cartDrawer.open();
-      });
-    }
-  } catch (err) {
-    _didIteratorError = true;
-    _iteratorError = err;
-  } finally {
-    try {
-      if (!_iteratorNormalCompletion && _iterator.return) {
-        _iterator.return();
-      }
-    } finally {
-      if (_didIteratorError) {
-        throw _iteratorError;
-      }
-    }
-  }
 };
 
 /***/ }),
@@ -1245,7 +1169,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _productSelector = __webpack_require__(8);
+var _productSelector = __webpack_require__(5);
 
 var _productSelector2 = _interopRequireDefault(_productSelector);
 
@@ -1988,7 +1912,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 exports.default = operator;
 
-var _mitt = __webpack_require__(4);
+var _mitt = __webpack_require__(3);
 
 var _mitt2 = _interopRequireDefault(_mitt);
 
@@ -2521,15 +2445,15 @@ function executeRoute(pathname, routes, done) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var map = {
-	"./components/account-login.js": 10,
-	"./components/cart-drawer-item.js": 11,
-	"./components/cart-drawer.js": 12,
-	"./components/header.js": 13,
+	"./components/account-login.js": 11,
+	"./components/cart-drawer-item.js": 12,
+	"./components/cart-drawer.js": 13,
+	"./components/header.js": 4,
 	"./components/hero.js": 14,
 	"./components/input-text.js": 15,
 	"./components/product.js": 16,
-	"./index.js": 2,
-	"./lib/router.js": 3,
+	"./index.js": 1,
+	"./lib/router.js": 2,
 	"./pages/product.js": 17,
 	"./sections/product.js": 18,
 	"./slate/sections.js": 19,
@@ -2537,8 +2461,8 @@ var map = {
 	"./slate/variants.js": 21,
 	"./slater/cart.js": 0,
 	"./slater/currency.js": 6,
-	"./slater/images.js": 5,
-	"./slater/product-selector.js": 8,
+	"./slater/images.js": 8,
+	"./slater/product-selector.js": 5,
 	"./slater/utils.js": 7,
 	"./templates/customers-addresses.js": 22,
 	"./templates/customers-login.js": 23,
@@ -2564,16 +2488,99 @@ webpackContext.id = 30;
 /* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.init = init;
+exports.mount = mount;
+exports.unmount = unmount;
+var types = {};
+
+var __cache = {};
+
+function log(level, msg) {
+  var _console;
+
+  for (var _len = arguments.length, args = Array(_len > 2 ? _len - 2 : 0), _key = 2; _key < _len; _key++) {
+    args[_key - 2] = arguments[_key];
+  }
+
+  (_console = console)[level].apply(_console, ['⚙️ micromanager -', msg].concat(args));
+}
+
+function init(t) {
+  types = t;
+}
+
+function mount() {
+  for (var type in types) {
+    var attr = 'data-' + type;
+    var nodes = [].slice.call(document.querySelectorAll('[' + attr + ']'));
+    var path = types[type].replace(/^\/|\/$/, '');
+
+    for (var i = 0; i < nodes.length; i++) {
+      var name = nodes[i].getAttribute(attr);
+
+      try {
+        var instance = __webpack_require__(32)("./" + path + '/' + name + '.js').default(nodes[i]);
+
+        nodes[i].removeAttribute(attr);
+
+        if (instance) {
+          this.cache.set(instance.displayName || name, instance);
+        }
+      } catch (e) {
+        log('error', name + ' threw an error\n\n', e);
+      }
+    }
+  }
+}
+
+function unmount() {
+  for (var key in __cache) {
+    var instance = __cache[key];
+    if (instance.unmount) {
+      instance.unmount();
+      delete __cache[key];
+    }
+  }
+}
+
+var cache = exports.cache = {
+  set: function set(id, instance) {
+    if (__cache[id]) log('warn', 'a duplicate key ' + id + ' was found in the cache. This instance will be overwritten.');
+    __cache[id] = instance;
+  },
+  get: function get(id) {
+    try {
+      return __cache[id];
+    } catch (e) {
+      log('warn', 'can\'t find ' + id + ' in the cache', e);
+      return null;
+    }
+  },
+  dump: function dump() {
+    return __cache;
+  }
+};
+
+/***/ }),
+/* 32 */
+/***/ (function(module, exports, __webpack_require__) {
+
 var map = {
-	"./components/account-login.js": 10,
-	"./components/cart-drawer-item.js": 11,
-	"./components/cart-drawer.js": 12,
-	"./components/header.js": 13,
+	"./components/account-login.js": 11,
+	"./components/cart-drawer-item.js": 12,
+	"./components/cart-drawer.js": 13,
+	"./components/header.js": 4,
 	"./components/hero.js": 14,
 	"./components/input-text.js": 15,
 	"./components/product.js": 16,
-	"./index.js": 2,
-	"./lib/router.js": 3,
+	"./index.js": 1,
+	"./lib/router.js": 2,
 	"./pages/product.js": 17,
 	"./sections/product.js": 18,
 	"./slate/sections.js": 19,
@@ -2581,8 +2588,8 @@ var map = {
 	"./slate/variants.js": 21,
 	"./slater/cart.js": 0,
 	"./slater/currency.js": 6,
-	"./slater/images.js": 5,
-	"./slater/product-selector.js": 8,
+	"./slater/images.js": 8,
+	"./slater/product-selector.js": 5,
 	"./slater/utils.js": 7,
 	"./templates/customers-addresses.js": 22,
 	"./templates/customers-login.js": 23,
@@ -2602,7 +2609,7 @@ webpackContext.keys = function webpackContextKeys() {
 };
 webpackContext.resolve = webpackContextResolve;
 module.exports = webpackContext;
-webpackContext.id = 31;
+webpackContext.id = 32;
 
 /***/ })
 /******/ ]);
