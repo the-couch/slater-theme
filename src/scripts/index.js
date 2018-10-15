@@ -1,20 +1,19 @@
-import router from './lib/router'
-import picoapp from 'picoapp'
+// import router from './lib/router'
 
-const init = types => (ctx = document) => {
-  for (let type in types) {
-    const attr = 'data-' + type
-    const nodes = [].slice.call(ctx.querySelectorAll(`[${attr}]`))
-
-    for (let i = 0; i < nodes.length; i++) {
-      try {
-        require(types[type] + nodes[i].getAttribute(attr) + '.js').default(nodes[i])
-      } catch (e) {
-        console.error(e)
-      }
-    }
-  }
-}
+// const init = types => (ctx = document) => {
+//   for (let type in types) {
+//     const attr = 'data-' + type
+//     const nodes = [].slice.call(ctx.querySelectorAll(`[${attr}]`))
+//
+//     for (let i = 0; i < nodes.length; i++) {
+//       try {
+//         require(types[type] + nodes[i].getAttribute(attr) + '.js').default(nodes[i])
+//       } catch (e) {
+//         console.error(e)
+//       }
+//     }
+//   }
+// }
 
 // document.addEventListener('DOMContentLoaded', e => {
 //   init({
@@ -33,22 +32,31 @@ const init = types => (ctx = document) => {
 //
 // scripts.mount()
 
-import header from './components/header.js'
+//
+// app.mount()
+//
+// router.on('afterRender', () => {
+//   console.log('route rendered!')
+//   app.unmount()
+//   setTimeout(() => {
+//     app.mount()
+//   }, 0)
+// })
+import operator from 'operator'
+import app from './app.js'
 
-const app = picoapp({
-  header
+const router = operator('#root')
+
+router.on('before', state => {
+  return Promise.all([
+    app.unmount(),
+    new Promise(r => {
+      document.body.classList.add('moving')
+      setTimeout(r, 800)
+    })
+  ])
 })
 
-app.mount()
-
-router.on('afterRender', () => {
-  console.log('route rendered!')
-  app.unmount()
-  setTimeout(() => {
-    app.mount()
-  }, 0)
-})
-
-console.groupCollapsed('Slater credits 🍝  pew')
+console.groupCollapsed('Slater credits 🍝  taco')
 console.log('Development by The Couch https://thecouch.nyc')
 console.groupEnd()

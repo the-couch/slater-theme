@@ -46,9 +46,8 @@
   },
   "dependencies": {
     "form-serialize": "^0.7.2",
-    "micromanager": "^1.0.1",
     "mitt": "^1.1.2",
-    "operator.js": "^3.5.4",
+    "operator": "^1.2.0",
     "picoapp": "^2.0.2",
     "unfetch": "^3.0.0"
   }
