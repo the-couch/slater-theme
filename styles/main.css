@@ -1,7 +1,0 @@
-@import 'slater/theme';
-
-/* Shopify Overrides */
-.shopify-preview-bar,
-#preview-bar-iframe {
-  display: none !important;
-}

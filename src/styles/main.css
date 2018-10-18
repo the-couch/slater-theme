@@ -1,0 +1,23 @@
+/* Default Slater Theme */
+@import 'slater/lib/reset';
+@import 'slater/lib/var';
+@import 'slater/lib/colors';
+@import 'slater/lib/breakpoint';
+@import 'slater/lib/align';
+@import 'slater/lib/display';
+@import 'slater/lib/containers';
+@import 'slater/lib/flexbox';
+@import 'slater/lib/lists';
+@import 'slater/lib/visibilty';
+@import 'slater/lib/spacing';
+@import 'slater/lib/z-index';
+@import 'slater/lib/positioning';
+
+@import 'slater/components/cart-drawer';
+@import 'slater/components/page-transition';
+@import 'slater/components/buttons';
+
+ body {
+   background-color: pink;
+   color: red;
+ }

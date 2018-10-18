@@ -45,6 +45,8 @@
 import operator from 'operator'
 import app from './app.js'
 
+import '../styles/main.css'
+
 const router = operator('#root')
 
 router.on('before', state => {

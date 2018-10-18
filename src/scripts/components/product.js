@@ -2,10 +2,17 @@ import { addVariant } from '../slater/cart.js'
 import { component } from 'picoapp'
 
 export default component(({ node: el, state }) => {
-  console.log('hey sup addy', el)
   const { selectedOrFirstAvailableVariant, product } = JSON.parse(el.querySelector('.js-product-json').innerHTML)
   let currentVariant = product.variants.filter(v => v.id === selectedOrFirstAvailableVariant)[0]
-  console.log('hey varry', currentVariant)
+
+  const form = el.getElementsByTagName('form')[0]
+  const submit = form.querySelector('.js-submit-cart')
+  const quantity = form.querySelector('.js-quantity').value
+
+  form.addEventListener('submit', e => {
+    e.preventDefault()
+    console.log('adding to cart')
+  })
 })
 
 //
