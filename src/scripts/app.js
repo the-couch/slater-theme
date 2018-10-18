@@ -1,6 +1,7 @@
 import picoapp from 'picoapp'
 
 import header from './components/header.js'
+import product from './components/product.js'
 
 const state = {
   cartOpen: false
@@ -11,7 +12,8 @@ const actions = {
 }
 
 const components = {
-  header
+  header,
+  product
 }
 
 export default picoapp(components, state, actions)

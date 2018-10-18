@@ -57,6 +57,20 @@ router.on('before', state => {
   ])
 })
 
+router.on('after', ({ title, pathname }) => {
+  console.log('after?')
+  document.title = title
+  window.history.pushState({}, '', pathname)
+})
+
+document.addEventListener('DOMContentLoaded', e => {
+  Promise.all([
+    // checkout.hydrate()
+  ]).then(() => {
+    app.mount()
+  })
+})
+
 console.groupCollapsed('Slater credits 🍝  taco')
 console.log('Development by The Couch https://thecouch.nyc')
 console.groupEnd()
