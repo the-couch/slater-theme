@@ -44,12 +44,33 @@
 // })
 import operator from 'operator'
 import app from './app.js'
+import wait from 'w2t'
 
 import '../styles/main.css'
 
-const router = operator('#root')
+let root = document.getElementById('pageTransition')
+
+const animateRoute = () => {
+  return new Promise(res => {
+    root.classList.add('cover')
+    setTimeout(() => {
+      root.classList.remove('cover')
+      res()
+    }, 600)
+  })
+}
+
+const router = operator('#root', [
+  state => {
+    return wait(600, [
+      animateRoute()
+    ])
+  }
+])
 
 router.on('before', state => {
+  // const pageTransition = document.getElementById('pageTransition')
+  // pageTransition.classList.add('cover')
   return Promise.all([
     app.unmount(),
     new Promise(r => {

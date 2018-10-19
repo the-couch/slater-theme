@@ -1,5 +1,6 @@
 import fetch from 'unfetch'
 import mitt from 'mitt'
+import app from '../app.js'
 
 const ev = mitt()
 
@@ -50,6 +51,7 @@ function changeAddon (line, quantity) {
     body: JSON.stringify({ line, quantity })
   }).then(res => res.json()).then(cart => {
     ev.emit('addon', { item: null, cart })
+    app.hydrate({ cart })()
     return cart
   })
 }
@@ -59,6 +61,8 @@ function changeAddon (line, quantity) {
  */
 export function addItemById (id, quantity) {
   ev.emit('updating')
+
+  console.log('yo adddy')
 
   return fetch('/cart/add.js', {
     method: 'POST',

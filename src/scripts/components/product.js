@@ -1,5 +1,6 @@
 import { addVariant } from '../slater/cart.js'
 import { component } from 'picoapp'
+import wait from 'w2t'
 
 export default component(({ node: el, state }) => {
   const { selectedOrFirstAvailableVariant, product } = JSON.parse(el.querySelector('.js-product-json').innerHTML)
@@ -11,7 +12,14 @@ export default component(({ node: el, state }) => {
 
   form.addEventListener('submit', e => {
     e.preventDefault()
-    console.log('adding to cart')
+    submit.children[0].innerHTML = 'Adding..'
+    wait(1000, [
+      addVariant(currentVariant, quantity).then(({ item, cart }) => {
+        submit.children[0].innerHTML = 'Add to Cart'
+      }).catch(e => {
+        alert(e)
+      })
+    ])
   })
 })
 
