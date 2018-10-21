@@ -45,6 +45,7 @@
 import operator from 'operator'
 import app from './app.js'
 import wait from 'w2t'
+import { fetchCart } from './slater/cart'
 
 import '../styles/main.css'
 
@@ -88,8 +89,11 @@ router.on('after', ({ title, pathname }) => {
 
 document.addEventListener('DOMContentLoaded', e => {
   Promise.all([
+    fetchCart()
     // checkout.hydrate()
-  ]).then(() => {
+  ]).then(([ cart ]) => {
+    console.log('yo response?', cart)
+    app.hydrate({ cart: cart })
     app.mount()
   })
 })

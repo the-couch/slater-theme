@@ -65,6 +65,9 @@ export default component(({ node, state, actions }) => {
     const loading = itemsRoot.innerHTML
 
     console.log('hey spaghetti', state)
+
+    itemsRoot.innerHTML = renderItems(state.cart.items)
+
     return {
       onStateChange (state) {
         console.log('hey spaghe change', state)
