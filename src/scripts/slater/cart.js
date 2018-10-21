@@ -74,6 +74,7 @@ export function addItemById (id, quantity) {
   }).then(r => r.json()).then(item => {
     return fetchCart().then(cart => {
       app.hydrate({ cart: cart })(() => console.log('updated'))
+      app.actions.toggleCart()
       // ev.emit('updated', { item, cart })
       return { item, cart }
     })

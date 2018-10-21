@@ -9,7 +9,7 @@ const state = {
 }
 
 const actions = {
-  toggleCart: open => state => ({ cartOpen: open !== undefined ? open : !state.cartOpen })
+  toggleCart: open => state => ({ cartOpen: !state.cartOpen })
 }
 
 const components = {

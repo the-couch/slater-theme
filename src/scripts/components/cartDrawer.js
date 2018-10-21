@@ -69,7 +69,6 @@ export default component(({ node, state, actions }) => {
   }
 
   const open = (cart) => {
-    app.hydrate({cartOpen: true})
     node.classList.add('is-active')
     itemsRoot.innerHTML = loading
     setTimeout(() => {
@@ -93,7 +92,8 @@ export default component(({ node, state, actions }) => {
 
   return {
     onStateChange ({cart, cartOpen}) {
-      cartOpen ? render(cart) : open(cart)
+      console.log('state is changing?', cartOpen)
+      cartOpen ? open(cart) : null
     }
   }
 })

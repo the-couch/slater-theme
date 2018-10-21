@@ -1,16 +1,23 @@
 // import { on, fetchCart } from '../slater/cart'
 import { component } from 'picoapp'
 // import Cart from './cart-drawer.js'
-import app from '../app.js'
 
 export default component(({ node: header, state, actions }) => {
-    // Handle cart count hard hit
   const cartCount = header.querySelector('.js-cart-count')
+  const cartToggles = header.querySelectorAll('.js-cart-drawer-toggle')
   cartCount.innerHTML = state.cart.items.length >= 1 ? state.cart.item_count : null
-  console.log('hey header?', cartCount)
+
+  for (let toggle of cartToggles) {
+    toggle.addEventListener('click', e => {
+      console.log('yo click', state)
+      e.preventDefault()
+      actions.toggleCart(true)
+      console.log('yo click', state)
+    })
+  }
+
   return {
     onStateChange (state) {
-      console.log('sta', state)
       cartCount.innerHTML = state.cart.item_count
     }
   }
