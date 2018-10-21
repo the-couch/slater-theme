@@ -1,13 +1,17 @@
 // import { on, fetchCart } from '../slater/cart'
 import { component } from 'picoapp'
 // import Cart from './cart-drawer.js'
+import app from '../app.js'
 
 export default component(({ node: header, state, actions }) => {
     // Handle cart count hard hit
-  console.log('hey header?')
+  const cartCount = header.querySelector('.js-cart-count')
+  cartCount.innerHTML = state.cart.items.length >= 1 ? state.cart.item_count : null
+  console.log('hey header?', cartCount)
   return {
     onStateChange (state) {
       console.log('sta', state)
+      cartCount.innerHTML = state.cart.item_count
     }
   }
   //   const cartCount = header.querySelector('.js-cart-count')

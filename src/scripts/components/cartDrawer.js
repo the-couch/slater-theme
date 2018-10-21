@@ -26,7 +26,7 @@ function createItem ({
     <a href='${url}'>
       <img src='${img}' />
     </a>
-    <div class='__content pl1 f fill-y ais jcb'>
+    <div class='__content pl1 f y ais jcb'>
       <div>
         <a href='${url}' class='serif mv0 p mv0'>${title}</a>
         <div class='small sans track mt025 mb05 book'>${formatMoney(price)}</div>
@@ -88,6 +88,7 @@ export default component(({ node, state, actions }) => {
 
   render(state.cart)
 
+  overlay.addEventListener('click', close)
   closeButton.addEventListener('click', close)
 
   return {
