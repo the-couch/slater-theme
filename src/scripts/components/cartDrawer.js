@@ -21,7 +21,7 @@ function createItem ({
   ) : 'https://source.unsplash.com/R9OS29xJb-8/2000x1333'
 
   return `
-<div class='cart-drawer__item' data-component='cart-drawer-item' data-id=${id}>
+<div class='cart-drawer__item' data-component='cartDrawerItem' data-id=${id}>
   <div class='f aic'>
     <a href='${url}'>
       <img src='${img}' />
@@ -74,6 +74,7 @@ export default component(({ node, state, actions }) => {
     setTimeout(() => {
       node.classList.add('is-visible')
       setTimeout(render(cart), 10)
+      app.mount()
     }, 50)
   }
 

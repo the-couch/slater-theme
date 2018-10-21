@@ -1,6 +1,10 @@
-import { removeAddon, updateAddon } from 'slater/cart'
+import { removeAddon, updateAddon } from '../slater/cart.js'
+import { component } from 'picoapp'
 
-export default item => {
+console.log('file ever?')
+
+export default component(({ node: item, state }) => {
+  console.log('this exists')
   const button = item.getElementsByTagName('button')[0]
   const decrease = item.querySelector('.js-remove-single')
   const increase = item.querySelector('.js-add-single')
@@ -8,6 +12,7 @@ export default item => {
   const id = item.getAttribute('data-id')
 
   button.addEventListener('click', e => {
+    console.log('what up?')
     e.preventDefault()
     removeAddon(id)
   })
@@ -21,4 +26,4 @@ export default item => {
     e.preventDefault()
     updateAddon(id, parseInt(currentQty) + 1)
   })
-}
+})
