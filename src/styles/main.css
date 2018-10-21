@@ -1,0 +1,29 @@
+@import 'svbstrate/src/lib/reset.css';
+@import 'svbstrate/src/lib/display.css';
+@import 'svbstrate/src/lib/positioning.css';
+@import 'svbstrate/src/lib/flexbox.css';
+@import 'svbstrate/src/lib/align.css';
+@import 'svbstrate/src/lib/spacing.css';
+@import 'svbstrate/src/lib/buttons.css';
+@import 'svbstrate/src/lib/forms.css';
+@import 'svbstrate/src/lib/z-index.css';
+
+/* Default Slater Theme */
+@import 'slater/lib/var';
+@import 'slater/lib/colors';
+@import 'slater/lib/breakpoint';
+@import 'slater/lib/spacing';
+@import 'slater/lib/containers';
+@import 'slater/lib/forms';
+@import 'slater/lib/lists';
+@import 'slater/lib/visibilty';
+
+@import 'slater/components/cart-drawer';
+@import 'slater/components/page-transition';
+@import 'slater/components/accounts';
+@import 'slater/components/buttons';
+
+ body {
+   background-color: pink;
+   color: red;
+ }

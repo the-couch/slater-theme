@@ -1,0 +1,17 @@
+.mt15, .my15, .m15 { margin-top: 1.5em }
+.mb15, .my15, .m15 { margin-bottom: 1.5em }
+.ml15, .mx15, .m15 { margin-left: 1.5em }
+.mr15, .mx15, .m15 { margin-right: 1.5em }
+.pt15, .pv15, .p15 { padding-top: 1.5em }
+.pb15, .pv15, .p15 { padding-bottom: 1.5em }
+.pl15, .py15, .p15 { padding-left: 1.5em }
+.pr15, .py15, .p15 { padding-right: 1.5em }
+
+.mt2, .my2, .m2 { margin-top: 2em }
+.mb2, .my2, .m2 { margin-bottom: 2em }
+.ml2, .mx2, .m2 { margin-left: 2em }
+.mr2, .mx2, .m2 { margin-right: 2em }
+.pt2, .pv2, .p2 { padding-top: 2em }
+.pb2, .pv2, .p2 { padding-bottom: 2em }
+.pl2, .py2, .p2 { padding-left: 2em }
+.pr2, .py2, .p2 { padding-right: 2em }

@@ -6,7 +6,7 @@
   {%- assign onboarding_title = 'homepage.onboarding.product_title' | t -%}
 {% endif %}
 
-<div data-section-id="{{ section.id }}" data-component="product" itemscope itemtype="http://schema.org/Product">
+<div class='p15' data-section-id="{{ section.id }}" data-component="product" itemscope itemtype="http://schema.org/Product">
   <meta itemprop="name" content="{{ product.title }}">
   <meta itemprop="url" content="{{ shop.url }}{{ product.url }}">
   <meta itemprop="image" content="{{ product.featured_image.src | img_url: '800x' }}">
@@ -15,7 +15,9 @@
   <script class='js-product-json' type='text/template'>
     {
       "selectedOrFirstAvailableVariant": {{ current_variant.id | json }},
-      "product": {{ product | json }}
+      "product": {{ product | json }},
+      "options": {{ product.options | json }},
+      "variants": {{ product.variants | json }}
     }
   </script>
 

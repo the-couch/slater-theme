@@ -1,42 +1,25 @@
-import router from 'lib/router'
-import * as scripts from 'micromanager'
+import picoapp from 'picoapp'
 
-const init = types => (ctx = document) => {
-  for (let type in types) {
-    const attr = 'data-' + type
-    const nodes = [].slice.call(ctx.querySelectorAll(`[${attr}]`))
+import header from './components/header.js'
+import product from './components/product.js'
+import cartDrawer from './components/cartDrawer.js'
+import cartDrawerItem from './components/cartDrawerItem.js'
+import accountLogin from './components/accountLogin.js'
 
-    for (let i = 0; i < nodes.length; i++) {
-      try {
-        require(types[type] + nodes[i].getAttribute(attr) + '.js').default(nodes[i])
-      } catch (e) {
-        console.error(e)
-      }
-    }
-  }
+const state = {
+  cartOpen: false
 }
 
-document.addEventListener('DOMContentLoaded', e => {
-  init({
-    component: './components/',
-    page: './pages/'
-  })()
-})
+const actions = {
+  toggleCart: open => state => ({ cartOpen: !state.cartOpen })
+}
 
-/**
- * Script management
- */
-scripts.init({
-  component: 'components/',
-  util: 'util/'
-})
+const components = {
+  header,
+  product,
+  cartDrawer,
+  cartDrawerItem,
+  accountLogin
+}
 
-scripts.mount()
-
-router.on('afterRender', () => {
-  console.log('route rendered!')
-})
-
-console.groupCollapsed('Slater credits 🍝')
-console.log('Development by The Couch https://thecouch.nyc')
-console.groupEnd()
+export default picoapp(components, state, actions)

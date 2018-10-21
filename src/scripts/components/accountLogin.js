@@ -1,4 +1,6 @@
-export default outer => {
+import { component } from 'picoapp'
+
+export default component(({ node: outer, state }) => {
   const login = outer.querySelector('.js-login-dialog')
   const recover = outer.querySelector('.js-recover-dialog')
   const recoverLink = outer.querySelector('.js-recover-trigger')
@@ -28,4 +30,4 @@ export default outer => {
     recover.style.display = 'none'
     login.style.display = 'block'
   })
-}
+})

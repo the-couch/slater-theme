@@ -1,5 +1,6 @@
 import fetch from 'unfetch'
 import mitt from 'mitt'
+import app from '../app.js'
 
 const ev = mitt()
 
@@ -50,6 +51,7 @@ function changeAddon (line, quantity) {
     body: JSON.stringify({ line, quantity })
   }).then(res => res.json()).then(cart => {
     ev.emit('addon', { item: null, cart })
+    app.hydrate({ cart: cart })(() => console.log('updated') )
     return cart
   })
 }
@@ -60,6 +62,8 @@ function changeAddon (line, quantity) {
 export function addItemById (id, quantity) {
   ev.emit('updating')
 
+  console.log('yo adddy')
+
   return fetch('/cart/add.js', {
     method: 'POST',
     credentials: 'include',
@@ -69,7 +73,9 @@ export function addItemById (id, quantity) {
     body: JSON.stringify({ id, quantity })
   }).then(r => r.json()).then(item => {
     return fetchCart().then(cart => {
-      ev.emit('updated', { item, cart })
+      app.hydrate({ cart: cart })(() => console.log('updated'))
+      app.actions.toggleCart()
+      // ev.emit('updated', { item, cart })
       return { item, cart }
     })
   })

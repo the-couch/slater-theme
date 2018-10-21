@@ -1,4 +1,4 @@
-<form action="/cart/add" method="post" enctype="multipart/form-data">
+<form action="/cart/add" method="post" enctype="multipart/form-data" data-component="productAdd">
   {% unless product.has_only_default_variant %}
     {% for option in product.options_with_values %}
       <div class="selector-wrapper js">
@@ -54,6 +54,7 @@
   <button
     type="submit"
     name="add"
+    role="button"
     class='js-submit-cart'
     data-add-to-cart
     {% unless product.available %}disabled="disabled"{% endunless %}

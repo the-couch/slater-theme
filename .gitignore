@@ -11,7 +11,11 @@ node_modules
 dist
 upload
 deploy.log
+build/*
+build
 config.yml
+src/assets/index.js
+src/assets/main.css
 
 # Compiled source #
 ###################

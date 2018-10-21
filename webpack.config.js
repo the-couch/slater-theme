@@ -7,7 +7,7 @@ const p = process.env.NODE_ENV === 'production'
 module.exports = {
   target: 'web',
   devtool: 'source-map',
-  entry: path.join(__dirname, 'src/scripts/app.js'),
+  entry: path.join(__dirname, 'src/scripts/index.js'),
   output: {
     path: path.join(__dirname, 'src/assets'),
     filename: 'index.js'

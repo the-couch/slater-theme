@@ -13,14 +13,14 @@
   color: var(--white);
 }
 
-.bg-w {
+.bcw {
   background-color: var(--white);
 }
 
-.bg-gm {
+.bcgm {
   background-color: var(--gray-medium);
 }
 
-.bg-r {
+.bcr {
   background-color: var(--ruby);
 }

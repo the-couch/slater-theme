@@ -1,4 +1,4 @@
-import { defaultTo } from 'slater/utils'
+import { defaultTo } from './utils.js'
 
 /**
  * Currency Helpers

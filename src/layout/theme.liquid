@@ -41,13 +41,13 @@
       }
     </script>
 
-    {{ 'main.css' | asset_url | stylesheet_tag }}
+    {{ 'index.css' | asset_url | stylesheet_tag }}
 
     {{ content_for_header }}
   </head>
   <body id="{{ page_title | handle }}">
     <!-- Remove for production -->
-      <div class='px1 ac bg-r'>
+      <div class='p1 ac bcr'>
         <h4><a class='cw' href="https://github.com/the-couch/slater-theme">Download this starter theme</a></h4>
       </div>
     <!-- End Remove for production -->
@@ -59,7 +59,7 @@
       {% section 'footer' %}
     </main>
 
-    <div id='pageTransition' class='page-transition bg-r'></div>
+    <div id='pageTransition' class='page-transition bcr'></div>
 
     {% include 'cart-drawer' %}
 
