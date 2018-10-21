@@ -51,7 +51,7 @@ function changeAddon (line, quantity) {
     body: JSON.stringify({ line, quantity })
   }).then(res => res.json()).then(cart => {
     ev.emit('addon', { item: null, cart })
-    app.hydrate({ cart })()
+    app.hydrate({ cart: cart })(() => console.log('updated') )
     return cart
   })
 }
@@ -73,7 +73,8 @@ export function addItemById (id, quantity) {
     body: JSON.stringify({ id, quantity })
   }).then(r => r.json()).then(item => {
     return fetchCart().then(cart => {
-      ev.emit('updated', { item, cart })
+      app.hydrate({ cart: cart })(() => console.log('updated'))
+      // ev.emit('updated', { item, cart })
       return { item, cart }
     })
   })

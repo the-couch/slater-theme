@@ -9,6 +9,7 @@ export default component(({ node: el, state }) => {
   const form = el.getElementsByTagName('form')[0]
   const submit = form.querySelector('.js-submit-cart')
   const quantity = form.querySelector('.js-quantity').value
+  console.log('subby', form)
 
   form.addEventListener('submit', e => {
     e.preventDefault()

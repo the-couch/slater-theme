@@ -12,7 +12,9 @@
   <script class='js-product-json' type='text/template'>
     {
       "selectedOrFirstAvailableVariant": {{ current_variant.id | json }},
-      "product": {{ product | json }}
+      "product": {{ product | json }},
+      "options": {{ product.options | json }},
+      "variants": {{ product.variants | json }}
     }
   </script>
 
@@ -36,9 +38,7 @@
     <meta itemprop="priceCurrency" content="{{ shop.currency }}">
     <meta itemprop="price" content="{{ current_variant.price | divided_by: 100.00 }}">
     <link itemprop="availability" href="http://schema.org/{% if current_variant.available %}InStock{% else %}OutOfStock{% endif %}">
-
     {% include 'add-to-cart-form' %}
-
   </div>
 
   <div class="rte">

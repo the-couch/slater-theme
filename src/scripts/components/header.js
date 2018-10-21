@@ -2,9 +2,14 @@
 import { component } from 'picoapp'
 // import Cart from './cart-drawer.js'
 
-export default component(({ node: header }) => {
+export default component(({ node: header, state, actions }) => {
     // Handle cart count hard hit
-    console.log('hey header?')
+  console.log('hey header?')
+  return {
+    onStateChange (state) {
+      console.log('sta', state)
+    }
+  }
   //   const cartCount = header.querySelector('.js-cart-count')
   //   const cart = fetchCart()
   //   cart.then(res => {
