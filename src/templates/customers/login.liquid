@@ -1,8 +1,8 @@
 {% include 'theme-provider' with theme: 'dark' %}
 
-<div class='account-login fill-x fill-y account-wrapper bg-p ac f aic jcc' data-component='account-login'>
+<div class='account-login x y account-wrapper bg-p ac f aic jcc' data-component='accountLogin'>
   <div class='outer x'>
-    <div class='account-login__recover account-dialog px2 hide mha js-recover-dialog'>
+    <div class='account-login__recover account-dialog px2 hide ma js-recover-dialog'>
       <h2 class='h3 serif mb05'>Forgot your password?</h2>
       <p class='h6'>Enter your email and we will send you a password reset link.</p>
 
@@ -45,10 +45,10 @@
       <a href='/accounts/login' class='block mt1 link--underline small cg js-recover-cancel no-ajax'>Cancel</a>
     </div>
 
-    <div class='account-login__login account-dialog mha px2 js-login-dialog'>
+    <div class='account-login__login account-dialog ma p2 js-login-dialog'>
       <h1 class='serif mb05'>Sign In</h1>
 
-      {% form 'customer_login', class: 'mha' %}
+      {% form 'customer_login', class: 'ma' %}
         <div class='mb1 pb05'>
           {%
           include 'form-input-text' with
