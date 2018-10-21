@@ -63,7 +63,7 @@ const animateRoute = () => {
 
 const router = operator('#root', [
   state => {
-    return wait(600, [
+    return wait(20, [
       animateRoute()
     ])
   }

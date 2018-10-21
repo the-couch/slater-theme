@@ -1,10 +1,7 @@
 import { removeAddon, updateAddon } from '../slater/cart.js'
 import { component } from 'picoapp'
 
-console.log('file ever?')
-
 export default component(({ node: item, state }) => {
-  console.log('this exists')
   const button = item.getElementsByTagName('button')[0]
   const decrease = item.querySelector('.js-remove-single')
   const increase = item.querySelector('.js-add-single')
