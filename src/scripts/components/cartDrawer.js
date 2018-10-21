@@ -1,7 +1,8 @@
-import { on, fetchCart } from '../slater/cart'
+import { fetchCart } from '../slater/cart'
 import { getSizedImageUrl, imageSize } from '../slater/images'
 import { formatMoney } from '../slater/currency'
 import { component } from 'picoapp'
+import app from '../app.js'
 
 const X = `<svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentcolor" stroke-width="3" style="display:inline-block;vertical-align:middle;overflow:visible;"><path d="M1.0606601717798212 1.0606601717798212 L14.939339828220179 14.939339828220179"></path><path d="M14.939339828220179 1.0606601717798212 L1.0606601717798212 14.939339828220179"></path></svg>`
 
@@ -55,24 +56,45 @@ function renderItems (items) {
   )
 }
 
-console.log('cart drawer file')
-
 export default component(({ node, state, actions }) => {
-    const overlay = node.querySelector('.js-overlay')
-    const closeButton = node.querySelector('.js-close')
-    const subtotal = node.querySelector('.js-subtotal')
-    const itemsRoot = node.querySelector('.js-items')
-    const loading = itemsRoot.innerHTML
+  const overlay = node.querySelector('.js-overlay')
+  const closeButton = node.querySelector('.js-close')
+  const subtotal = node.querySelector('.js-subtotal')
+  const itemsRoot = node.querySelector('.js-items')
+  const loading = itemsRoot.innerHTML
 
-    console.log('hey spaghetti', state)
+  const render = (cart) => {
+    itemsRoot.innerHTML = renderItems(cart.items)
+    subtotal.innerHTML = formatMoney(cart.total_price)
+  }
 
-    itemsRoot.innerHTML = renderItems(state.cart.items)
+  const open = (cart) => {
+    app.hydrate({cartOpen: true})
+    node.classList.add('is-active')
+    itemsRoot.innerHTML = loading
+    setTimeout(() => {
+      node.classList.add('is-visible')
+      setTimeout(render(cart), 10)
+    }, 50)
+  }
 
-    return {
-      onStateChange (state) {
-        console.log('hey spaghe change', state)
-      }
+  const close = () => {
+    node.classList.remove('is-visible')
+    setTimeout(() => {
+      node.classList.remove('is-active')
+      app.hydrate({cartOpen: false})
+    }, 400)
+  }
+
+  render(state.cart)
+
+  closeButton.addEventListener('click', close)
+
+  return {
+    onStateChange ({cart, cartOpen}) {
+      cartOpen ? render(cart) : open(cart)
     }
+  }
 })
 
 //

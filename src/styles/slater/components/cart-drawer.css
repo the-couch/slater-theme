@@ -3,7 +3,7 @@
 }
 
 .cart-drawer-outer {
-  /* display: none; */
+  display: none;
 
   &.is-active {
     display: block;
@@ -18,13 +18,13 @@
   }
 }
 .cart-drawer-overlay {
-  /* opacity: 0; */
+  opacity: 0;
   transition: all var(--slow) var(--ease);
 }
 .cart-drawer {
   max-width: 500px;
   transition: all var(--slow) var(--ease);
-  /* transform: translateX(100%); */
+  transform: translateX(100%);
   flex-direction: column;
   padding-bottom: 160px; /* make room for footer */
 
