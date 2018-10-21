@@ -9,7 +9,6 @@ export default component(({ node: item, state }) => {
   const id = item.getAttribute('data-id')
 
   button.addEventListener('click', e => {
-    console.log('what up?')
     e.preventDefault()
     removeAddon(id)
   })
