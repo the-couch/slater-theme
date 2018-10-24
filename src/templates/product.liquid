@@ -1,1 +1,69 @@
-{% section 'product' %}
+<div data-component="product">
+  {%- assign current_variant = product.selected_or_first_available_variant -%}
+  {%- assign featured_image = current_variant.featured_image | default: product.featured_image -%}
+
+  <script type="application/ld+json">
+    {
+      "@context": "http://schema.org/",
+      "@type": "Product",
+      "name": "{{ product.title }}",
+      "url": "{{ shop.url }}{{ current_variant.url }}",
+      "image": "{{ featured_image | img_url: '600x600' }}",
+      "description": "{{ product.description | strip_html | escape }}",
+      "brand": {
+        "@type": "Thing",
+        "name": "{{ product.vendor }}"
+      },
+      "offers": [
+        {
+          "@type": "Offer",
+          "availability": "http://schema.org/{% if current_variant.available %}InStock{% else %}OutOfStock{% endif %}",
+          "price": "{{ current_variant.price | money_without_currency }}",
+          "priceCurrency": "{{ shop.currency }}",
+          "url": "{{ shop.url }}{{ current_variant.url }}",
+          "itemOffered": {
+            "@type": "Product",
+            "name": "{{ product.title }}",
+            "sku": "{{ current_variant.sku }}"
+          }
+        }
+      ]
+    }
+  </script>
+
+  <script class='js-product-json' type='application/json'>
+    {
+      "selectedOrFirstAvailableVariant": {{ current_variant.id | json }},
+      "product": {{ product | json }},
+      "options": {{ product.options | json }},
+      "variants": {{ product.variants | json }}
+    }
+  </script>
+
+  <section class='outer'>
+    <div class='container--l mxa'>
+      <img src="{{ featured_image | img_url: '480x480' }}" alt="{{ featured_image.alt | escape }}" data-product-featured-image>
+
+      {% if product.images.size > 1 %}
+        <ul>
+          {% for image in product.images %}
+            <li>
+              <a href="{{ image.src | img_url: '480x480' }}" data-product-single-thumbnail>
+                <img src="{{ image.src | img_url: '160x160' }}" alt="{{ image.alt | escape }}">
+              </a>
+            </li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+
+      <h1>{{ product.title }}</h1>
+      <p>{{ product.vendor }}</p>
+
+      {% include 'add-to-cart-form' %}
+
+      <div class="rte">
+        {{ product.description }}
+      </div>
+    </div>
+  </section>
+</div>
