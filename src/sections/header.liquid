@@ -1,53 +1,35 @@
-<!--
+{% comment %}
   Considerations for the header:
     1. Schema.org tags
-      - <h1 itemscope itemtype="http://schema.org/Organization">
+      - <h1 itemscope itemtype='http://schema.org/Organization'>
       - itemprop [url, logo] etc
--->
-<div data-section-id="{{ section.id }}" data-component="header">
-  <header role="banner" id='header'>
-    <div class="f jcb aic px1">
-      <h1 itemscope itemtype="http://schema.org/Organization">
-        <em>Slater</em>
-      </h1>
+{% endcomment %}
 
-      <div class='f jcb fw'>
-        {% include 'search' %}
+<header role='banner' id='header' data-component='header'>
+  <div class='outer'>
+    <div class='container--l mxa'>
+      <div class='f jcb aic'>
+        <h1 itemscope itemtype='http://schema.org/Organization'>
+          <a href='/'><em>Slater</em></a>
+        </h1>
 
-        <a class='ml1 js-cart-drawer-toggle no-ajax' href="/cart">
-          Cart
-          <span class='js-cart-count'>{{ cart.item_count }}</span>
-        </a>
-        <div class='fill-y'>
+        <div class='f jcb fw'>
+          <a class='mx05' href='/search'>Search</a>
+
           {% if shop.customer_accounts_enabled %}
-            <ul class='f jce fw'>
-              {% if customer %}
-                <li class='ml1'>
-                  {% if customer.first_name != blank %}
-                    {% capture first_name %}<a href="/account">{{ customer.first_name }}</a>{% endcapture %}
-                    {{ 'layout.customer.logged_in_as_html' | t: first_name: first_name }}
-                  {% else %}
-                    <a href="/account">{{ 'layout.customer.account' | t }}</a>
-                  {% endif %}
-                </li>
-                <li class='ml1'>
-                  {{ 'layout.customer.log_out' | t | customer_logout_link }}
-                </li>
-              {% else %}
-                <li class='ml1'>
-                  {{ 'layout.customer.log_in' | t | customer_login_link }}
-                </li>
-                <li class='ml1'>
-                  {{ 'layout.customer.create_account' | t | customer_register_link }}
-                </li>
-              {% endif %}
-            </ul>
+            <a class='mx05' href='/account'>Account</a>
           {% endif %}
+
+          <a href='/cart' class='ml1 js-cart-drawer-toggle'>
+            Cart
+            <span class='js-cart-count'>{{ cart.item_count }}</span>
+          </a>
         </div>
       </div>
+
+      <div class='pt1'>
+        {% include 'navigation' %}
+      </div>
     </div>
-    <div class='px1'>
-      {% include 'navigation' %}
-    </div>
-  </header>
-</div>
+  </div>
+</header>

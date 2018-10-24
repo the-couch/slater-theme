@@ -1,14 +1,10 @@
 <!DOCTYPE html>
-<html lang="{{ shop.locale }}">
+<html lang='{{ shop.locale }}'>
   <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="theme-color" content="{{ settings.color_primary }}">
-    <link rel="canonical" href="{{ canonical_url }}">
-    {% if settings.favicon != blank %}
-      <link rel="shortcut icon" href="{{ settings.favicon | img_url: '32x32' }}" type="image/png">
-    {% endif %}
+    <meta charset='utf-8'>
+    <meta name='viewport' content='width=device-width,initial-scale=1'>
+    <link rel='canonical' href='{{ canonical_url }}'>
+    <link rel='shortcut icon' href='' type='image/png'>
 
     {% capture seo_title %}
       {{ page_title }}
@@ -27,7 +23,7 @@
     {% include 'head-meta' %}
 
     {% if template.directory == 'customers' %}
-      <script src="{{ 'shopify_common.js' | shopify_asset_url }}" defer="defer"></script>
+      <script src='{{ 'shopify_common.js' | shopify_asset_url }}' defer='defer'></script>
     {% endif %}
 
     <script>
@@ -45,24 +41,29 @@
 
     {{ content_for_header }}
   </head>
-  <body id="{{ page_title | handle }}">
+
+  <body>
     <!-- Remove for production -->
-      <div class='p1 ac bcr'>
-        <h4><a class='cw' href="https://github.com/the-couch/slater-theme">Download this starter theme</a></h4>
+    <header class='py025 bct'>
+      <div class='outer'>
+        <div class='container--l mxa'>
+          <h5><a class='cw' href='https://github.com/the-couch/slater-theme'>Download this starter theme</a></h5>
+        </div>
       </div>
+    </header>
     <!-- End Remove for production -->
 
     {% section 'header' %}
 
-    <main role="main" id="root">
+    <main role='main' id='root'>
       {{ content_for_layout }}
       {% section 'footer' %}
     </main>
 
-    <div id='pageTransition' class='page-transition bcr'></div>
+    <div id='siteOverlay' class='site-overlay'></div>
 
     {% include 'cart-drawer' %}
 
-    <script src="{{ 'index.js' | asset_url }}" defer="defer"></script>
+    <script src='{{ 'index.js' | asset_url }}' defer='defer'></script>
   </body>
 </html>
