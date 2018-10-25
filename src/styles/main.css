@@ -16,5 +16,6 @@
 @import 'components/lists.css';
 @import 'components/containers.css';
 @import 'components/site-overlay.css';
+@import 'components/counter.css';
 
 @import 'slater/components/cart-drawer';

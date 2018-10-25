@@ -1,19 +1,20 @@
-<form action="/cart/add" method="post" enctype="multipart/form-data" data-component="productAdd">
+<form action='/cart/add' method='post' enctype='multipart/form-data' data-component='productAdd'>
+
   {% unless product.has_only_default_variant %}
     {% for option in product.options_with_values %}
-      <div class="selector-wrapper js">
-        <label for="SingleOptionSelector-{{ section.id }}-{{ forloop.index0 }}">
+      <div class='selector-wrapper js'>
+        <label for='SingleOptionSelector-{{ section.id }}-{{ forloop.index0 }}'>
           {{ option.name }}
         </label>
 
         <select
-          id="SingleOptionSelector-{{ section.id }}-{{ forloop.index0 }}"
+          id='SingleOptionSelector-{{ section.id }}-{{ forloop.index0 }}'
           data-single-option-selector
-          data-index="option{{ option.position }}">
+          data-index='option{{ option.position }}'>
           {% for value in option.values %}
             <option
-              value="{{ value | escape }}"
-              {% if option.selected_value == value %}selected="selected"{% endif %}>
+              value='{{ value | escape }}'
+              {% if option.selected_value == value %}selected='selected'{% endif %}>
                 {{ value }}
             </option>
           {% endfor %}
@@ -22,19 +23,19 @@
     {% endfor %}
   {% endunless %}
 
-  <select name="id" class="no-js" data-product-select>
+  <select name='id' class='no-js' data-product-select>
     {% for variant in product.variants %}
       <option
-        {% if variant == product.selected_or_first_available_variant %}selected="selected"{% endif %}
-        {% unless variant.available %}disabled="disabled"{% endunless %}
-        value="{{ variant.id }}">
+        {% if variant == product.selected_or_first_available_variant %}selected='selected'{% endif %}
+        {% unless variant.available %}disabled='disabled'{% endunless %}
+        value='{{ variant.id }}'>
           {{ variant.title }}
       </option>
     {% endfor %}
   </select>
 
-  <label for="Quantity-{{ section.id }}">{{ 'products.product.quantity' | t }}</label>
-  <input type="number" id="Quantity-{{ section.id }}" name="quantity" class='js-quantity' value="1" min="1">
+  <label for='Quantity-{{ section.id }}'>{{ 'products.product.quantity' | t }}</label>
+  {% include 'counter' with min: 0 %}
 
   <div data-price-wrapper>
     <span data-product-price>
@@ -42,7 +43,7 @@
     </span>
 
     {% if product.compare_at_price_max > product.price %}
-      <span class="visually-hidden" data-compare-text>{{ 'products.product.regular_price' | t }}</span>
+      <span class='visually-hidden' data-compare-text>{{ 'products.product.regular_price' | t }}</span>
       <s data-compare-price>
         {% if current_variant.compare_at_price > current_variant.price %}
           {{ current_variant.compare_at_price | money }}
@@ -52,13 +53,13 @@
   </div>
 
   <button
-    type="submit"
-    name="add"
-    role="button"
+    type='submit'
+    name='add'
+    role='button'
     class='js-submit-cart'
     data-add-to-cart
-    {% unless product.available %}disabled="disabled"{% endunless %}
-    {% if section_onboarding %}disabled="disabled"{% endif %}>
+    {% unless product.available %}disabled='disabled'{% endunless %}
+    {% if section_onboarding %}disabled='disabled'{% endif %}>
       <span data-add-to-cart-text>
         {% if product.available %}
           {{ 'products.product.add_to_cart' | t }}
