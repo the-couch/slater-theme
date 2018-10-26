@@ -1,4 +1,5 @@
 import radio from '../slater/radio.js'
+import './util/select.js'
 
 export default function productSelection (node, opts) {
   opts = Object.assign({

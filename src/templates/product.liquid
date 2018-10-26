@@ -31,13 +31,6 @@
     }
   </script>
 
-  <script data-product-json type='application/json'>
-    {
-      "selectedId": {{ current_variant.id | json }},
-      "product": {{ product | json }}
-    }
-  </script>
-
   <section class='outer' data-component='productSelection'>
     <div class='container--l mxa'>
       <img src="{{ featured_image | img_url: '480x480' }}" alt="{{ featured_image.alt | escape }}" data-product-featured-image>

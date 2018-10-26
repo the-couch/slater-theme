@@ -3,19 +3,17 @@ import { component } from 'picoapp'
 import wait from 'w2t'
 import radio from '../slater/radio.js'
 import options from '../slater/options.js'
+import getProductJson from '../slater/getProductJson.js'
 
 export default component(({ node }) => {
   const opts = options(node)
 
+  // cache
+  getProductJson()
+
   opts.onUpdate(state => {
-    console.log(state)
+    getProductJson().then(json => {
+      const variant = json.variants.filter(v => v.id == state.id)[0]
+    })
   })
-
-  // form.onsubmit = e => {
-  //   e.preventDefault()
-
-  //   const { quantity, id } = e.target.elements
-
-  //   console.log(quantity.value, id.value)
-  // }
 })
