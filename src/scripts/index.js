@@ -1,6 +1,7 @@
 import operator from 'operator'
 import app from './app.js'
 import { fetchCart } from './slater/cart'
+import './slater/util/select.js'
 
 import '../styles/main.css'
 

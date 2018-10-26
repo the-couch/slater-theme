@@ -31,16 +31,14 @@
     }
   </script>
 
-  <script class='js-product-json' type='application/json'>
+  <script data-product-json type='application/json'>
     {
-      "selectedOrFirstAvailableVariant": {{ current_variant.id | json }},
-      "product": {{ product | json }},
-      "options": {{ product.options | json }},
-      "variants": {{ product.variants | json }}
+      "selectedId": {{ current_variant.id | json }},
+      "product": {{ product | json }}
     }
   </script>
 
-  <section class='outer'>
+  <section class='outer' data-component='productSelection'>
     <div class='container--l mxa'>
       <img src="{{ featured_image | img_url: '480x480' }}" alt="{{ featured_image.alt | escape }}" data-product-featured-image>
 
@@ -57,9 +55,35 @@
       {% endif %}
 
       <h1>{{ product.title }}</h1>
-      <p>{{ product.vendor }}</p>
 
-      {% include 'add-to-cart-form' %}
+      <form action='/cart/add' method='post' enctype='multipart/form-data'>
+        {% include 'product-options' %}
+
+        {% include 'input-counter' %}
+
+        <div class='f aic'>
+          <span data-price>{{ current_variant.price | money }}</span>
+          {% if current_variant.compare_at_price > current_variant.price %}
+            <s data-compare-price>{{ current_variant.compare_at_price | money }}</s>
+          {% endif %}
+        </div>
+
+        {%- capture cta -%}
+          {% if product.available %}
+            Add to Cart
+          {% else %}
+            Out of Stock
+          {% endif %}
+        {%- endcapture -%}
+        {%
+          include 'button' with
+          tag: 'button',
+          name: 'add',
+          type: 'submit',
+          className: 'js-add-to-cart',
+          cta: cta
+        %}
+      </form>
 
       <div class="rte">
         {{ product.description }}
