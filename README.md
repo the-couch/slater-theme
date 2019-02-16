@@ -1,8 +1,10 @@
+## slater theme is deprected and now maintained in slater
+
 Note, the slater-theme is now bundled with Slater-CLI
 
 [slater](https://github.com/the-couch/slater)
 
-This theme is no longer maintainer here
+This theme is no longer maintained here
 
 
 -----------
