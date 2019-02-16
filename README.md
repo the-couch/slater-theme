@@ -1,3 +1,13 @@
+Note, the slater-theme is now bundled with Slater-CLI
+
+[slater](https://github.com/the-couch/slater)
+
+This theme is no longer maintainer here
+
+
+-----------
+
+
 # SLATER
 Slater than [Slate](https://github.com/Shopify/slate). Minimaler than minimal.
 
