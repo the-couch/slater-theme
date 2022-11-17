@@ -42,7 +42,7 @@
     "standard-loader": "^6.0.1",
     "uglifyjs-webpack-plugin": "^1.2.2",
     "webpack": "^3.0.0",
-    "webpack-dashboard": "^1.0.0-5"
+    "webpack-dashboard": "^1.1.1"
   },
   "dependencies": {
     "form-serialize": "^0.7.2",
